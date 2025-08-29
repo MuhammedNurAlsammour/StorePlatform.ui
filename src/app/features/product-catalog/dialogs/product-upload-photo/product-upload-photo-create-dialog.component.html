@@ -1,0 +1,50 @@
+<form [formGroup]="frm!" (ngSubmit)="onSubmit(frm?.value)">
+  <div class="container">
+    <div class="row justify-content-between">
+      <div class="col-6">
+        <h1 mat-dialog-title>Resim Yükleme İşlemleri</h1>
+      </div>
+    </div>
+  </div>
+  <div mat-dialog-content style="padding: 5px">
+    <hr />
+
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <file-pond
+            #myPond
+            [options]="pondOptions"
+            [files]="pondFiles"
+            (oninit)="pondHandleInit()"
+            (onaddfile)="pondHandleAddFile($event)"
+            (onactivatefile)="pondHandleActivateFile($event)"
+          >
+          </file-pond>
+        </div>
+      </div>
+    </div>
+
+    <hr />
+  </div>
+  <mat-dialog-actions style="justify-content: end; padding-right: 25px">
+    <div>
+      <div class="button-appApproval" style="float: right">
+        <span class="mas"> Kaydet </span>
+        <button
+          type="submit"
+          name="Hover"
+          [disabled]="frm?.invalid || !frm.get('photoBase64')?.value"
+        >
+          Kaydet
+        </button>
+      </div>
+    </div>
+    <div>
+      <div class="button-forego" style="float: right">
+        <span class="mas"> Vazgeç </span>
+        <button type="button" mat-dialog-close name="Hover">Vazgeç</button>
+      </div>
+    </div>
+  </mat-dialog-actions>
+</form>

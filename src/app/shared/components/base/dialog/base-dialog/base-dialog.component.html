@@ -1,0 +1,113 @@
+<form [formGroup]="frm!" (ngSubmit)="onFormSubmit()">
+  <div class="container">
+    <div class="row justify-content-between">
+      <div class="col-12">
+        <h1 mat-dialog-title>
+          <span class="material-icons" [style.color]="titleIconColor">{{titleIcon}}</span>
+          {{dialogTitle}}
+        </h1>
+      </div>
+    </div>
+  </div>
+  <div mat-dialog-content style="padding: 5px;">
+    <hr>
+
+  <ng-content select="[dialog-content]"></ng-content>
+
+    @for (row of getFieldRows(); track $index) {
+      <div class="container">
+        <div class="row">
+                     @for (field of row; track field.name) {
+             <div [class]="getColClass(field)">
+              <mat-form-field appearance="outline" style="width: 100%;">
+                <mat-label>{{field.label}}</mat-label>
+                @switch (field.type) {
+                  @case ('text') {
+                    <input matInput
+                      [formControlName]="field.name"
+                      [attr.maxlength]="field.maxLength || null"
+                      [placeholder]="field.placeholder || ''">
+                  }
+                  @case ('number') {
+                    <input matInput
+                      type="number"
+                      [formControlName]="field.name"
+                      [placeholder]="field.placeholder || ''">
+                  }
+                                     @case ('selectAutocomplete') {
+                     <input type="text"
+                     matInput
+                     [formControlName]="field.name"
+                     [matAutocomplete]="fieldAuto"
+                     [placeholder]="field.placeholder || ''">
+                     <mat-autocomplete #fieldAuto="matAutocomplete"
+                                      [displayWith]="displayFn(field)"
+                                      (optionSelected)="onAutocompleteSelected($event, field.name)">
+                       <mat-option [value]="null">-- Seçim Yok --</mat-option>
+                       @for (option of getFilteredOptions(field.name) | async; track option.id || option.categoryId || $index) {
+                         <mat-option [value]="option">
+                           {{field.displayFn ? field.displayFn(option) : (option.name || option.firstName + ' ' + option.lastName)}}
+                         </mat-option>
+                       }
+                     </mat-autocomplete>
+                   }
+                  @case ('date') {
+                    <div class="date-input-container">
+                      <input matInput
+                        [matDatepicker]="picker"
+                        [formControlName]="field.name"
+                        [placeholder]="field.placeholder || 'GG.AA.YYYY'"
+                        class="date-input">
+                      <mat-datepicker-toggle class="date-toggle-right" [for]="picker"></mat-datepicker-toggle>
+                      <mat-datepicker #picker></mat-datepicker>
+                    </div>
+                  }
+                  @case ('select') {
+                    <mat-select [formControlName]="field.name">
+                      @for (option of field.options || []; track option.id) {
+                        <mat-option [value]="option.id">{{option.name}}</mat-option>
+                      }
+                    </mat-select>
+                  }
+                  @case ('textarea') {
+                    <textarea matInput
+                      [formControlName]="field.name"
+                      [attr.maxlength]="field.maxLength || null"
+                      [placeholder]="field.placeholder || ''">
+                    </textarea>
+                  }
+                }
+
+                @if (frm && frm.get(field.name)?.errors?.['required'] && frm.get(field.name)?.touched) {
+                  <mat-error>{{getErrorMessage(field.name)}}</mat-error>
+                }
+
+                <!-- Character counter showing remaining characters -->
+                @if (field.maxLength) {
+                  <mat-hint align="end" [dir]="'ltr'" class="mat-mdc-form-field-hint mat-mdc-form-field-bottom-align">
+                    {{getCurrentCharacterCount(field.name, field.maxLength)}} karakter kaldı
+                  </mat-hint>
+                }
+              </mat-form-field>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </div>
+  <hr>
+  <mat-dialog-actions style="justify-content: end; padding-right: 25px;">
+    <div>
+      <div style="float: right;"  *ngIf="isSaveButtonVisible===true" [ngClass]="{'button-forego': buttonStatus === '0', 'button-appApprov': buttonStatus === '1', 'button-appApproval': buttonStatus === '2' }">
+        <span class="mas">{{saveButtonText}}</span>
+        <button type="submit" name="Hover">{{saveButtonText}}</button>
+      </div>
+    </div>
+    <div>
+      <div class="button-forego" style="float: right;" >
+        <span class="mas">{{cancelButtonText}}</span>
+        <button type="button" mat-dialog-close name="Hover">{{cancelButtonText}}</button>
+      </div>
+    </div>
+  </mat-dialog-actions>
+</form>

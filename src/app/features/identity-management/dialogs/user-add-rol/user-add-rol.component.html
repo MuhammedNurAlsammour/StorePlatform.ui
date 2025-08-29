@@ -1,0 +1,31 @@
+<form [formGroup]="frm" (ngSubmit)="onSubmit(frm.value)">
+  <app-base-dialog
+    [dialogTitle]="dialogTitle"
+    [titleIcon]="titleIcon"
+    [frm]="frm"
+    (formSubmit)="onSubmit($event)">
+    <div dialog-content>
+
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <mat-form-field style="width: 100%;" appearance="outline">
+              <mat-label>Roller</mat-label>
+              <mat-select formControlName="roles" name="roles" multiple>
+                <mat-option *ngFor="let role of AddRol" [value]="role.name">{{role.name}}</mat-option>
+                <mat-error *ngIf="frmControls?.['roles']?.errors?.['required']">Lütfen Roller Seçiniz.</mat-error>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </app-base-dialog>
+</form>
+
+
+
+
+
+

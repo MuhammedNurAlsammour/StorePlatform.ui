@@ -1,0 +1,17 @@
+<app-cp
+[homeRoute]="'/'"
+[closeRoute]="'/settings'"
+[breadcrumbs]="[
+  { route: '/settings', label: 'Tanımlar', icon: 'fa-cog' },
+  { route: '/rol-definitions', label: 'Rol Tanımları', active: true }
+]">
+  <app-create
+  header
+  (created)="created()"
+  (searchFilter)="receiveSearchValue($event)"
+  ></app-create>
+
+  <app-list content
+  [filterValue]="searchValue"
+  ></app-list>
+</app-cp>

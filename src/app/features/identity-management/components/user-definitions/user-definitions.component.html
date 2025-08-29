@@ -1,0 +1,22 @@
+<app-cp
+[homeRoute]="'/'"
+[closeRoute]="'/settings'"
+[breadcrumbs]="[
+  { route: '/settings', label: 'Tanımlar', icon: 'fa-cog' },
+  { route: '/user-definitions', label: 'Kullanıcı Tanımlari', active: true }
+]">
+<app-create header
+(created)="created()"
+(excel)="excel()"
+(csv)="exportToCSV()"
+(txt)="exportToTXT()"
+(json)="exportToJSON()"
+(html)="exportToHTML()"
+(searchFilter)="receiveSearchValue($event)"
+(durumuChanged)="receiveDurumuValue($event)">
+</app-create>
+<app-list content
+[filterValue]="searchValue"
+[durumu]="durumu"
+></app-list>
+</app-cp>

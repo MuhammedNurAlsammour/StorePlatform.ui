@@ -1,0 +1,19 @@
+<cp-header
+[collapsed]="isSideNavCollapsed"
+[screenWidth]="screenWidth"
+[appVersion]="version"
+></cp-header>
+
+
+<cp-app-sidebar
+(onToggleSideNav)="onToggleSideNav($event)"
+[companyLogo]="companyLogo"
+[navData]="navData">
+</cp-app-sidebar>
+
+
+<lib-cp-main-content
+  [collapsed]="isSideNavCollapsed"
+  [screenWidth]="screenWidth"
+></lib-cp-main-content>
+

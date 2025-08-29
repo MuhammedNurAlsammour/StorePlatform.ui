@@ -1,0 +1,48 @@
+<div class="product-grid-container">
+  <!-- Loading State -->
+  <div class="loading-container" *ngIf="isLoading">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p class="loading-text">Ürünler yükleniyor...</p>
+  </div>
+
+  <!-- Products Grid -->
+  <div class="products-grid" *ngIf="!isLoading">
+    <!-- No Products Message -->
+    <div class="no-products" *ngIf="products.length === 0">
+      <div class="no-products-content">
+        <mat-icon class="no-products-icon">inventory_2</mat-icon>
+        <h3>Ürün Bulunamadı</h3>
+        <p>Görüntülenecek ürün bulunmamaktadır.</p>
+      </div>
+    </div>
+
+    <!-- Product Cards -->
+    <div class="product-cards-container" *ngIf="products.length > 0">
+      <app-product-card
+        *ngFor="let product of products; trackBy: trackByProductId"
+        [product]="product"
+        [showActions]="showActions"
+        (edit)="onEdit($event)"
+        (addToCart)="onAddToCart($event)"
+        (uploadPhoto)="onUploadPhoto($event)"
+        (delete)="onDelete($event)"
+        (cardClick)="onCardClick($event)"
+      >
+      </app-product-card>
+    </div>
+  </div>
+
+  <!-- Paginator -->
+  <mat-paginator
+    *ngIf="!isLoading && products.length > 0"
+    [length]="totalRows"
+    [pageSize]="pageSize"
+    [pageIndex]="pageIndex"
+    [pageSizeOptions]="[6, 12, 24, 48]"
+    [showFirstLastButtons]="true"
+    [hidePageSize]="false"
+    (page)="onPageChange($event)"
+    class="grid-paginator"
+  >
+  </mat-paginator>
+</div>

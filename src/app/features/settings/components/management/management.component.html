@@ -1,0 +1,80 @@
+<!-- management.component.html -->
+<div class="row">
+  <div class="col-12">
+    <div
+      cdkDropList
+      cdkDropListAutoScrollStep="80"
+      [cdkDropListAutoScrollDisabled]="false"
+      class="flex-wrap d-flex card-container"
+      [class.drop-zone-active]="isDragging"
+      (cdkDropListDropped)="onDrop($event)">
+
+      @for (card of visibleCards; track card.route; let i = $index) {
+        <!-- Sürükleme göstergesi her karttan önce -->
+        @if (isDragging) {
+          <div class="drop-indicator" [class.rtl]="isRTL">
+            <div class="drop-indicator-content">
+              <i class="material-icons">add_box</i>
+              <span>Buraya bırak</span>
+            </div>
+          </div>
+        }
+
+        <div
+          #cardItem
+          cdkDrag
+          class="card-drag-item"
+          [cdkDragData]="card"
+          [cdkDragBoundary]="'.card-container'"
+          [cdkDragDisabled]="false"
+          [cdkDragStartDelay]="dragStartDelay"
+          (cdkDragStarted)="startDragging($event)"
+          (cdkDragEnded)="endDragging($event)">
+
+          <!-- Basit yer tutucu -->
+          <div class="custom-placeholder" *cdkDragPlaceholder>
+            <div class="placeholder-inner">
+              <div class="placeholder-pulse"></div>
+            </div>
+          </div>
+
+          <div
+            class="drag-handle"
+            cdkDragHandle
+            [class.rtl]="isRTL"
+            [attr.aria-label]="'Yeniden sıralamak için sürükleyin'">
+            <i class="material-icons">drag_indicator</i>
+          </div>
+
+          <app-admin-settings-cards
+            [cardRoute]="[card.route]"
+            [title]="card.title"
+            [description]="card.description"
+            [iconBackgroundColor]="card.iconBackgroundColor"
+            [materialIconName]="card.materialIconName"
+            [status]="card.status"
+            [backgroundColor]="card.backgroundColor">
+          </app-admin-settings-cards>
+        </div>
+      }
+
+      <!-- Son sürükleme göstergesi -->
+      @if (isDragging && visibleCards.length > 0) {
+        <div class="drop-indicator drop-indicator-last" [class.rtl]="isRTL">
+          <div class="drop-indicator-content">
+            <i class="material-icons">add_box</i>
+            <span>Sona bırak</span>
+          </div>
+        </div>
+      }
+
+      <!-- Kart olmadığında boş durum göstergesi -->
+      @if (!visibleCards.length) {
+        <div class="empty-state">
+          <i class="material-icons">dashboard</i>
+          <p>Kullanılabilir kart yok</p>
+        </div>
+      }
+    </div>
+  </div>
+</div>

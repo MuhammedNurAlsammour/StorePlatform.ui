@@ -1,0 +1,24 @@
+<app-base-bottom-sheet
+  [config]="bottomSheetConfig"
+  [contentTemplate]="contentTpl"
+  (save)="onSave()"
+  (cancel)="onCancel()"
+  (dismissed)="onDismiss()">
+</app-base-bottom-sheet>
+
+<ng-template #contentTpl>
+  <div class="filter-container">
+    <div class="filter-options">
+      <div class="option-card"
+           *ngFor="let option of statusOptions"
+           [class.selected]="selectedStatus === option.value"
+           (click)="selectStatus(option.value)">
+        <img [src]="option.icon" alt="{{option.label}}" class="option-icon">
+        <div class="option-details">
+          <span class="option-label">{{option.label}}</span>
+          <span class="option-description">{{option.description}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

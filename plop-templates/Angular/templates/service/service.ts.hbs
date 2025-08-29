@@ -1,0 +1,46 @@
+import { Injectable } from '@angular/core';
+import { AlertService, BaseResponses, BaseService, HttpClientService } from '@coder-pioneers/shared';
+import { {{serviceName}}Response } from '../contracts/responses/{{name}}-response';
+import { Request{{serviceName}} } from '../contracts/requests/request-{{name}}';
+
+
+@Injectable({
+  providedIn: 'root'
+})
+export class {{serviceName}}Service extends BaseService<
+  {{serviceName}}Response,      // TListResponse
+  Request{{serviceName}},       // TCreateRequest
+  Request{{serviceName}},       // TUpdateRequest
+  never,                        // TApproveRequest
+  never,                        // TRejectRequest
+  never,                        // TListDropboxResponse
+  {{serviceName}}Response,      // TListIdResponse
+  {{serviceName}}Response,      // TListByUserIdResponse
+  never,                        // TListResponseFilter
+  never,                        // TPostRequest1
+  never,                        // TPostRequest2
+  never,                        // TPutRequest1
+  never,                        // TPutRequest2
+  never,                        // TPutRequest3
+  BaseResponses                 // TAllResponse
+> {
+  constructor(
+    httpClientService: HttpClientService,
+    alertService: AlertService
+  )
+  {
+    super(
+      httpClientService,
+      alertService,
+    {
+      controller: '{{controllerName}}',
+      defaultActions: {
+        list: '{{getAction}}',
+        listId: '{{getByIdAction}}',
+        listByUserId: '{{getByUserIdAction}}',
+        insert: '{{postAction}}',
+        update: '{{updateAction}}',
+      },
+    });
+  }
+}

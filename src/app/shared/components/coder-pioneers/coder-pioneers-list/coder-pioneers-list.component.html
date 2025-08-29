@@ -1,0 +1,850 @@
+<div style="position: fixed; visibility: hidden">
+  <button
+    mat-button
+    #menuTrigger="matMenuTrigger"
+    *ngIf="features.contextMenu"
+    [matMenuTriggerFor]="contextMenu"
+  >
+    <mat-icon>more_vert</mat-icon>
+  </button>
+</div>
+<!-- Main Table Container -->
+<div
+  class="container-scroll example-container"
+  [class.sticky-header]="config.stickyHeader"
+  [class.loading-state]="isLoading"
+>
+  <!-- Loading overlay that covers only table body -->
+  <div class="table-loading-overlay" *ngIf="isLoading">
+    <app-loading
+      [isVisible]="true"
+      size="compact"
+      title="Yükleniyor"
+      subtitle="Verileriniz hazırlanıyor, lütfen bekleyin..."
+      [spinnerDiameter]="40"
+      [spinnerStrokeWidth]="3"
+    >
+    </app-loading>
+  </div>
+  <table
+    mat-table
+    [dataSource]="dataSource"
+    multiTemplateDataRows
+    class="mat-elevation-z8 clickable-rows"
+    [class.resizable-table]="features.columnResize"
+    [class.striped]="config.enableStriped"
+    [class.hoverable]="config.enableRowHover"
+    [style.--row-height]="config.rowHeight"
+    tabindex="0"
+    cdkDropList
+    (cdkDropListDropped)="dropRow($event)"
+  >
+    <!-- Selection Column -->
+    <ng-container matColumnDef="select" *ngIf="config.showCheckbox" sticky>
+      <th mat-header-cell *matHeaderCellDef>
+        <mat-checkbox
+          (change)="$event ? toggleAllRows() : null"
+          [checked]="selection.hasValue() && isAllSelected()"
+          [indeterminate]="selection.hasValue() && !isAllSelected()"
+          [disabled]="!dataSource.data.length"
+        >
+        </mat-checkbox>
+      </th>
+      <td mat-cell *matCellDef="let row">
+        <mat-checkbox
+          (click)="$event.stopPropagation()"
+          (change)="$event ? selection.toggle(row) : null"
+          [checked]="selection.isSelected(row)"
+        >
+        </mat-checkbox>
+      </td>
+    </ng-container>
+
+    <!-- Dynamic Data Columns -->
+    <ng-container *ngFor="let column of columns" [matColumnDef]="column.name">
+      <th
+        mat-header-cell
+        *matHeaderCellDef
+        class="resizable"
+        [class]="column.headerClass"
+        [style.min-width]="column.minWidth"
+        [style.width]="column.width"
+      >
+        <div class="header-cell-content">
+          <span class="column-label">{{ column.label }}</span>
+          <button
+            mat-icon-button
+            *ngIf="features.sort && column.sortable !== false"
+            (click)="
+              sortService.toggleSort(column.name, column.type || 'string')
+            "
+          >
+            <mat-icon>{{ sortService.getSortIcon(column.name) }}</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            *ngIf="column.filterMenu"
+            (click)="openFilterMenu(column.name)"
+          >
+            <mat-icon>filter_list</mat-icon>
+          </button>
+        </div>
+        <div class="resize-handle" *ngIf="features.columnResize"></div>
+      </th>
+      <td
+        mat-cell
+        *matCellDef="let element"
+        [class]="column.cellClass"
+        (click)="onRowClick(element)"
+      >
+        <ng-container *ngIf="column.cellTemplate; else defaultCell">
+          <ng-container
+            *ngTemplateOutlet="
+              column.cellTemplate;
+              context: { $implicit: element, column: column }
+            "
+          >
+          </ng-container>
+        </ng-container>
+        <ng-template #defaultCell>
+          <ng-container [ngSwitch]="column.type">
+            <span
+              *ngSwitchCase="'date'"
+              [matTooltip]="
+                column.showTooltip ? getCellTooltip(element, column) : ''
+              "
+              [matTooltipDisabled]="!column.showTooltip"
+            >
+              {{ getCellValue(element, column) | customDate }}
+            </span>
+
+            <span
+              *ngSwitchCase="'dateTime'"
+              [matTooltip]="
+                column.showTooltip ? getCellTooltip(element, column) : ''
+              "
+              [matTooltipDisabled]="!column.showTooltip"
+            >
+              {{ getCellValue(element, column) | customDate : true }}
+            </span>
+
+            <span
+              *ngSwitchCase="'leaveDateTime'"
+              [matTooltip]="
+                column.showTooltip ? getCellTooltip(element, column) : ''
+              "
+              [matTooltipDisabled]="!column.showTooltip"
+            >
+              {{
+                element.startOfWorkDate === "0001-01-01T00:00:00"
+                  ? ""
+                  : (getCellValue(element, column)
+                    | customDate : (element.hourlyLeave ? true : false))
+              }}
+            </span>
+
+            <span
+              *ngSwitchCase="'number'"
+              [matTooltip]="
+                column.showTooltip ? getCellTooltip(element, column) : ''
+              "
+              [matTooltipDisabled]="!column.showTooltip"
+            >
+              {{ getCellValue(element, column) | number }}
+            </span>
+
+            <span
+              *ngSwitchCase="'month'"
+              [matTooltip]="
+                column.showTooltip ? getCellTooltip(element, column) : ''
+              "
+              [matTooltipDisabled]="!column.showTooltip"
+            >
+              {{ getCellValue(element, column) | month }}
+            </span>
+
+            <span
+              *ngSwitchCase="'statusPaidBool'"
+              [matTooltip]="
+                column.showTooltip ? getCellTooltip(element, column) : ''
+              "
+              [matTooltipDisabled]="!column.showTooltip"
+            >
+              <span
+                [ngClass]="
+                  getCellValue(element, column) | statusPaidBool : 'class'
+                "
+              >
+                {{ getCellValue(element, column) | statusPaidBool : "text" }}
+              </span>
+            </span>
+
+            <span
+              *ngSwitchCase="'truncateText'"
+              [matTooltip]="
+                column.showTooltip ? getCellTooltip(element, column) : ''
+              "
+              [matTooltipDisabled]="!column.showTooltip"
+            >
+              {{ getCellValue(element, column) | truncateText : 15 }}
+            </span>
+
+            <span
+              *ngSwitchCase="'gender'"
+              [matTooltip]="
+                column.showTooltip ? getCellTooltip(element, column) : ''
+              "
+              [matTooltipDisabled]="!column.showTooltip"
+            >
+              {{ getCellValue(element, column) | gender }}
+            </span>
+
+            <span
+              *ngSwitchCase="'statusLeave'"
+              [matTooltip]="
+                column.showTooltip ? getCellTooltip(element, column) : ''
+              "
+              [matTooltipDisabled]="!column.showTooltip"
+            >
+              <span [ngClass]="element.status | status : 'class'">
+                {{ element.status | status : "text" }}
+              </span>
+            </span>
+
+            <span
+              *ngSwitchCase="'statusBool'"
+              [matTooltip]="
+                column.showTooltip ? getCellTooltip(element, column) : ''
+              "
+              [matTooltipDisabled]="!column.showTooltip"
+            >
+              <span
+                [ngClass]="getCellValue(element, column) | statusBool : 'class'"
+              >
+                {{ getCellValue(element, column) | statusBool : "text" }}
+              </span>
+            </span>
+
+            <span
+              *ngSwitchCase="'taskType'"
+              [matTooltip]="
+                column.showTooltip ? getCellTooltip(element, column) : ''
+              "
+              [matTooltipDisabled]="!column.showTooltip"
+            >
+              {{ getCellValue(element, column) | taskType }}
+            </span>
+
+            <span
+              *ngSwitchCase="'isActive'"
+              [matTooltip]="
+                column.showTooltip ? getCellTooltip(element, column) : ''
+              "
+              [matTooltipDisabled]="!column.showTooltip"
+            >
+              <span [ngClass]="element.isActive | isActive : 'class'">
+                {{ element.isActive | isActive : "text" }}
+              </span>
+            </span>
+
+            <span
+              *ngSwitchCase="'travelAllowanceType'"
+              [matTooltip]="
+                column.showTooltip ? getCellTooltip(element, column) : ''
+              "
+              [matTooltipDisabled]="!column.showTooltip"
+            >
+              <span
+                [ngClass]="
+                  getCellValue(element, column) | travelAllowanceType : 'class'
+                "
+              >
+                {{
+                  getCellValue(element, column) | travelAllowanceType : "text"
+                }}
+              </span>
+            </span>
+
+            <span
+              *ngSwitchCase="'leaveDefinitionStatus'"
+              [matTooltip]="
+                column.showTooltip ? getCellTooltip(element, column) : ''
+              "
+              [matTooltipDisabled]="!column.showTooltip"
+            >
+              <span
+                [ngClass]="
+                  getCellValue(element, column)
+                    | leaveDefinitionStatus : 'class'
+                "
+              >
+                {{
+                  getCellValue(element, column) | leaveDefinitionStatus : "text"
+                }}
+              </span>
+            </span>
+
+            <span
+              *ngSwitchCase="'accommodationType'"
+              [matTooltip]="
+                column.showTooltip ? getCellTooltip(element, column) : ''
+              "
+              [matTooltipDisabled]="!column.showTooltip"
+            >
+              {{ getCellValue(element, column) | accommodationType }}
+            </span>
+
+            <span
+              *ngSwitchCase="'educationStatus'"
+              [matTooltip]="
+                column.showTooltip ? getCellTooltip(element, column) : ''
+              "
+              [matTooltipDisabled]="!column.showTooltip"
+            >
+              {{ getCellValue(element, column) | educationStatus }}
+            </span>
+
+            <span
+              *ngSwitchCase="'image'"
+              [matTooltip]="
+                column.showTooltip ? getCellTooltip(element, column) : ''
+              "
+              [matTooltipDisabled]="!column.showTooltip"
+            >
+              <div class="d-flex align-items-center">
+                <img
+                  [src]="element.imageUrl || getImagesUrl(element)"
+                  alt="{{ element.firstName }}
+                    {{ element.lastName }}"
+                  style="width: 30px; height: 30px"
+                  class="rounded-circle"
+                />
+                {{ getCellValue(element, column) | truncateText : 15 }}
+              </div>
+            </span>
+
+            <span
+              *ngSwitchCase="'images'"
+              [matTooltip]="
+                column.showTooltip ? getCellTooltip(element, column) : ''
+              "
+              [matTooltipDisabled]="!column.showTooltip"
+            >
+              <div class="d-flex align-items-center">
+                <img
+                  [src]="element.imagesUrl || getImagesUrl(element, column)"
+                  alt="{{ element.productName }}"
+                  style="width: 30px; height: 30px"
+                  class="rounded-circle"
+                />
+              </div>
+            </span>
+
+            <!-- Dinamik pipe desteği -->
+            <span
+              *ngSwitchCase="'custom'"
+              [matTooltip]="
+                column.showTooltip ? getRawCellValue(element, column) : ''
+              "
+              [matTooltipDisabled]="!column.showTooltip"
+            >
+              {{ getCellValue(element, column) }}
+            </span>
+
+            <span
+              *ngSwitchDefault
+              [matTooltip]="
+                column.showTooltip ? getCellTooltip(element, column) : ''
+              "
+              [matTooltipDisabled]="!column.showTooltip"
+            >
+              {{ getCellValue(element, column) }}
+            </span>
+          </ng-container>
+        </ng-template>
+        <div class="resize-handle" *ngIf="features.columnResize"></div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions" stickyEnd>
+      <th mat-header-cell *matHeaderCellDef class="actions-cell text-end">
+        <button
+          *ngIf="config.showActionsHeader"
+          mat-icon-button
+          [matMenuTriggerFor]="columnMenus"
+        >
+          <mat-icon>more_vert</mat-icon>
+        </button>
+
+        <!-- Column Settings Menu -->
+        <mat-menu #columnMenus="matMenu">
+          @if (permissionsService.ifPermit(actions.permissionApproveAll!)) {
+          <button mat-menu-item (click)="onAllApprove()">
+            <mat-icon
+              class="material-icons"
+              [ngStyle]="{ color: actions.colorApproveAll || '#00ff00' }"
+            >
+              {{ actions.iconApproveAll || "verified_user" }}
+            </mat-icon>
+            <span class="ml-5">{{
+              actions.titleApproveAll || "Tümünü Onayla"
+            }}</span>
+          </button>
+          } @if (permissionsService.ifPermit(actions.permissionDenyAll!)) {
+          <button mat-menu-item (click)="onAllDeny()">
+            <mat-icon
+              class="material-icons"
+              [ngStyle]="{ color: actions.colorDenyAll || '#ff0000' }"
+            >
+              {{ actions.iconDenyAll || "gpp_bad" }}
+            </mat-icon>
+            <span class="ml-5">{{
+              actions.titleDenyAll || "Tümünü Reddet"
+            }}</span>
+          </button>
+          }
+
+          <div cdkDropList (cdkDropListDropped)="onColumnDrop($event)">
+            <div
+              *ngFor="let col of getColumnDefinitions()"
+              cdkDrag
+              class="column-item"
+            >
+              <mat-checkbox
+                [checked]="col.visible"
+                (change)="onVisibilityChange(col)"
+              >
+                {{ col.label }}
+              </mat-checkbox>
+              <button
+                mat-icon-button
+                [matMenuTriggerFor]="pinMenu"
+                (click)="$event.stopPropagation()"
+              >
+                <mat-icon>push_pin</mat-icon>
+              </button>
+              <!-- Pin Options Menu -->
+              <mat-menu #pinMenu="matMenu">
+                <button mat-menu-item (click)="onTogglePin(col, 'start')">
+                  <mat-icon>first_page</mat-icon>
+                  <span>Başa Sabitle</span>
+                </button>
+                <button mat-menu-item (click)="onTogglePin(col, 'end')">
+                  <mat-icon>last_page</mat-icon>
+                  <span>Sona Sabitle</span>
+                </button>
+                <button mat-menu-item (click)="onUnpin(col)" *ngIf="col.pinned">
+                  <mat-icon>push_pin</mat-icon>
+                  <span>Sabitlemeyi Kaldır</span>
+                </button>
+              </mat-menu>
+              <mat-icon cdkDragHandle>drag_indicator</mat-icon>
+            </div>
+          </div>
+          <button mat-menu-item (click)="onResetColumns()">
+            <mat-icon>restore</mat-icon>
+            <span>Ayarları Sıfırla</span>
+          </button>
+        </mat-menu>
+      </th>
+      <td mat-cell *matCellDef="let element" class="actions-cell text-end">
+        <ng-container *ngIf="actionTemplate; else defaultActions">
+          <ng-container
+            *ngTemplateOutlet="actionTemplate; context: { $implicit: element }"
+          >
+          </ng-container>
+        </ng-container>
+        <ng-template #defaultActions>
+          <div class="action-buttons-container">
+            <div class="main-buttons">
+              <!-- Download button -->
+              @if (permissionsService.ifPermit(actions.downloadPermission!)) {
+              <button
+                class="action-button download"
+                style="margin: 4px 10px 4px 0px"
+                (click)="onDownload(element)"
+                [class.active]="buttonStates[element.id] === 'download'"
+                (mouseenter)="updateButtonState(element.id, 'download')"
+                (mouseleave)="updateButtonState(element.id, 'normal')"
+                aria-label="İzin isteğini onayla"
+              >
+                <span class="material-icons">description</span>
+                <span>İndir</span>
+              </button>
+              }@else{} @if
+              (permissionsService.ifPermit(actions.uploadPermission!)) {
+              <button
+                *ngIf="actions.hasUploadPermission"
+                class="action-button upload"
+                style="margin: 4px 10px 4px 0px"
+                (click)="onUpload(element)"
+                [class.active]="buttonStates[element.id] === 'upload'"
+                (mouseenter)="updateButtonState(element.id, 'upload')"
+                (mouseleave)="updateButtonState(element.id, 'normal')"
+                aria-label="yükle"
+              >
+                <span class="material-icons">cloud_upload</span>
+                <span>yükle</span>
+              </button>
+              }@else{} @if
+              (permissionsService.ifPermit(actions.approvePermission!)) {
+              <button
+                *ngIf="
+                  (element?.employeeApproval === undefined ||
+                    element?.employeeApproval === null ||
+                    element?.employeeApproval === 0) &&
+                  (element?.status === undefined ||
+                    element?.status === null ||
+                    element?.status === 0) &&
+                  (element?.isLeaveOnManager === undefined ||
+                    element?.isLeaveOnManager === null ||
+                    element?.isLeaveOnManager === true)
+                "
+                class="action-button approve"
+                (click)="onApprove(element)"
+                [class.active]="buttonStates[element.id] === 'approve'"
+                (mouseenter)="updateButtonState(element.id, 'approve')"
+                (mouseleave)="updateButtonState(element.id, 'normal')"
+                aria-label="İzin isteğini onayla"
+              >
+                <span class="material-icons" style="color: green !important"
+                  >verified_user</span
+                >
+                <span>Onayla</span>
+              </button>
+              } @if (permissionsService.ifPermit(actions.denyPermission!)) {
+              <button
+                *ngIf="
+                  (element?.employeeApproval === undefined ||
+                    element?.employeeApproval === null ||
+                    element?.employeeApproval === 0) &&
+                  (element?.status === undefined ||
+                    element?.status === null ||
+                    element?.status === 0) &&
+                  (element?.isLeaveOnManager === undefined ||
+                    element?.isLeaveOnManager === null ||
+                    element?.isLeaveOnManager === true)
+                "
+                class="action-button deny"
+                (click)="onDeny(element)"
+                [class.active]="buttonStates[element.id] === 'deny'"
+                (mouseenter)="updateButtonState(element.id, 'deny')"
+                (mouseleave)="updateButtonState(element.id, 'normal')"
+                aria-label="İzin isteğini reddet"
+              >
+                <span class="material-icons" style="color: red !important"
+                  >gpp_bad</span
+                >
+                <span>Reddet</span>
+              </button>
+              }
+            </div>
+            @if (actions.showMenuIcon === true) {
+            <div class="flex justify-end items-center">
+              <button mat-icon-button (click)="onRowClick(element)">
+                <mat-icon>info</mat-icon>
+              </button>
+            </div>
+            } @if (actions.hasEditOrDeletePermission === true &&
+            actions.showMenu ? actions.showMenu(element) :
+            (hasEditOrDeletePermission() || !has())) {
+            <div class="flex justify-end items-center">
+              <button
+                *ngIf="config.showActionsRow"
+                mat-icon-button
+                [matMenuTriggerFor]="menu"
+              >
+                <mat-icon>more_vert</mat-icon>
+              </button>
+            </div>
+
+            <mat-menu #menu="matMenu" xPosition="before">
+              @for (menuItem of actions.menuItems; track menuItem) { @if
+              (!menuItem.permission ||
+              permissionsService.ifPermit(menuItem.permission)) {
+              <button
+                mat-menu-item
+                (click)="menuItem.handler(element)"
+                [attr.appAuthActive]="menuItem.customAttributes?.appAuthActive"
+                [attr.appAuthPassive]="
+                  menuItem.customAttributes?.appAuthPassive
+                "
+                [attr.controller]="menuItem.customAttributes?.controller"
+                [attr.action]="menuItem.customAttributes?.action"
+                [id]="element.id"
+              >
+                @if (menuItem.icon) {
+                <span
+                  class="material-icons"
+                  [style.color]="menuItem.iconColor + ' !important'"
+                >
+                  {{ menuItem.icon }}
+                </span>
+                }
+                <span [style.margin-left]="menuItem.icon ? '20px' : '0'">{{
+                  menuItem.label
+                }}</span>
+              </button>
+              } } @if (permissionsService.ifPermit(actions.updatePermission!)) {
+              <button mat-menu-item (click)="onUpdate(element)">
+                <mat-icon
+                  class="material-icons"
+                  [style.color]="actions.color || 'blue !important;'"
+                >
+                  {{ actions.icon || "edit_note" }}
+                </mat-icon>
+                <span class="ml-5">{{ actions.label || "Düzenle" }}</span>
+              </button>
+              } @if (permissionsService.ifPermit(actions.updateOnePermission!))
+              {
+              <button mat-menu-item (click)="onUpdateOne(element)">
+                <mat-icon
+                  class="material-icons"
+                  [style.color]="actions.colorOne || 'blue !important;'"
+                >
+                  {{ actions.iconOne || "edit_note" }}
+                </mat-icon>
+                <span class="ml-5">{{ actions.labelOne || "Düzenle" }}</span>
+              </button>
+              } @if (permissionsService.ifPermit(actions.updateTwoPermission!))
+              {
+              <button mat-menu-item (click)="onUpdateTwo(element)">
+                <mat-icon
+                  class="material-icons"
+                  [style.color]="actions.colorTwo || 'blue !important;'"
+                >
+                  {{ actions.iconTwo || "edit_note" }}
+                </mat-icon>
+                <span class="ml-5">{{ actions.labelTwo || "Düzenle" }}</span>
+              </button>
+              } @if
+              (permissionsService.ifPermit(actions.updateThreePermission!)) {
+              <button mat-menu-item (click)="onUpdateThree(element)">
+                <mat-icon
+                  class="material-icons"
+                  [style.color]="actions.colorThree || 'blue !important;'"
+                >
+                  {{ actions.iconThree || "edit_note" }}
+                </mat-icon>
+                <span class="ml-5">{{ actions.labelThree || "Düzenle" }}</span>
+              </button>
+              } @if (permissionsService.ifPermit(actions.deletePermission!)) {
+              <button
+                mat-menu-item
+                appDelete
+                [id]="element.id"
+                (getdata)="onDelete(element)"
+                [controller]="actions.deleteController!"
+                [action]="actions.deleteAction!"
+              >
+                <span style="margin-left: 20px">Sil</span>
+              </button>
+              } @if (permissionsService.ifPermit(actions.deleteIdPermission!)) {
+              <button
+                mat-menu-item
+                appDeleteId
+                [id]="element.id"
+                (getdata)="onDelete(element)"
+                [controller]="actions.deleteController!"
+                [action]="actions.deleteAction!"
+              >
+                <span style="margin-left: 20px">Sil</span>
+              </button>
+              } @if (permissionsService.ifPermit(actions.deleteOnePermission!))
+              {
+              <button mat-menu-item (click)="onDeleteOne(element)">
+                <mat-icon style="color: red">delete</mat-icon>
+                <span style="margin-left: 20px">Sil</span>
+              </button>
+              } @if (permissionsService.ifPermit(actions.activePermission!)) {
+              <button
+                *ngIf="element.isActive === 0"
+                mat-menu-item
+                appActive
+                [id]="element.id"
+                (getdata)="onActive(element)"
+                [controller]="actions.activeController!"
+                [action]="actions.activeAction!"
+              >
+                <span style="margin-left: 20px">Aktif Et</span>
+              </button>
+              } @if (permissionsService.ifPermit(actions.passivePermission!)) {
+              <button
+                *ngIf="element.isActive === 1"
+                mat-menu-item
+                appPassive
+                [id]="element.id"
+                (getdata)="onPassive(element)"
+                [controller]="actions.passiveController!"
+                [action]="actions.passiveAction!"
+              >
+                <span style="margin-left: 20px">Pasif Et</span>
+              </button>
+              } @if (permissionsService.ifPermit(actions.permissionApprove!)) {
+              <button
+                mat-menu-item
+                *ngIf="element.status === 0"
+                (click)="onApprove(element)"
+              >
+                <mat-icon
+                  class="material-icons"
+                  [ngStyle]="{ color: actions.colorApprove || '#00ff00' }"
+                >
+                  {{ actions.iconApprove || "verified_user" }}
+                </mat-icon>
+                <span class="ml-5">{{ actions.titleApprove || "Onayla" }}</span>
+              </button>
+              } @if (permissionsService.ifPermit(actions.permissionDeny!)) {
+              <button
+                mat-menu-item
+                *ngIf="element.status === 0"
+                (click)="onDeny(element)"
+              >
+                <mat-icon
+                  class="material-icons"
+                  [ngStyle]="{ color: actions.colorDeny || '#ff0000' }"
+                >
+                  {{ actions.iconDeny || "gpp_bad" }}
+                </mat-icon>
+                <span class="ml-5">{{ actions.titleDeny || "Reddet" }}</span>
+              </button>
+              }
+            </mat-menu>
+            }
+          </div>
+        </ng-template>
+      </td>
+    </ng-container>
+
+    <!-- Row Definitions -->
+    <tr
+      mat-header-row
+      *matHeaderRowDef="displayedColumns; sticky: config.stickyHeader"
+    ></tr>
+    <tr
+      mat-row
+      *matRowDef="let row; columns: displayedColumns"
+      [class.clickable]="features.contextMenu !== false"
+      (contextmenu)="onRightClick($event, row)"
+      (dblclick)="onRowDoubleClick(row)"
+      (click)="highlight(row)"
+      (contextmenu)="highlight(row)"
+      [ngClass]="{ highlight: selectedRowIndex === row.id }"
+      (click)="clickedRows.clear(); clickedRows.add(row)"
+      [class.demo-row-is-clicked]="clickedRows.has(row)"
+      tabindex="0"
+      cdkDrag
+      [cdkDragDisabled]="features.dragDrop === false"
+    ></tr>
+
+    <mat-menu #contextMenu="matMenu">
+      <ng-template matMenuContent let-item="item">
+        @if (permissionsService.ifPermit(actions.updatePermission!)) {
+        <button mat-menu-item (click)="onUpdate(item)">
+          <mat-icon style="color: blue">edit_note</mat-icon>
+          <span class="mr-5">{{ actions.label || "Düzenle" }}</span>
+        </button>
+        } @if (permissionsService.ifPermit(actions.updateOnePermission!)) {
+        <button mat-menu-item (click)="onUpdateOne(item)">
+          <mat-icon
+            class="material-icons"
+            [style.color]="actions.colorOne || 'blue !important;'"
+          >
+            {{ actions.iconOne || "edit_note" }}
+          </mat-icon>
+          <span class="ml-5">{{ actions.labelOne || "Düzenle" }}</span>
+        </button>
+        } @if (permissionsService.ifPermit(actions.updateTwoPermission!)) {
+        <button mat-menu-item (click)="onUpdateTwo(item)">
+          <mat-icon
+            class="material-icons"
+            [style.color]="actions.colorTwo || 'blue !important;'"
+          >
+            {{ actions.iconTwo || "edit_note" }}
+          </mat-icon>
+          <span class="ml-5">{{ actions.labelTwo || "Düzenle" }}</span>
+        </button>
+        } @if (permissionsService.ifPermit(actions.updateThreePermission!)) {
+        <button mat-menu-item (click)="onUpdateThree(item)">
+          <mat-icon
+            class="material-icons"
+            [style.color]="actions.colorThree || 'blue !important;'"
+          >
+            {{ actions.iconThree || "edit_note" }}
+          </mat-icon>
+          <span class="ml-5">{{ actions.labelThree || "Düzenle" }}</span>
+        </button>
+        } @if (permissionsService.ifPermit(actions.deletePermission!)) {
+        <button
+          mat-menu-item
+          appDelete
+          [id]="item.id"
+          (getdata)="onDelete(item)"
+          [controller]="actions.deleteController!"
+          [action]="actions.deleteAction!"
+        >
+          <span style="margin-left: 20px">Sil</span>
+        </button>
+        } @if (permissionsService.ifPermit(actions.permissionApprove!)) {
+        <button
+          mat-menu-item
+          *ngIf="item.status === 0"
+          (click)="onApprove(item)"
+        >
+          <mat-icon
+            class="material-icons"
+            [ngStyle]="{ color: actions.colorApprove || '#00ff00' }"
+          >
+            {{ actions.iconApprove || "verified_user" }}
+          </mat-icon>
+          <span class="ml-5">{{ actions.titleApprove || "Onayla" }}</span>
+        </button>
+        } @if (permissionsService.ifPermit(actions.permissionDeny!)) {
+        <button mat-menu-item *ngIf="item.status === 0" (click)="onDeny(item)">
+          <mat-icon
+            class="material-icons"
+            [ngStyle]="{ color: actions.colorDeny || '#ff0000' }"
+          >
+            {{ actions.iconDeny || "gpp_bad" }}
+          </mat-icon>
+          <span class="ml-5">{{ actions.titleDeny || "Reddet" }}</span>
+        </button>
+        }
+      </ng-template>
+    </mat-menu>
+    <!-- No Data Row -->
+
+    <tr class="no-data-row" *matNoDataRow>
+      <td [attr.colspan]="displayedColumns.length" class="no-data-cell">
+        <div class="no-data-message">
+          <img
+            src="assets/images/table/nodata.png"
+            alt="Veri Yok"
+            class="no-data-image"
+          />
+          <h3 class="no-data-title">
+            {{ actions.title || "Kullanılabilir Veri Yok" }}
+          </h3>
+          <p class="no-data-subtitle">
+            {{
+              actions.subtitle || "Görüntülenecek herhangi bir kayıt bulunamadı"
+            }}
+          </p>
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<!-- Paginator -->
+<mat-paginator
+  #paginator
+  [pageSize]="currentPageSize"
+  [pageSizeOptions]="config.pageSizeOptions || [10, 25, 50]"
+  [length]="totalRows"
+  [pageIndex]="currentPageIndex"
+  [showFirstLastButtons]="true"
+  (page)="handlePageEvent($event)"
+  class="bg-blue-50 sticky-paginator"
+>
+</mat-paginator>

@@ -1,0 +1,87 @@
+
+// Loading State Styles - Keep headers visible, dim body
+.container-scroll.example-container {
+  position: relative;
+  
+  &.loading-state {
+    .table-loading-overlay {
+      position: absolute;
+      top: var(--header-height, 48px); // Dynamic header height
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(1px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      
+      ::ng-deep app-loading {
+        .loading-container {
+          min-height: 200px;
+          background: transparent;
+          box-shadow: none;
+          border: none;
+          
+          &.compact {
+            min-height: 150px;
+            padding: 20px 15px;
+            
+            .loading-content {
+              background: rgba(var(--custom-color-primary-rgb), 0.05);
+              border: 1px solid rgba(var(--custom-color-primary-rgb), 0.1);
+              border-radius: 12px;
+              backdrop-filter: blur(5px);
+              
+              .spinner-wrapper {
+                margin-bottom: 12px;
+                
+                mat-spinner {
+                  ::ng-deep .mat-mdc-progress-spinner {
+                    width: 35px !important;
+                    height: 35px !important;
+                  }
+                }
+                
+                .pulse-ring {
+                  width: 55px;
+                  height: 55px;
+                }
+              }
+              
+              .loading-text {
+                .loading-title {
+                  font-size: 16px;
+                  margin-bottom: 6px;
+                }
+                
+                .loading-subtitle {
+                  font-size: 11px;
+                  margin-bottom: 10px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    // Dim only table body content when loading, keep headers visible
+    table tbody {
+      opacity: 0.3;
+      pointer-events: none;
+    }
+    
+    table thead {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+}
+
+// Table container positioning for overlay
+.mat-mdc-table {
+  position: relative;
+}
+

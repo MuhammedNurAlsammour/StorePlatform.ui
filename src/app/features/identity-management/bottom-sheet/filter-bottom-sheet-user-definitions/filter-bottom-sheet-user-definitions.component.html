@@ -1,0 +1,94 @@
+<div class="filter-sheet-container">
+  <!-- Header Section -->
+  <div class="filter-header">
+    <div class="header-content">
+      <mat-icon class="filter-icon">filter_list</mat-icon>
+      <h2>Filtreleme</h2>
+      <span class="selected-count" *ngIf="selectedRoles.length > 0">
+        {{selectedRoles.length}} seçili
+      </span>
+    </div>
+    <button mat-icon-button (click)="dismiss()" class="close-button">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <!-- Search Section -->
+  <div class="search-section">
+    <mat-form-field appearance="outline" class="search-field">
+      <img
+      matListItemIcon
+      matPrefix
+      src="assets/search.png"
+      alt="My Icon"
+      style="margin-left: 15px; height: 20px; width: 20px"
+    />
+      <input matInput
+             [(ngModel)]="searchText"
+             placeholder="Filtre ara..."
+             (input)="filterRoles()">
+      <button mat-icon-button matSuffix
+              *ngIf="searchText"
+              (click)="searchText = ''; filterRoles()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+
+  <!-- Filter Groups -->
+
+      <!-- Filter Groups -->
+      <div class="filter-groups">
+        <!-- Select All Option -->
+        <div class="select-all-option">
+          <mat-checkbox
+            [checked]="isAllSelected()"
+            [indeterminate]="isIndeterminate()"
+            (change)="toggleAll($event.checked)">
+            Tümünü Seç
+            <span class="total-count">({{getTotalUsersCount()}} kullanıcı)</span>
+          </mat-checkbox>
+        </div>
+
+        <!-- Scrollable Filter List -->
+        <div class="filter-list">
+          <mat-checkbox
+            *ngFor="let role of filteredRoles"
+            [checked]="isRoleSelected(role.name)"
+            (change)="onRoleFilterChange(role.name, $event.checked)"
+            class="filter-item">
+            <div class="filter-item-content">
+              <span class="role-name">{{role.name}}</span>
+              <span class="role-count">({{role.count}})</span>
+              <mat-icon *ngIf="isRoleSelected(role.name)" class="selected-icon">check_circle</mat-icon>
+            </div>
+          </mat-checkbox>
+        </div>
+      </div>
+  <!-- Actions Section -->
+  <div class="filter-actions">
+
+    <div>
+      <div class="button-appApproval" style="float: right;">
+        <span class="mas">
+          Uygula
+        </span>
+        <button type="button" [disabled]="!hasChanges()"
+        (click)="applyFilters()" type="submit" name="Hover">
+          Uygula
+        </button>
+      </div>
+    </div>
+    <div>
+      <div class="button-forego"  style="float: left;">
+        <span class="mas">
+          Sıfırla
+        </span>
+        <button type="button" [disabled]="selectedRoles.length === 0"
+        (click)="resetFilters()" mat-dialog-close  name="Hover">
+          Sıfırla
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

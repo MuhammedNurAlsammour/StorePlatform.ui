@@ -1,0 +1,14 @@
+<cp-create
+  [showAddButton]="true"
+  [showExportMenu]="true"
+  [showSearch]="true"
+  [showFilter]="false"
+  [addButtonText]="'Yeni Kayıt'"
+  [hasAddPermission]="permissionsService.ifPermit('POST.Writing.YeniDokumanTipiOlustur')"
+  [hasFilterPermission]="permissionsService.ifPermit('POST.EnvanterKategoriEkle')"
+  [searchPlaceholder]="'Arama...'"
+  [enabledExportOptions]="exportOptions"
+  (add)="create()"
+  (search)="filterList($event)"
+  (export)="handleExport($event)">
+</cp-create>

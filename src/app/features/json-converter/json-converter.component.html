@@ -1,0 +1,142 @@
+<div class="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 p-4">
+  <!-- Header -->
+  <div class="max-w-7xl mx-auto mb-8">
+    <div class="text-center">
+      <h1 class="flex items-center justify-center gap-4 text-4xl lg:text-5xl font-bold text-gray-800 mb-4">
+        <i class="material-icons text-5xl lg:text-6xl text-blue-500">code</i>
+        JSON → TypeScript Dönüştürücü
+      </h1>
+      <p class="text-xl text-gray-600">JSON verilerinizi TypeScript interface'lerine dönüştürün</p>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="max-w-7xl mx-auto">
+    <form [formGroup]="converterForm">
+      <div class="grid grid-cols-1 xl:grid-cols-2 gap-8">
+
+        <!-- JSON Input Section -->
+        <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6">
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 pb-4 border-b border-gray-100">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4 sm:mb-0">JSON Girişi</h2>
+            <button
+              type="button"
+              class="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-600 border border-blue-200 rounded-lg hover:bg-blue-100 hover:text-blue-700 transition-colors duration-200"
+              (click)="loadSample()">
+              <i class="material-icons text-lg">paste</i>
+              Örnek Yükle
+            </button>
+          </div>
+
+          <div class="space-y-4">
+            <textarea
+              formControlName="jsonInput"
+              class="w-full h-96 p-4 border-2 border-gray-200 rounded-lg font-mono text-sm leading-relaxed resize-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 focus:outline-none transition-all duration-200"
+              [class.border-red-500]="getFieldError('jsonInput')"
+              placeholder="JSON verilerinizi buraya yapıştırın..."
+              rows="20">
+            </textarea>
+
+            <div class="flex items-center gap-2 text-red-600 text-sm" *ngIf="getFieldError('jsonInput')">
+              <i class="material-icons text-lg">error</i>
+              {{ getFieldError('jsonInput') }}
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="flex flex-col sm:flex-row gap-3 mt-6">
+            <button
+              type="button"
+              class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-lg hover:from-blue-600 hover:to-blue-700 disabled:opacity-60 disabled:cursor-not-allowed transform hover:scale-105 transition-all duration-200 shadow-md hover:shadow-lg"
+              [disabled]="converterForm.invalid || isConverting"
+              (click)="convertToTypeScript()">
+              <i class="material-icons text-lg"
+                 [class.animate-spin]="isConverting">
+                {{ isConverting ? 'refresh' : 'transform' }}
+              </i>
+              {{ isConverting ? 'Dönüştürülüyor...' : 'TypeScript\'e Dönüştür' }}
+            </button>
+
+            <button
+              type="button"
+              class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gray-100 text-gray-700 font-semibold rounded-lg hover:bg-gray-200 transition-all duration-200"
+              (click)="clearForm()">
+              <i class="material-icons text-lg">clear</i>
+              Temizle
+            </button>
+          </div>
+        </div>
+
+        <!-- TypeScript Output Section -->
+        <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6" *ngIf="convertedTypeScript">
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 pb-4 border-b border-gray-100">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4 sm:mb-0">TypeScript Çıktısı</h2>
+            <button
+              type="button"
+              class="inline-flex items-center gap-2 px-4 py-2 bg-green-50 text-green-600 border border-green-200 rounded-lg hover:bg-green-100 hover:text-green-700 transition-colors duration-200"
+              (click)="copyToClipboard()">
+              <i class="material-icons text-lg">content_copy</i>
+              Panoya Kopyala
+            </button>
+          </div>
+
+          <div class="bg-gray-900 rounded-lg p-4 max-h-96 overflow-y-auto mb-4">
+            <pre class="text-gray-100 font-mono text-sm leading-relaxed whitespace-pre-wrap"><code>{{ convertedTypeScript }}</code></pre>
+          </div>
+
+          <!-- Success Message -->
+          <div class="flex items-center gap-2 p-4 bg-green-50 border border-green-200 rounded-lg text-green-700" *ngIf="conversionSuccess">
+            <i class="material-icons text-lg">check_circle</i>
+            <span class="font-medium">JSON başarıyla TypeScript'e dönüştürüldü!</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Error Display -->
+      <div class="mt-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 flex items-center gap-3" *ngIf="errorMessage">
+        <i class="material-icons text-xl">error_outline</i>
+        <span>{{ errorMessage }}</span>
+      </div>
+    </form>
+
+    <!-- Usage Guide -->
+    <div class="mt-12 bg-white rounded-xl shadow-lg p-8">
+      <h3 class="flex items-center gap-3 text-2xl font-semibold text-gray-800 mb-6">
+        <i class="material-icons text-2xl text-amber-500">help_outline</i>
+        Kullanım Kılavuzu
+      </h3>
+
+      <div class="space-y-6">
+        <div class="flex items-start gap-4">
+          <div class="flex items-center justify-center w-8 h-8 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold rounded-full text-sm flex-shrink-0">
+            1
+          </div>
+          <div class="pt-1">
+            <div class="font-semibold text-gray-800 mb-1">JSON Girin</div>
+            <div class="text-gray-600">Sol alana JSON verilerinizi yapıştırın veya örnek yükle butonunu kullanın.</div>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-4">
+          <div class="flex items-center justify-center w-8 h-8 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold rounded-full text-sm flex-shrink-0">
+            2
+          </div>
+          <div class="pt-1">
+            <div class="font-semibold text-gray-800 mb-1">Dönüştür</div>
+            <div class="text-gray-600">"TypeScript'e Dönüştür" butonuna tıklayın.</div>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-4">
+          <div class="flex items-center justify-center w-8 h-8 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold rounded-full text-sm flex-shrink-0">
+            3
+          </div>
+          <div class="pt-1">
+            <div class="font-semibold text-gray-800 mb-1">Kopyala</div>
+            <div class="text-gray-600">Oluşturulan TypeScript kodunu panoya kopyalayın.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

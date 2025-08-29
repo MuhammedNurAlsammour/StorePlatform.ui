@@ -1,0 +1,160 @@
+// Variables
+$button-width: 72px;
+$button-height: 80px;
+$border-radius: 8px;
+$transition-duration: 0.3s;
+$primary-color: var(--custom-color-primary) !important;
+$text-color: var(--custom-color-text) !important;
+$border-color: #d3d3d3;
+$background-color: var(--custom-color-accent) !important;
+$badge-color: #ff4081;
+// Mixins
+@mixin flex-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin box-shadow($x: 0, $y: 4px, $blur: 6px, $color: rgba(0, 0, 0, 0.1)) {
+  box-shadow: $x $y $blur $color;
+}
+
+@mixin transition($property: all, $duration: $transition-duration, $timing: ease) {
+  transition: $property $duration $timing;
+}
+
+// Keyframes
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+// Styles
+.button-container {
+  width: $button-width;
+  height: $button-height;
+  @include flex-center;
+  border-radius: $border-radius;
+  cursor: pointer;
+  @include box-shadow;
+  @include transition(all, $transition-duration, cubic-bezier(0.25, 0.8, 0.25, 1));
+  background-color: $background-color;
+  color: $text-color;
+  border: 2px dashed $border-color;
+  overflow: hidden;
+  position: relative;
+  overflow: visible;
+  animation: fadeIn 0.5s ease-out;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background-color: $primary-color;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    @include transition(all, 0.5s, cubic-bezier(0.25, 0.8, 0.25, 1));
+  }
+
+  img {
+    width: 24px;
+    height: 24px;
+    margin-bottom: 8px;
+    @include transition(all, $transition-duration, ease);
+    filter: brightness(0) saturate(100%) invert(55%) sepia(10%) saturate(6%) hue-rotate(314deg) brightness(94%) contrast(92%);
+    z-index: 1;
+  }
+
+  span {
+    font-size: 14px;
+    font-weight: 500;
+    color: $text-color;
+    @include transition(all, $transition-duration, ease);
+    z-index: 1;
+  }
+
+
+  .badge-wrapper {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    z-index: 20;
+  }
+
+  .badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    height: 24px;
+    padding: 0 6px;
+    font-size: 15px;
+    font-weight: bold;
+    color: white !important;
+    background-color: #ff4081;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    animation: badgePulse 1.5s infinite;
+  }
+
+
+  &:hover,
+  &.active {
+    border: none;
+    @include box-shadow(0, 8px, 15px, var(--custom-color-primary) !important);
+    animation: pulse 0.6s ease-in-out;
+
+    &::before {
+      width: 73px;
+      height: 80px;
+      opacity: 1;
+      border-radius: 8px;
+    }
+
+    img,
+    span {
+      color: $background-color;
+      filter: brightness(0) invert(1);
+      transform: scale(1.1);
+    }
+  }
+}
+
+// Optional: Add entrance animation
+.button-container {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.button-label {
+ text-align: center;
+}
+
+
+
+@keyframes badgePulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(255, 64, 129, 0.7);
+  }
+
+  70% {
+    transform: scale(1.1);
+    box-shadow: 0 0 0 10px rgba(255, 64, 129, 0);
+  }
+
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(255, 64, 129, 0);
+  }
+}
+

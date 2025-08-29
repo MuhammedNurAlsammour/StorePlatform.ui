@@ -1,0 +1,29 @@
+<app-cp
+[homeRoute]="'/'"
+[closeRoute]="'/settings'"
+[breadcrumbs]="[
+  { route: '/settings', label: 'Tanımlar', active: true }
+]"
+[showMainContent]="false">
+</app-cp>
+
+<div class="row">
+  <div class="card">
+    <div class="flex-wrap col-12 d-flex gap-6 p-6">
+      @for (card of adminCards; track card.route) {
+        @if (permissionsService.ifPermit(card.permission)) {
+          <app-admin-settings-cards
+            [cardRoute]="[card.route]"
+            [title]="card.title"
+            [description]="card.description"
+            [iconBackgroundColor]="card.iconBackgroundColor"
+            [materialIconName]="card.materialIconName"
+            status="Aktif"
+            [backgroundColor]="card.backgroundColor">
+          </app-admin-settings-cards>
+        } @else {}
+      }
+
+    </div>
+  </div>
+</div>

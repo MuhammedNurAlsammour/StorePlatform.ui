@@ -1,0 +1,47 @@
+<form [formGroup]="frm" (ngSubmit)="onSubmit(frm.value)">
+  <app-base-dialog
+    [dialogTitle]="dialogTitle"
+    [titleIcon]="titleIcon"
+    [frm]="frm"
+    (formSubmit)="onSubmit($event)">
+    <div dialog-content>
+
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <mat-form-field style="width: 100%;" appearance="outline">
+              <mat-label>Yıl</mat-label>
+              <mat-select formControlName="year">
+                <mat-option *ngFor="let year of years" [value]="year.id">{{year.name}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field style="width: 100%;" appearance="outline">
+              <mat-label>Ay</mat-label>
+              <mat-select formControlName="month">
+                <mat-option *ngFor="let month of months" [value]="month.id">{{month.name}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+
+
+
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <mat-form-field style="width: 100%;" appearance="outline">
+              <mat-label>Yemek Fiyatı</mat-label>
+              <input matInput formControlName="mealPrice" type="number" />
+              <mat-error *ngIf="frmControls['mealPrice']?.errors?.['required']">Lütfen Yemek Fiyatı Giriniz.</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+
+      </div>
+    </app-base-dialog>
+  </form>
+

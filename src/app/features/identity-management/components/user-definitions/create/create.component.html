@@ -1,0 +1,19 @@
+<cp-create
+  [showAddButton]="true"
+  [showExportMenu]="true"
+  [showFilterMenu]="true"
+  [showSearch]="true"
+  [showFilter]="false"
+  [addButtonText]="'Yeni Kayıt'"
+  [hasAddPermission]="permissionsService.ifPermit('POST.Writing.OnaySüreciOluştur')"
+  [searchPlaceholder]="'Arama...'"
+  [filterStatusName]="'filterStatusPermissionDefinitions'"
+  [enabledExportOptions]="exportOptions"
+  [enabledFilterOptions]="filterOptions"
+  [hasExportPermission]="permissionsService.ifPermit('GET.Reading.PersonelVerileriniİndir')"
+  (add)="create()"
+  (search)="filterList($event)"
+  (export)="handleExport($event)"
+  (filter)="handleFilter($event)"
+>
+</cp-create>

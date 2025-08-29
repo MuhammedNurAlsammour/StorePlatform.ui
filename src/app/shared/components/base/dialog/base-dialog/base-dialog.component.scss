@@ -1,0 +1,40 @@
+@import '../../../../../../themes/dialogs.scss';
+
+.date-input-container {
+  position: relative;
+  width: 100%;
+}
+
+.date-input {
+  width: 100%;
+  padding-right: 35px; /* Space for the icon */
+}
+
+.date-toggle-right {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* Optional: Adjust the icon button size if needed */
+.date-toggle-right .mat-datepicker-toggle-default-icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* RTL Support */
+[dir="rtl"] .date-toggle-right {
+  left: 0;
+  right: auto;
+}
+
+[dir="rtl"] .date-input {
+  padding-right: 0;
+  padding-left: 35px;
+}
+
+.mat-mdc-form-field-hint {
+  direction: ltr;
+  text-align: left;
+}

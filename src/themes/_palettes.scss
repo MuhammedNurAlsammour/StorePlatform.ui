@@ -1,0 +1,222 @@
+// =============================================================================
+// MATERIAL DESIGN PALETTES
+// =============================================================================
+
+@use '@angular/material' as mat;
+@import './variables.scss';
+
+// =============================================================================
+// PRIMARY PALETTE
+// =============================================================================
+$primary-palette: (
+  50: lighten($color-primary, 52%),
+  100: lighten($color-primary, 40%),
+  200: lighten($color-primary, 30%),
+  300: lighten($color-primary, 20%),
+  400: lighten($color-primary, 10%),
+  500: $color-primary,
+  600: darken($color-primary, 10%),
+  700: darken($color-primary, 20%),
+  800: darken($color-primary, 30%),
+  900: darken($color-primary, 40%),
+  A100: lighten($color-primary, 60%),
+  A200: lighten($color-primary, 40%),
+  A400: lighten($color-primary, 20%),
+  A700: darken($color-primary, 20%),
+  contrast: (
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: rgba(black, 0.87),
+    400: rgba(black, 0.87),
+    500: rgba(white, 0.87),
+    600: rgba(white, 0.87),
+    700: rgba(white, 0.87),
+    800: rgba(white, 0.87),
+    900: rgba(white, 0.87),
+    A100: rgba(black, 0.87),
+    A200: rgba(black, 0.87),
+    A400: rgba(white, 0.87),
+    A700: rgba(white, 0.87),
+  )
+);
+
+// =============================================================================
+// ACCENT PALETTE
+// =============================================================================
+$accent-palette: (
+  50: lighten($color-accent, 52%),
+  100: lighten($color-accent, 40%),
+  200: lighten($color-accent, 30%),
+  300: lighten($color-accent, 20%),
+  400: lighten($color-accent, 10%),
+  500: $color-accent,
+  600: darken($color-accent, 10%),
+  700: darken($color-accent, 20%),
+  800: darken($color-accent, 30%),
+  900: darken($color-accent, 40%),
+  A100: lighten($color-accent, 60%),
+  A200: lighten($color-accent, 40%),
+  A400: lighten($color-accent, 20%),
+  A700: darken($color-accent, 20%),
+  contrast: (
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: rgba(black, 0.87),
+    400: rgba(black, 0.87),
+    500: rgba(white, 0.87),
+    600: rgba(white, 0.87),
+    700: rgba(white, 0.87),
+    800: rgba(white, 0.87),
+    900: rgba(white, 0.87),
+    A100: rgba(black, 0.87),
+    A200: rgba(black, 0.87),
+    A400: rgba(white, 0.87),
+    A700: rgba(white, 0.87),
+  )
+);
+
+// =============================================================================
+// WARN PALETTE
+// =============================================================================
+$warn-palette: (
+  50: lighten($color-error, 52%),
+  100: lighten($color-error, 40%),
+  200: lighten($color-error, 30%),
+  300: lighten($color-error, 20%),
+  400: lighten($color-error, 10%),
+  500: $color-error,
+  600: darken($color-error, 10%),
+  700: darken($color-error, 20%),
+  800: darken($color-error, 30%),
+  900: darken($color-error, 40%),
+  A100: lighten($color-error, 60%),
+  A200: lighten($color-error, 40%),
+  A400: lighten($color-error, 20%),
+  A700: darken($color-error, 20%),
+  contrast: (
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: rgba(black, 0.87),
+    400: rgba(black, 0.87),
+    500: rgba(white, 0.87),
+    600: rgba(white, 0.87),
+    700: rgba(white, 0.87),
+    800: rgba(white, 0.87),
+    900: rgba(white, 0.87),
+    A100: rgba(black, 0.87),
+    A200: rgba(black, 0.87),
+    A400: rgba(white, 0.87),
+    A700: rgba(white, 0.87),
+  )
+);
+
+// =============================================================================
+// SUCCESS PALETTE
+// =============================================================================
+$success-palette: (
+  50: lighten($color-success, 52%),
+  100: lighten($color-success, 40%),
+  200: lighten($color-success, 30%),
+  300: lighten($color-success, 20%),
+  400: lighten($color-success, 10%),
+  500: $color-success,
+  600: darken($color-success, 10%),
+  700: darken($color-success, 20%),
+  800: darken($color-success, 30%),
+  900: darken($color-success, 40%),
+  A100: lighten($color-success, 60%),
+  A200: lighten($color-success, 40%),
+  A400: lighten($color-success, 20%),
+  A700: darken($color-success, 20%),
+  contrast: (
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: rgba(black, 0.87),
+    400: rgba(black, 0.87),
+    500: rgba(white, 0.87),
+    600: rgba(white, 0.87),
+    700: rgba(white, 0.87),
+    800: rgba(white, 0.87),
+    900: rgba(white, 0.87),
+    A100: rgba(black, 0.87),
+    A200: rgba(black, 0.87),
+    A400: rgba(white, 0.87),
+    A700: rgba(white, 0.87),
+  )
+);
+
+// =============================================================================
+// WARNING PALETTE
+// =============================================================================
+$warning-palette: (
+  50: lighten($color-warning, 52%),
+  100: lighten($color-warning, 40%),
+  200: lighten($color-warning, 30%),
+  300: lighten($color-warning, 20%),
+  400: lighten($color-warning, 10%),
+  500: $color-warning,
+  600: darken($color-warning, 10%),
+  700: darken($color-warning, 20%),
+  800: darken($color-warning, 30%),
+  900: darken($color-warning, 40%),
+  A100: lighten($color-warning, 60%),
+  A200: lighten($color-warning, 40%),
+  A400: lighten($color-warning, 20%),
+  A700: darken($color-warning, 20%),
+  contrast: (
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: rgba(black, 0.87),
+    400: rgba(black, 0.87),
+    500: rgba(black, 0.87),
+    600: rgba(black, 0.87),
+    700: rgba(black, 0.87),
+    800: rgba(black, 0.87),
+    900: rgba(white, 0.87),
+    A100: rgba(black, 0.87),
+    A200: rgba(black, 0.87),
+    A400: rgba(black, 0.87),
+    A700: rgba(white, 0.87),
+  )
+);
+
+// =============================================================================
+// INFO PALETTE
+// =============================================================================
+$info-palette: (
+  50: lighten($color-info, 52%),
+  100: lighten($color-info, 40%),
+  200: lighten($color-info, 30%),
+  300: lighten($color-info, 20%),
+  400: lighten($color-info, 10%),
+  500: $color-info,
+  600: darken($color-info, 10%),
+  700: darken($color-info, 20%),
+  800: darken($color-info, 30%),
+  900: darken($color-info, 40%),
+  A100: lighten($color-info, 60%),
+  A200: lighten($color-info, 40%),
+  A400: lighten($color-info, 20%),
+  A700: darken($color-info, 20%),
+  contrast: (
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: rgba(black, 0.87),
+    400: rgba(black, 0.87),
+    500: rgba(white, 0.87),
+    600: rgba(white, 0.87),
+    700: rgba(white, 0.87),
+    800: rgba(white, 0.87),
+    900: rgba(white, 0.87),
+    A100: rgba(black, 0.87),
+    A200: rgba(black, 0.87),
+    A400: rgba(white, 0.87),
+    A700: rgba(white, 0.87),
+  )
+); 

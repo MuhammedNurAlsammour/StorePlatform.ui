@@ -1,0 +1,76 @@
+<form [formGroup]="frm" (ngSubmit)="onSubmit(frm.value)">
+  <app-base-dialog
+    [dialogTitle]="dialogTitle"
+    [titleIcon]="titleIcon"
+    [frm]="frm"
+    (formSubmit)="onSubmit($event)">
+    <div dialog-content>
+
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <mat-form-field style="width: 100%;" appearance="outline">
+            <mat-label >Adı</mat-label>
+            <input matInput #inputname maxlength="50"  formControlName="name">
+            <mat-hint align="end">{{inputname.value.length}}/50  karakter kaldı</mat-hint>
+            <mat-error *ngIf="frmControls?.['name']?.errors?.['required']">Lütfen  Adı Giriniz.</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field style="width: 100%;" appearance="outline">
+            <mat-label >Web Site</mat-label>
+            <input matInput #inputWebSite maxlength="50"  formControlName="webSite">
+            <mat-hint align="end">{{inputWebSite.value.length}}/50  karakter kaldı</mat-hint>
+            <mat-error *ngIf="frmControls?.['name']?.errors?.['required']">Lütfen Web Site Giriniz.</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <mat-form-field style="width: 100%;" appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput #inputEmail maxlength="100" placeholder="Örnek: test@test.com" formControlName="email" required>
+            <mat-icon matSuffix>email</mat-icon>
+            <mat-hint align="end">{{inputEmail.value.length}}/100 karakter kaldı</mat-hint>
+            <mat-error *ngIf="frmControls?.['email']?.errors?.['required']">Lütfen Email Giriniz.</mat-error>
+            <mat-error *ngIf="frmControls?.['email']?.errors?.['email']">Email formatı uygun değil.</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field style="width: 100%;" appearance="outline">
+            <mat-label>Telefon</mat-label>
+            <input matInput #inputPhone type="text" prefix="+90" mask="(000) 000 00 00" formControlName="phoneNumber" required>
+            <mat-error *ngIf="frmControls?.['phoneNumber']?.errors?.['required']">Lütfen Telefon Giriniz.</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <mat-form-field style="width: 100%;" appearance="outline">
+            <mat-label >Açıklama</mat-label>
+            <textarea  matInput #inputdescription maxlength="100"  formControlName="description" rows="1" value="Seyhan Devlet Hastanesi"></textarea>
+            <mat-hint align="end">{{inputdescription.value.length}}/100  karakter kaldı</mat-hint>
+            <mat-error *ngIf="frmControls?.['description']?.errors?.['required']">Lütfen Açıklama Giriniz.</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field style="width: 100%;" appearance="outline">
+            <mat-label >Adres</mat-label>
+            <textarea  matInput #inputaddress maxlength="100"  formControlName="address" rows="1" value="Seyhan Devlet Hastanesi"></textarea>
+            <mat-hint align="end">{{inputaddress.value.length}}/100  karakter kaldı</mat-hint>
+            <mat-error *ngIf="frmControls?.['address']?.errors?.['required']">Lütfen Adres Giriniz.</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</app-base-dialog>
+</form>

@@ -1,0 +1,65 @@
+/* To learn more about this file see: https://angular.io/config/tsconfig. */
+{
+  "compileOnSave": false,
+
+  "compilerOptions": {
+    "outDir": "./dist/out-tsc",
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": false,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "esModuleInterop": true,
+    "sourceMap": true,
+    "declaration": false,
+    "experimentalDecorators": true,
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "target": "ES2022",
+    "module": "ES2022",
+    "strictNullChecks": true,
+    "useDefineForClassFields": false,
+    "baseUrl": "./",
+    "paths": {
+      "@shared": ["src/app/shared"],
+      "@shared/*": ["src/app/shared/*"],
+      "@features": ["src/app/features"],
+      "@features/*": ["src/app/features/*"],
+      "@common": ["src/app/common"],
+      "@common/*": ["src/app/common/*"],
+      "@contracts": ["src/app/contracts"],
+      "@contracts/*": ["src/app/contracts/*"],
+      "@services": ["src/app/services"],
+      "@services/*": ["src/app/services/*"],
+      "@dialogs": ["src/app/dialogs"],
+      "@dialogs/*": ["src/app/dialogs/*"],
+      "@core": ["src/app/core"],
+      "@core/*": ["src/app/core/*"],
+      "@styles": ["src/styles"],
+      "@styles/*": ["src/styles/*"],
+      "@themes": ["src/themes"],
+      "@themes/*": ["src/themes/*"]
+    },
+    "typeRoots": [
+      "node_modules/@types",
+      "src/typings"
+    ],
+    "lib": [
+      "ES2022",
+      "dom"
+    ]
+
+  },
+
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/polyfills.ts"
+, "src/app/common/services/export/.service.ts"  ]
+}

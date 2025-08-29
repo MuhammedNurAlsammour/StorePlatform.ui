@@ -1,0 +1,705 @@
+
+::ng-deep .mdc-label {
+  color: var(--custom-color-text) !important;
+}
+
+::ng-deep div.mat-mdc-select-panel {
+  width: 100%;
+  max-height: 275px;
+  outline: 0;
+  overflow: auto;
+  padding: 8px 0;
+  border-radius: 4px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+  box-sizing: border-box;
+  position: static;
+  background-color: var(--custom-color-shade-1) !important;
+}
+
+::ng-deep .mat-mdc-option {
+  color: var(--custom-color-text) !important;
+}
+::ng-deep .mdc-text-field--outlined:not(.mdc-text-field--disabled).mdc-text-field--focused ::ng-deep .mat-mdc-notch-piece {
+  border-color:var(--custom-color-primary) !important;
+}
+::ng-deep .mat-mdc-icon-button[disabled], ::ng-deep .mat-mdc-icon-button.mat-mdc-button-disabled {
+  cursor: default;
+  pointer-events: none;
+  color: var(--custom-color-primary) !important;
+}
+::ng-deep .mat-expansion-panel {
+  box-sizing: content-box;
+  display: block;
+  margin: 0;
+  overflow: hidden;
+  transition: margin 225ms cubic-bezier(0.4, 0, 0.2, 1),box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  background: var(--custom-color-primary) !important;
+  color: var(--mat-expansion-container-text-color);
+  border-radius: var(--mat-expansion-container-shape);
+}
+
+.btn-delete-dialog {
+  background-color: #FF5630;
+  color: #fff;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  cursor: pointer;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  width: 72px;
+  height: 36px;
+}
+/* Küçük boyutlu ve hafif gölge efektli düğme */
+.btn-shadow-xs {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Hafif gölge */
+  padding: 0.10rem 0.2rem; /* Düğme boyutu ayarı */
+  border-radius: 0.25rem; /* Yuvarlatılmış kenarlar */
+  margin-right: 0.5rem; /* Sağ kenara ekstra boşluk */
+
+}
+
+/* Küçük boyutlu, hafif gölge efektli ve boşluk olmadan düğme */
+.btn-shadow-xs-no-margin {
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.50); /* Hafif gölge */
+  padding: 0.25rem 0.5rem; /* Düğme boyutu ayarı */
+  border-radius: 0.2rem; /* Yuvarlatılmış kenarlar */
+}
+
+/* Büyük boyutlu ve yumuşak kenarlı düğme */
+.btn-shadow-lg {
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* Büyük gölge */
+  padding: 0.5rem 1rem; /* Düğme boyutu ayarı */
+  border-radius: 0.4rem; /* Yuvarlatılmış kenarlar */
+}
+
+/* Büyük boyutlu, yumuşak kenarlı ve boşluk olmadan düğme */
+.btn-shadow-lg-no-margin {
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* Büyük gölge */
+  padding: 0.5rem 1rem; /* Düğme boyutu ayarı */
+  border-radius: 0.4rem; /* Yuvarlatılmış kenarlar */
+  margin: 0; /* Herhangi bir boşluk kaldırma */
+}
+
+
+
+/* Onaylı silme düğmesi (Özelleştirilmiş simge kullanımı) */
+.btn-dangers-dialog {
+  background-color: #FFFFFF; /* Arkaplan rengi */
+  color: #1C2534; /* Yazı rengi */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Geçiş efekti */
+  cursor: pointer; /* İşaretçi türü belirleme */
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  width: 72px;
+  height: 36px;
+
+  border-style: solid;
+  border-width: 1px;
+  border-color: #DBE5ED;
+}
+
+/* Hover efekti */
+.btn-dangers-dialog:hover {
+  background-color: #dc3545; /* Hover arkaplan rengi */
+  color: #ffffff; /* Hover yazı rengi */
+}
+
+
+
+
+
+
+/* Onaylı vazgeçme düğmesi (Özelleştirilmiş simge kullanımı) */
+.btn-cancel-dialog {
+  background-color: #FFFFFF; /* Arkaplan rengi */
+  color: #1C2534; /* Yazı rengi */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Geçiş efekti */
+  cursor: pointer; /* İşaretçi türü belirleme */
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  width: 72px;
+  height: 36px;
+
+  border-style: solid;
+  border-width: 1px;
+  border-color: #DBE5ED;
+}
+
+
+/* Ekleme düğmesi */
+.btn-add-dialog {
+  background-color: #008be7; /* Arkaplan rengi - Mavi */
+  color: #fff; /* Yazı rengi - Beyaz */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Geçiş efekti */
+  cursor: pointer; /* İşaretçi türü belirleme */
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  width: 72px;
+  height: 36px;
+
+}
+
+
+
+/* Ekleme düğmesi */
+.btn-appApproval-dialog {
+  background-color: rgb(28, 172, 28); /* Arkaplan rengi - Mavi */
+  color: #fff; /* Yazı rengi - Beyaz */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Geçiş efekti */
+  cursor: pointer; /* İşaretçi türü belirleme */
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  width: 72px;
+  height: 36px;
+
+}
+.btn-Withdrawal-dialog{
+  background-color: rgba(29, 70, 206, 0.945); /* Arkaplan rengi - Mavi */
+  color: #fff; /* Yazı rengi - Beyaz */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Geçiş efekti */
+  cursor: pointer; /* İşaretçi türü belirleme */
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  width: 72px;
+  height: 36px;
+
+}
+
+
+/* Ekleme düğmesi */
+.btn-forego-dialog {
+  background-color: rgb(209, 35, 35); /* Arkaplan rengi - Mavi */
+  color: #fff; /* Yazı rengi - Beyaz */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Geçiş efekti */
+  cursor: pointer; /* İşaretçi türü belirleme */
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  width: 72px;
+  height: 36px;
+
+}
+
+
+/* Ekleme düğmesi */
+.btn-Withdrawal-dialogs {
+  background-color: chocolate; /* Arkaplan rengi - Mavi */
+  color: #fff; /* Yazı rengi - Beyaz */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Geçiş efekti */
+  cursor: pointer; /* İşaretçi türü belirleme */
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  width: 72px;
+  height: 36px;
+
+}
+
+
+
+::ng-deep .datetime-input {
+  width: 100%;
+  height: 51px;
+  padding: 18px;
+  border: none;
+  border-radius: 5px;
+  background-color: var(--custom-color-accent) !important;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  font-size: 16px;
+  outline: invert;
+  transition: box-shadow 0.3s ease;
+  margin-bottom: 16px;
+  color: var(--custom-color-shade-1) !important;
+
+}
+
+.datetime-input:hover,
+.datetime-input:focus {
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+
+::ng-deep .calendar-icon {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  color: var(--custom-color-text) !important;
+}
+
+
+::ng-deep .mdc-dialog__surface{
+  background-color: var(--custom-color-accent) !important;
+}
+::ng-deep mat-label{
+  color: var(--custom-color-text) !important;
+}
+::ng-deep h1,h2{
+  color: var(--custom-color-text) !important;
+}
+
+::ng-deep .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-text-field__input {
+  color: var(--custom-color-text) !important;
+  caret-color: var(--custom-color-shade-1) !important;
+
+}
+
+
+
+::ng-deep .mat-primary {
+  --mat-full-pseudo-checkbox-selected-icon-color: var(--custom-color-shade-1) !important;
+
+  --mat-full-pseudo-checkbox-selected-checkmark-color: #fafafa;
+
+  --mat-full-pseudo-checkbox-unselected-icon-color: rgba(0, 0, 0, 0.54);
+
+  --mat-full-pseudo-checkbox-disabled-selected-checkmark-color: #fafafa;
+
+  --mat-full-pseudo-checkbox-disabled-unselected-icon-color: #b0b0b0;
+
+  --mat-full-pseudo-checkbox-disabled-selected-icon-color: #b0b0b0;
+
+  --mat-minimal-pseudo-checkbox-selected-checkmark-color: var(--custom-color-shade-1) !important;
+
+  --mat-minimal-pseudo-checkbox-disabled-selected-checkmark-color: #b0b0b0;
+
+}
+
+
+::ng-deep .mat-mdc-option.mdc-list-item--selected:not(.mdc-list-item--disabled) .mdc-list-item__primary-text {
+  color: var(--custom-color-primary) !important;
+}
+
+::ng-deep .mat-pseudo-checkbox-minimal.mat-pseudo-checkbox-checked::after, ::ng-deep .mat-pseudo-checkbox-minimal.mat-pseudo-checkbox-indeterminate::after {
+  color: var(--custom-color-primary) !important;
+}
+
+::ng-deep .mat-mdc-form-field.mat-focused .mat-mdc-select-arrow {
+  color: var(--custom-color-primary) !important;
+}
+
+::ng-deep .mat-datepicker-toggle-active {
+  color: var(--custom-color-primary) !important;
+}
+
+@media(hover: hover) {
+  ::ng-deep .mat-calendar-body-cell:not(.mat-calendar-body-disabled):hover>.mat-calendar-body-cell-content:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical) {
+    background-color:var(--custom-color-primary) !important;
+  }
+}
+
+::ng-deep .mat-calendar-body-selected {
+  background-color: var(--custom-color-primary) !important;
+  color: var(--custom-color-text) !important;
+}
+
+::ng-deep .mat-calendar-table-header-divider::after {
+  content:"";
+  position:absolute;
+  top:0;
+  left:-8px;
+  right:-8px;
+  height:1px;
+  background:var(--custom-color-primary) !important;
+}
+
+::ng-deep mat-hint{
+  color: #5EA96E;
+}
+
+
+
+@mixin button($bcolor,
+$url,
+$x1,
+$y1,
+$bor,
+$col) {
+ background: $bcolor;
+ -webkit-mask: url($url);
+ mask: url($url);
+ -webkit-mask-size: $x1 $y1;
+ mask-size: $x1 $y1;
+ border: $bor;
+ color: $col;
+}
+
+
+.button-delete {
+  position: relative;
+  width: 80px;
+  height: 40px;
+  margin-left: 10px;
+  margin-right: auto;
+  overflow: hidden;
+  border: 1px solid #FF5630;
+  font-weight: 300;
+  transition: 0.5s;
+  letter-spacing: 1px;
+  border-radius: 8px;
+
+  button {
+   width: 101%;
+   height: 100%;
+   font-family: 'Lato', sans-serif;
+   font-weight: 300;
+   font-size: 14px;
+   letter-spacing: 1px;
+   font-weight: bold;
+
+       @include button(#FF5630,
+    "/assets/buttons/nature-sprite.png",
+   2300%,
+   100%,
+   none,
+   #fff);
+   cursor: pointer;
+   -webkit-animation: ani2 0.7s steps(22) forwards;
+   animation: ani2 0.7s steps(22) forwards;
+
+   &:hover {
+    -webkit-animation: ani 0.7s steps(22) forwards;
+    animation: ani 0.7s steps(22) forwards;
+   }
+  }
+ }
+
+.button-appApprov {
+  position: relative;
+  width: 80px;
+  height: 40px;
+  margin-left: 10px;
+  margin-right: auto;
+  overflow: hidden;
+  border: 1px solid rgb(28, 172, 28);
+  font-weight: 300;
+  transition: 0.5s;
+  letter-spacing: 1px;
+  border-radius: 8px;
+
+  button {
+   width: 101%;
+   height: 100%;
+   font-family: 'Lato', sans-serif;
+   font-weight: 300;
+   font-size: 14px;
+   letter-spacing: 1px;
+   font-weight: bold;
+
+       @include button(rgb(28, 172, 28),
+    "/assets/buttons/nature-sprite.png",
+   2300%,
+   100%,
+   none,
+   #fff);
+   cursor: pointer;
+   -webkit-animation: ani2 0.7s steps(22) forwards;
+   animation: ani2 0.7s steps(22) forwards;
+
+   &:hover {
+    -webkit-animation: ani 0.7s steps(22) forwards;
+    animation: ani 0.7s steps(22) forwards;
+   }
+  }
+ }
+
+
+
+.button-Withdrawal {
+  position: relative;
+  width: 80px;
+  height: 40px;
+  margin-left: 10px;
+  margin-right: auto;
+  overflow: hidden;
+  border: 1px solid chocolate;
+  font-weight: 300;
+  transition: 0.5s;
+  letter-spacing: 1px;
+  border-radius: 8px;
+
+  button {
+   width: 101%;
+   height: 100%;
+   font-family: 'Lato', sans-serif;
+   font-weight: 300;
+   font-size: 14px;
+   letter-spacing: 1px;
+   font-weight: bold;
+
+       @include button(chocolate,
+    "/assets/buttons/nature-sprite.png",
+   2300%,
+   100%,
+   none,
+   #fff);
+   cursor: pointer;
+   -webkit-animation: ani2 0.7s steps(22) forwards;
+   animation: ani2 0.7s steps(22) forwards;
+
+   &:hover {
+    -webkit-animation: ani 0.7s steps(22) forwards;
+    animation: ani 0.7s steps(22) forwards;
+   }
+  }
+ }
+
+
+// link
+ .button-link {
+  position: relative;
+  width: 60px;
+  height: 25px;
+  margin-left: auto;
+  margin-right: auto;
+  overflow: hidden;
+  border: 1px solid var(--custom-color-shade-1) !important;
+  font-family: 'Lato', sans-serif;
+  font-weight: 300;
+  transition: 0.5s;
+  letter-spacing: 1px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .mas {
+    position: absolute;
+    color: #000;
+    text-align: center;
+    width: 101%;
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    position: absolute;
+    font-size: 12px;
+    margin-top: 1px;
+    overflow: hidden;
+    font-weight: bold;
+
+}
+
+  button {
+   width: 101%;
+   height: 100%;
+   font-family: 'Lato', sans-serif;
+   font-weight: 300;
+   font-size: 14px;
+   letter-spacing: 1px;
+   font-weight: bold;
+
+       @include button(var(--custom-color-primary) !important,
+    "/assets/buttons/nature-sprite.png",
+   2300%,
+   100%,
+   none,
+   #fff);
+   cursor: pointer;
+   -webkit-animation: ani2 0.7s steps(22) forwards;
+   animation: ani2 0.7s steps(22) forwards;
+
+   &:hover {
+    -webkit-animation: ani 0.7s steps(22) forwards;
+    animation: ani 0.7s steps(22) forwards;
+   }
+  }
+ }
+
+/* Ekleme düğmesi */
+
+.button-appApproval {
+  position: relative;
+  width: 80px;
+  height: 40px;
+  margin-left: 10px;
+  margin-right: auto;
+  overflow: hidden;
+  border: 1px solid #008be7;
+  font-weight: 300;
+  transition: 0.5s;
+  letter-spacing: 1px;
+  border-radius: 8px;
+
+  button {
+   width: 101%;
+   height: 100%;
+   font-family: 'Lato', sans-serif;
+   font-weight: 300;
+   font-size: 12px;
+   letter-spacing: 1px;
+   font-weight: bold;
+
+       @include button(#008be7,
+    "/assets/buttons/nature-sprite.png",
+   2300%,
+   100%,
+   none,
+   #fff);
+   cursor: pointer;
+   -webkit-animation: ani2 0.7s steps(22) forwards;
+   animation: ani2 0.7s steps(22) forwards;
+
+   &:hover {
+    -webkit-animation: ani 0.7s steps(22) forwards;
+    animation: ani 0.7s steps(22) forwards;
+   }
+  }
+ }
+
+
+.button-container-2 {
+  position: relative;
+  width: 80px;
+  height: 40px;
+  margin-left: 10px;
+  margin-right: auto;
+  overflow: hidden;
+  border: 1px solid var(--custom-color-shade-1) !important;
+  font-family: 'Lato', sans-serif;
+  font-weight: 300;
+  transition: 0.5s;
+  letter-spacing: 1px;
+  border-radius: 8px;
+
+  button {
+   width: 101%;
+   height: 100%;
+   font-family: 'Lato', sans-serif;
+   font-weight: 300;
+   font-size: 12px;
+   font-weight: bold;
+
+       @include button(var(--custom-color-primary) !important, "/assets/buttons/urban-sprite.png",
+   3000%,
+   100%,
+   none,
+   #fff);
+   cursor: pointer;
+   -webkit-animation: ani2 0.7s steps(29) forwards;
+   animation: ani2 0.7s steps(29) forwards;
+
+   &:hover {
+    -webkit-animation: ani 0.7s steps(29) forwards;
+    animation: ani 0.7s steps(29) forwards;
+   }
+  }
+ }
+
+
+ .mas {
+     position: absolute;
+     color: #000;
+     text-align: center;
+     width: 101%;
+     font-family: 'Lato', sans-serif;
+     font-weight: 300;
+     position: absolute;
+     font-size: 12px;
+     margin-top: 10px;
+     overflow: hidden;
+     font-weight: bold;
+
+ }
+
+ @-webkit-keyframes ani {
+  from {
+   -webkit-mask-position: 0 0;
+   mask-position: 0 0;
+  }
+
+  to {
+   -webkit-mask-position: 100% 0;
+   mask-position: 100% 0;
+  }
+ }
+
+ @keyframes ani {
+  from {
+   -webkit-mask-position: 0 0;
+   mask-position: 0 0;
+  }
+
+  to {
+   -webkit-mask-position: 100% 0;
+   mask-position: 100% 0;
+  }
+ }
+
+ @-webkit-keyframes ani2 {
+  from {
+   -webkit-mask-position: 100% 0;
+   mask-position: 100% 0;
+  }
+
+  to {
+   -webkit-mask-position: 0 0;
+   mask-position: 0 0;
+  }
+ }
+
+ @keyframes ani2 {
+  from {
+   -webkit-mask-position: 100% 0;
+   mask-position: 100% 0;
+  }
+
+  to {
+   -webkit-mask-position: 0 0;
+   mask-position: 0 0;
+  }
+ }
+
+ a{
+   color:#00ff95;
+ }
+
+
+
+/* Vazgeç düğmesi */
+
+ .button-forego {
+  position: relative;
+  width: 80px;
+  height: 40px;
+  margin-left: 10px;
+  margin-right: auto;
+  overflow: hidden;
+  border: 1px solid #e70000;
+  font-weight: 300;
+  transition: 0.5s;
+  letter-spacing: 1px;
+  border-radius: 8px;
+
+  button {
+   width: 101%;
+   height: 100%;
+   font-family: 'Lato', sans-serif;
+   font-weight: 300;
+   font-size: 14px;
+   letter-spacing: 1px;
+   font-weight: bold;
+
+
+       @include button(#e70000, "/assets/buttons/natureSmaller.png",
+   7100%,
+   100%,
+   none,
+   #fff);
+   cursor: pointer;
+   -webkit-animation: ani2 0.7s steps(70) forwards;
+   animation: ani2 0.7s steps(70) forwards;
+
+   &:hover {
+    -webkit-animation: ani 0.7s steps(70) forwards;
+    animation: ani 0.7s steps(70) forwards;
+   }
+  }
+
+
+
+}
+

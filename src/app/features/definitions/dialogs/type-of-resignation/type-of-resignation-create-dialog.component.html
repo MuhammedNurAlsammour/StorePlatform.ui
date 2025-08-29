@@ -1,0 +1,25 @@
+<form [formGroup]="frm" (ngSubmit)="onSubmit(frm.value)">
+  <app-base-dialog
+    [dialogTitle]="dialogTitle"
+    [titleIcon]="titleIcon"
+    [frm]="frm"
+    (formSubmit)="onSubmit($event)">
+    <div dialog-content>
+
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <mat-form-field style="width: 100%;" appearance="outline">
+              <mat-label>İstifa Adi</mat-label>
+              <input matInput  #inputTypeName maxlength="50" formControlName="typeName"/>
+              <mat-hint align="end">{{inputTypeName.value.length}}/50  karakter kaldı</mat-hint>
+              <mat-error *ngIf="frmControls['typeName']?.errors?.['required']">Lütfen İstifa Adi Giriniz.</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </app-base-dialog>
+</form>
+

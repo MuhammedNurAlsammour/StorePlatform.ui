@@ -1,0 +1,42 @@
+{
+  "role": "SuperAdmin",
+  "institutionId": "17b48d1e-54a6-42c5-8c20-e2a523dfc1ac",
+  "customerId": "72c54b1a-8e1c-45ea-8edd-b5da1091e325",
+  "menus": [
+    {
+      "menu": "AuthorizationEndpoints",
+      "codes": [
+        "POST.Writing.AssignRoleEndpoint"
+      ]
+    },
+    {
+      "menu": "Customers",
+      "codes": [
+        "GET.Reading.GetAllCustomers",
+        "GET.Reading.GetCustomerById",
+        "POST.Writing.CreateCustomer",
+        "PUT.Updating.UpdateCustomer",
+        "DELETE.Deleting.RemoveCustomer"
+      ]
+    },
+    {
+      "menu": "Roles",
+      "codes": [
+        "GET.Reading.GetRoles",
+        "GET.Reading.GetRoleById",
+        "GET.Reading.GetRolePermissions",
+        "POST.Writing.CreateRole",
+        "PUT.Updating.UpdateRole",
+        "DELETE.Deleting.DeleteRole"
+      ]
+    },
+    {
+      "menu": "Users",
+      "codes": [
+        "GET.Reading.GetAllUsers",
+        "GET.Reading.GetUserById",
+        "POST.Reading.AssignRoleToUser"
+      ]
+    }
+  ]
+}

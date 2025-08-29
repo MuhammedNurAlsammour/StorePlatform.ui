@@ -1,0 +1,25 @@
+<app-cp
+[homeRoute]="'/'"
+[closeRoute]="'/settings'"
+[breadcrumbs]="[
+  { route: '/settings', label: 'Tanımlar', icon: 'fa-cog' },
+  { route: '/customer-definitions', label: 'Müşteri Tanımları', active: true }
+]">
+  <app-create
+  header
+  (excel)="excel()"
+  (csv)="exportToCSV()"
+  (txt)="exportToTXT()"
+  (json)="exportToJSON()"
+  (html)="exportToHTML()"
+  (created)="created()"
+  (searchFilter)="receiveSearchValue($event)"
+  >
+  </app-create>
+  <app-list content
+  [filterValue]="searchValue"
+  ></app-list>
+</app-cp>
+
+
+

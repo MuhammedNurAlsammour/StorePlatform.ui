@@ -1,0 +1,14 @@
+<cp-create
+  [showAddButton]="true"
+  [showExportMenu]="false"
+  [showFilterMenu]="false"
+  [showSearch]="true"
+  [showFilter]="false"
+  [addButtonText]="'Yeni Kayıt'"
+  [hasAddPermission]="permissionsService.ifPermit('POST.Writing.CreateRole')"
+  [hasFilterPermission]="permissionsService.ifPermit('POST.Writing.CreateRole')"
+  [searchPlaceholder]="'Arama...'"
+  (add)="create()"
+  (search)="filterList($event)"
+  >
+</cp-create>

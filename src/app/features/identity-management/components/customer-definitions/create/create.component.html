@@ -1,0 +1,15 @@
+<cp-create
+  [showAddButton]="true"
+  [showExportMenu]="true"
+  [showFilterMenu]="false"
+  [showSearch]="true"
+  [showFilter]="false"
+  [addButtonText]="'Yeni Kayıt'"
+  [hasAddPermission]="permissionsService.ifPermit('POST.Writing.MüşteriOluştur')"
+  [hasFilterPermission]="permissionsService.ifPermit('POST.Writing.MüşteriOluştur')"
+  [searchPlaceholder]="'Arama...'"
+  (add)="create()"
+  (export)="handleExport($event)"
+  (search)="filterList($event)"
+  >
+</cp-create>

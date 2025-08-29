@@ -1,0 +1,68 @@
+::ng-deep .card{
+  background-color: var(--custom-color-acc) !important;
+  --bs-card-cap-bg: var(--custom-color-acc) !important;
+}
+
+.button-container {
+  display: flex;
+  gap: 20px;
+}
+
+.custom-card {
+  background-color: #2e2e2e;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.left-buttons, .right-buttons {
+  display: flex;
+}
+
+.left-buttons app-traffic-button {
+  margin: 14px;
+}
+.right-buttons app-plus-icon {
+  margin: 14px;
+}
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.buttons-group {
+  display: flex;
+  align-items: center;
+}
+
+.left-buttons app-traffic-button {
+  margin-right: 10px;
+}
+
+.float-left {
+  float: left;
+}
+
+.float-right {
+  float: right;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

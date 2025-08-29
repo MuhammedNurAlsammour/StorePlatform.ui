@@ -1,0 +1,62 @@
+<!-- Gruplama Kontrolleri -->
+<div
+  class="filter-controls-container"
+  style="
+    margin-bottom: 16px;
+    padding: 12px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+  "
+>
+  <div class="filter-row">
+    <mat-slide-toggle
+      [(ngModel)]="carding"
+      (change)="onCardingToggle()"
+      color="primary"
+    >
+      Ürünleri kart çevir
+    </mat-slide-toggle>
+  </div>
+</div>
+
+<!-- Tablo Görünümü -->
+<div *ngIf="!carding">
+<app-cp-list
+  [data]="tableData"
+  [columns]="columns"
+  [config]="tableConfig"
+  [features]="tableFeatures"
+  [actions]="tableActions"
+  [sortConfig]="sortConfig"
+  [totalRows]="totalRows"
+  [isLoading]="isDataLoading"
+  (rowClick)="onRowClick($event)"
+  (sortChange)="onSortChange($event)"
+  (pageChange)="onPageChange($event)"
+  (update)="update($event)"
+  (updateOne)="createCart($event)"
+  (updateTwo)="uploadPhotoProduct($event)"
+  (delete)="getList()"
+  [filterValue]="filterValue"
+>
+</app-cp-list>
+</div>
+
+<div *ngIf="carding">
+<!-- Kart Görünümü -->
+<app-product-card-grid
+  [products]="tableData"
+  [isLoading]="isDataLoading"
+  [totalRows]="totalRows"
+  [pageSize]="currentPageSize"
+  [pageIndex]="currentPageIndex"
+  [showActions]="true"
+  (pageChange)="onCardPageChange($event)"
+  (edit)="update($event)"
+  (addToCart)="createCart($event)"
+  (uploadPhoto)="uploadPhotoProduct($event)"
+  (delete)="getList()"
+  (cardClick)="onRowClick($event)"
+>
+</app-product-card-grid>
+</div>

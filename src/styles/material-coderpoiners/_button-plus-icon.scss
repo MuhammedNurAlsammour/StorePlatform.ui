@@ -1,0 +1,150 @@
+// Variables
+$container-width: 72px;
+$container-height: 80px;
+$border-radius: 10px;
+$border-color: #d3d3d3;
+$icon-size: 33px;
+$transition-duration: 0.3s;
+$plus-color: #8E33FF;
+
+// Variables
+$button-padding: 12px 24px;
+$border-radius: 8px;
+$transition-duration: 0.3s;
+$hover-scale: 1.05;
+
+// Mixins
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin transition($property: all, $duration: $transition-duration, $timing: ease) {
+  transition: $property $duration $timing;
+}
+
+// Styles
+.button-container {
+  @include flex-center;
+  cursor: pointer;
+}
+
+.custom-button {
+  padding: $button-padding;
+  border: none;
+  border-radius: $border-radius;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  @include transition;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  &:hover {
+    transform: scale($hover-scale);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+// Mixins
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin absolute-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@mixin transition($property: all, $duration: $transition-duration, $timing: ease) {
+  transition: $property $duration $timing;
+}
+
+// Keyframes
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(90deg);
+  }
+}
+
+// Styles
+.plus-icon-container {
+  @include flex-center;
+  flex-direction: column;
+  width: $container-width;
+  height: $container-height;
+  border: 2px dashed $border-color;
+  border-radius: $border-radius;
+  @include transition;
+  text-align: center;
+  cursor: pointer;
+  overflow: hidden;
+
+  &:hover {
+    border-color: darken($border-color, 10%);
+    animation: pulse 0.6s ease-in-out;
+
+    .plus-icon {
+      animation: rotate 0.3s ease-in-out forwards;
+    }
+  }
+}
+
+.plus-icon {
+  width: $icon-size;
+  height: $icon-size;
+  border-radius: 50%;
+  position: relative;
+  background-color: $plus-color;
+  @include transition(background-color);
+
+  &::before,
+  &::after {
+    content: '';
+    @include absolute-center;
+    background-color: white;
+    @include transition(transform);
+  }
+
+  &::before {
+    width: 60%;
+    height: 10%;
+  }
+
+  &::after {
+    width: 10%;
+    height: 60%;
+  }
+
+  &:hover {
+    background-color: darken($plus-color, 10%);
+
+    &::before,
+    &::after {
+      transform: translate(-50%, -50%) scale(1.1);
+    }
+  }
+}

@@ -1,0 +1,148 @@
+import { CommonModule } from '@angular/common';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { AlertConfig, AlertPosition, AlertService } from '@coder-pioneers/shared';
+import { DialogService } from '@coder-pioneers/shared';
+import { PermissionsService } from '@coder-pioneers/shared';
+import { BaseComponent } from '@coder-pioneers/shared';
+import { CoderPioneersCreateComponent } from '@coder-pioneers/ui-layout-components';
+import { CategoriesCreateDialogComponent } from '@features/product-catalog/dialogs/categories/categories-create-dialog.component';
+import { NgxSpinnerService } from 'ngx-spinner';
+
+@Component({
+  selector: 'app-create',
+  standalone: true,
+  imports: [
+    CommonModule,
+    RouterModule,
+    CoderPioneersCreateComponent
+  ],
+  templateUrl: './create.component.html',
+  styleUrl: './create.component.scss'
+})
+export class CreateComponent extends BaseComponent implements OnInit {
+
+//#region Çıkış Olayları (Output Events)
+@Output() created = new EventEmitter();
+@Output() searchFilter = new EventEmitter<string>();
+
+// Dışa Aktarma Olayları (Export Events)
+@Output() excel = new EventEmitter();
+@Output() csv = new EventEmitter();
+@Output() txt = new EventEmitter();
+@Output() json = new EventEmitter();
+@Output() html = new EventEmitter();
+// Filtreleme Olayları (Filter Events)
+@Output() filtre1 = new EventEmitter();
+@Output() filtre2 = new EventEmitter();
+@Output() filtre3 = new EventEmitter();
+@Output() filtre4 = new EventEmitter();
+//#endregion
+
+//#region Yapıcı (Constructor)
+constructor(
+  private dialogService: DialogService,
+  private alertService: AlertService,
+  public permissionsService: PermissionsService,
+  spinner: NgxSpinnerService
+) {
+  super(spinner);
+  const config = new AlertConfig();
+  config.duration = 5000;
+  config.positionY = AlertPosition.Top;
+  config.positionX = AlertPosition.Right;
+  alertService.setConfig(config);
+}
+//#endregion
+
+//#region Yaşam Döngüsü Metodları (Lifecycle Methods)
+ngOnInit(): void {
+}
+//#endregion
+
+//#region Dialog Yönetimi (Dialog Management)
+create(): void {
+  if (this.permissionsService.ifPermit('POST.Writing.KategoriEklemek')) {
+    this.dialogService.openDialog({
+      componentType: CategoriesCreateDialogComponent,
+      options: { width: '730px' },
+      disableClose: true,
+      data: {},
+      afterClosed: () => this.created.emit()
+    });
+  } else {
+    this.createalert();
+  }
+}
+createalert(): void {
+  this.alertService.warning('Yetkiniz yok');
+}
+//#endregion
+
+//#region Arama Fonksiyonu (Search Function)
+filterList(value: string): void {
+  this.searchFilter.emit(value);
+}
+//#endregion
+
+//#region Dışa Aktarma Fonksiyonu (Export Function)
+handleExport(type: string): void {
+  switch (type) {
+    case 'excel':
+      this.excel.emit();
+      break;
+    case 'csv':
+      this.csv.emit();
+      break;
+    case 'txt':
+      this.txt.emit();
+      break;
+    case 'json':
+      this.json.emit();
+      break;
+    case 'html':
+      this.html.emit();
+      break;
+    default:
+      console.error('Bilinmeyen dışa aktarma türü:', type);
+      break;
+  }
+}
+//#endregion
+
+//#region Filtreleme Fonksiyonu (Filtering Function)
+handleFilter(type: string): void {
+  switch (type) {
+    case 'filtre1':
+      this.filtre1.emit();
+      break;
+    case 'filtre2':
+      this.filtre2.emit();
+      break;
+    case 'filtre3':
+      this.filtre3.emit();
+      break;
+    case 'filtre4':
+      this.filtre4.emit();
+      break;
+    default:
+      console.error('Bilinmeyen filtre türü:', type);
+      break;
+  }
+}
+//#endregion
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,47 @@
+// =============================================================================
+// MAIN THEME FILE
+// =============================================================================
+
+// Angular Material imports
+@use '@angular/material' as mat;
+
+// Import core Material styles
+@include mat.core();
+
+// Import our custom files
+@import './palettes.scss';
+
+// =============================================================================
+// MATERIAL DESIGN THEME CONFIGURATION
+// =============================================================================
+
+// Define Material palettes using our custom palettes
+$my-primary: mat.m2-define-palette($primary-palette, 500);
+$my-accent: mat.m2-define-palette($accent-palette, 500);
+$my-warn: mat.m2-define-palette($warn-palette, 500);
+
+// Define the light theme
+$my-light-theme: mat.m2-define-light-theme((
+  color: (
+    primary: $my-primary,
+    accent: $my-accent,
+    warn: $my-warn,
+  ),
+  typography: mat.m2-define-typography-config(
+    $font-family: $font-family-base,
+    $headline-1: mat.m2-define-typography-level(2.5rem, 1.2, 700, $font-family-heading),
+    $headline-2: mat.m2-define-typography-level(2rem, 1.3, 600, $font-family-heading),
+    $headline-3: mat.m2-define-typography-level(1.5rem, 1.4, 600, $font-family-heading),
+    $headline-4: mat.m2-define-typography-level(1.25rem, 1.4, 500, $font-family-heading),
+    $body-1: mat.m2-define-typography-level($font-size-base, 1.6, 400, $font-family-base),
+    $body-2: mat.m2-define-typography-level($font-size-sm, 1.5, 400, $font-family-base),
+  ),
+  density: 0,
+));
+
+// =============================================================================
+// APPLY THEMES
+// =============================================================================
+
+// Apply the light theme by default
+@include mat.all-component-themes($my-light-theme);

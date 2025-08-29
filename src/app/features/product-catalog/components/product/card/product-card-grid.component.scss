@@ -1,0 +1,249 @@
+// Product Grid Container
+.product-grid-container {
+  width: 100%;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+// Loading Container
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  gap: 16px;
+  
+  .loading-text {
+    font-size: 16px;
+    color: #6c757d;
+    margin: 0;
+  }
+}
+
+// Products Grid
+.products-grid {
+  width: 100%;
+}
+
+// No Products Message
+.no-products {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  text-align: center;
+  
+  .no-products-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    max-width: 400px;
+    
+    .no-products-icon {
+      font-size: 64px;
+      width: 64px;
+      height: 64px;
+      color: #dee2e6;
+    }
+    
+    h3 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 600;
+      color: #495057;
+    }
+    
+    p {
+      margin: 0;
+      font-size: 16px;
+      color: #6c757d;
+      line-height: 1.5;
+    }
+  }
+}
+
+// Product Cards Container
+.product-cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+  padding: 16px 0;
+  
+  // Responsive grid adjustments
+  @media (min-width: 1200px) {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 32px;
+  }
+  
+  @media (max-width: 1199px) and (min-width: 768px) {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+  }
+  
+  @media (max-width: 767px) and (min-width: 480px) {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+  }
+  
+  @media (max-width: 479px) {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 8px 0;
+  }
+}
+
+// Grid Paginator
+.grid-paginator {
+  margin-top: 16px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 8px 0;
+  
+  ::ng-deep {
+    .mat-mdc-paginator-container {
+      justify-content: center;
+    }
+    
+    .mat-mdc-paginator-page-size {
+      margin-right: 16px;
+    }
+    
+    .mat-mdc-paginator-range-actions {
+      margin-left: 16px;
+    }
+  }
+}
+
+// Animation for cards
+.product-cards-container {
+  app-product-card {
+    animation: fadeInUp 0.4s ease-out;
+    
+    @for $i from 1 through 20 {
+      &:nth-child(#{$i}) {
+        animation-delay: #{$i * 0.05}s;
+      }
+    }
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Hover effects for grid
+.product-cards-container {
+  app-product-card {
+    transition: transform 0.2s ease;
+    
+    &:hover {
+      transform: translateY(-2px);
+    }
+  }
+}
+
+// Loading skeleton animation
+.loading-skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+// Empty state improvements
+.no-products {
+  .no-products-content {
+    padding: 32px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border: 1px solid #dee2e6;
+    
+    .no-products-icon {
+      background: linear-gradient(135deg, #dee2e6, #adb5bd);
+      border-radius: 50%;
+      padding: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+  }
+}
+
+// Responsive improvements
+@media (max-width: 768px) {
+  .product-grid-container {
+    gap: 16px;
+  }
+  
+  .product-cards-container {
+    gap: 16px;
+  }
+  
+  .grid-paginator {
+    margin-top: 12px;
+    
+    ::ng-deep {
+      .mat-mdc-paginator-container {
+        flex-direction: column;
+        gap: 8px;
+      }
+      
+      .mat-mdc-paginator-page-size {
+        margin-right: 0;
+      }
+      
+      .mat-mdc-paginator-range-actions {
+        margin-left: 0;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .product-grid-container {
+    gap: 12px;
+  }
+  
+  .product-cards-container {
+    gap: 12px;
+    padding: 4px 0;
+  }
+  
+  .no-products {
+    .no-products-content {
+      padding: 24px 16px;
+      
+      .no-products-icon {
+        font-size: 48px;
+        width: 48px;
+        height: 48px;
+        padding: 12px;
+      }
+      
+      h3 {
+        font-size: 20px;
+      }
+      
+      p {
+        font-size: 14px;
+      }
+    }
+  }
+}

@@ -1,0 +1,37 @@
+<mat-toolbar class="example-full-width hrefpro-full-width">
+  <mat-toolbar-row class="example-full-width" style="height: 40px;">
+    <div id="crumbs" >
+      <ul>
+        <li><a href="/" ><i class="fa fa-home" aria-hidden="true"></i></a></li>
+        <li><a href="/demand-management" class="active"><i class="fa fa-bell-o" aria-hidden="true"></i> Talep Yönetimi </a></li>
+      </ul>
+    </div>
+    <span class="example-spacer"></span>
+    <button  mat-icon-button class="example-icon material-icons" aria-label="Example icon-button with share icon">
+    </button>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+
+<div class="row">
+  <div  class="flex-wrap col-12 d-flex">
+  @for (card of adminCards; track card.route) {
+    @if (permissionsService.ifPermit(card.permission!)) {
+      <app-admin-settings-cards
+        [cardRoute]="[card.route]"
+        [title]="card.title"
+        [title2]="card.title2"
+        [onTitle2]="card.onTitle2"
+        [description]="card.description"
+        [iconBackgroundColor]="card.iconBackgroundColor"
+        [materialIconName]="card.materialIconName"
+        [status]="card.status"
+        [backgroundColor]="card.backgroundColor">
+      </app-admin-settings-cards>
+    } @else {}
+  }
+  </div>
+</div>
+
+
+

@@ -1,0 +1,208 @@
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MaterialDialogModule } from '@common/models/material-dialog.module';
+import { Request{{componentName}} } from '@features/{{featureName}}/contracts/requests/request-{{name}}';
+import { {{componentName}}Service } from '@features/{{featureName}}/services/{{name}}.service';
+import { BaseDialogComponent, FormFieldConfig } from '@shared/components/base/dialog/base-dialog/base-dialog.component';
+import { CoderBaseDialogComponent } from '@shared/components/base/dialog/coder-pioneers-dialog/coder-pioneers-dialog.component';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { MY_FORMATS } from '@common/utils/date-format';
+import { AlertService } from '@core/services/alert.service';
+import { ResultSelecte } from '@contracts/entities/response-selecte-personel';
+
+
+@Component({
+  selector: 'app-{{name}}-create-dialog',
+  standalone: true,
+  imports: [
+    BaseDialogComponent,
+    MaterialDialogModule
+  ],
+  templateUrl: './{{name}}-create-dialog.component.html',
+  styleUrl: './{{name}}-create-dialog.component.scss',
+    providers: [
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+    },
+    { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } },
+    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
+  ],
+})
+export class {{componentName}}CreateDialogComponent
+  extends CoderBaseDialogComponent<{{componentName}}CreateDialogComponent>
+  implements OnInit {
+  frm!: FormGroup;
+  fields: FormFieldConfig[] = [];
+  isFormVisible: boolean = false;
+  {{serviceName}}s: ResultSelecte[] = [];
+  hascearte:boolean= false;
+  constructor(
+    dialogRef: MatDialogRef<{{componentName}}CreateDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: Request{{componentName}},
+    alertService: AlertService,
+    spinner: NgxSpinnerService,
+    private formBuilder: FormBuilder,
+    private {{componentName}}Service: {{componentName}}Service,
+  )
+  {
+    super(dialogRef, spinner, alertService);
+    this.dialogTitle = '{{serviceName}} Ekle';
+    this.titleIcon = 'add';
+    this.initializeForm();
+  }
+
+  // #region Form İşlemleri
+  private initializeForm(): void {
+    const customerId = sessionStorage.getItem('customerId') || null;
+    const institutionId = sessionStorage.getItem('institutionId') || null;
+    const userId = sessionStorage.getItem('userId');
+    const employeeId = sessionStorage.getItem('employeeId');
+
+    this.frm = this.formBuilder.group({
+      id:[null],
+      rowIsActive: [true],
+      rowIsDeleted: [false],
+      rowCreatedDate: [new Date()],
+      rowUpdatedDate: [new Date()],
+      authCustomerId: [customerId],
+      authUserId: [userId],
+      customerId: [customerId],
+      institutionId:[institutionId],
+      employeeId: [employeeId],
+      userId: [userId],
+      //yeni alanlar
+      {{serviceName}}Name: [null,Validators.required],
+    });
+
+    // Setup fields configuration for BaseDialogComponent
+    this.setupFieldsConfig();
+
+    if (this.data?.id) {
+      this.frm.patchValue(this.data);
+    }
+  }
+  //#endregion
+
+
+  //#region satır ve sütün yapılandırma
+  private setupFieldsConfig(): void {
+    // Form alanlarını Bootstrap Grid sistemine göre yapılandırma
+    // Her satır ayrı container ve row olarak yapılandırılacak
+    this.fields = [
+      // İlk satır: Ürün Adı ve Açıklaması
+      {
+        name: 'name',
+        label: 'Ürün Adı',
+        type: 'text',
+        required: true,
+        maxLength: 50,
+        placeholder: 'Ürün adını giriniz',
+        col: 'col', // col sınıfı (sayı olmadan)
+        rowStart: true // Yeni satır başlangıcı
+      },
+      {
+        name: 'description',
+        label: 'Ürün Açıklaması',
+        type: 'text',
+        required: true,
+        maxLength: 50,
+        placeholder: 'Ürün açıklamasını giriniz',
+        col: 'col', // col sınıfı (sayı olmadan)
+        rowEnd: true // Satır sonu
+      },
+
+      // İkinci satır: Fiyat ve Stok
+      {
+        name: 'price',
+        label: 'Ürün Fiyatı',
+        type: 'number',
+        required: true,
+        placeholder: 'Fiyat giriniz',
+        col: 'col', // col sınıfı (sayı olmadan)
+        rowStart: true // Yeni satır başlangıcı
+      },
+      {
+        name: 'stock',
+        label: 'Ürün Stok',
+        type: 'number',
+        required: true,
+        placeholder: 'Stok miktarı giriniz',
+        col: 'col', // col sınıfı (sayı olmadan)
+        rowEnd: true // Satır sonu
+      },
+
+      // Üçüncü satır: Kategori seçimi
+      {
+        name: 'categoryId',
+        label: 'Kategori Seçiniz',
+        type: 'selectAutocomplete',
+        required: false,
+        placeholder: 'Kategori ara...',
+        col: 'col', // col sınıfı (sayı olmadan)
+        rowStart: true, // Yeni satır başlangıcı
+        rowEnd: true, // Satır sonu
+        autocompleteOptions: this.categories,
+        displayFn: (item: CategoryResult) => item ? item.name : '',
+        filterFn: (value: string, options: CategoryResult[]) => {
+          const filterValue = value.toLowerCase();
+          return options.filter(option =>
+            option.name.toLowerCase().includes(filterValue)
+          );
+        }
+      },
+
+      // Dördüncü satır: Konum ve Envanter Takibi
+      {
+        name: 'defaultLocation',
+        label: 'Varsayılan Konum',
+        type: 'text',
+        required: true,
+        maxLength: 100,
+        placeholder: 'Örn: Depo A, Raf 1, Bölüm 2',
+        col: 'col', // col sınıfı (sayı olmadan)
+        rowStart: true // Yeni satır başlangıcı
+      },
+      {
+        name: 'hasInventoryTracking',
+        label: 'Envanter Takibi',
+        type: 'select',
+        required: true,
+        col: 'col', // col sınıfı (sayı olmadan)
+        rowEnd: true, // Satır sonu
+        options: [
+          { id: true, name: '✅ Evet - Envanter takibi yapılsın' },
+          { id: false, name: '❌ Hayır - Envanter takibi yapılmasın' }
+        ]
+      }
+    ];
+  }
+  //#endregion
+
+  //#region ngOnInit
+  ngOnInit() { }
+  //#endregion
+
+  //#region Getters
+  get frmControls() {
+    return this.frm?.controls;
+  }
+  //#endregion
+
+  //#region OnSubmit
+  override onSubmit(request{{componentName}}: Request{{componentName}})  {
+    const numericId = this.data?.id || undefined;
+
+    this.submitForm(
+      (data) => this.{{componentName}}Service.create(data),
+      (data) => this.{{componentName}}Service.update(data),
+      request{{componentName}},
+      numericId
+    );
+  }
+  //#endregion
+}

@@ -1,0 +1,176 @@
+
+
+$bg-color:var(--custom-color-primary) !important;
+
+$crumbs-back:var(--custom-color-text) !important;
+$text-color:var(--custom-color-text) !important;
+
+::ng-deep #crumbs {
+  text-align: center;
+  h1 {
+      text-transform: uppercase;
+      font-size: .9rem;
+      font-weight: 600;
+      letter-spacing: .01rem;
+      color: var(--custom-color-textsidbar) !important; /* Assuming $text-color is defined elsewhere */
+  }
+  ul {
+      list-style: none;
+      display: inline-flex;
+      align-items: center;
+      li {
+          margin: 0 0px;
+          a {
+              display: block;
+              height: 40px;
+              line-height: 40px;
+              text-align: center;
+              padding: 0 30px;
+              position: relative;
+              text-decoration: none;
+              color: $text-color; /* Assuming $text-color is defined elsewhere */
+              font-size: 14px;
+              &:after {
+                  content: "";
+                  border-top: 20px solid transparent;
+                  border-bottom: 20px solid transparent;
+                  border-left: 20px solid var(--custom-color-accent) !important;
+                  position: absolute;
+                  right: -20px;
+                  top: 0;
+                  z-index: 1;
+              }
+              &:before {
+                content: "";
+                border-top: 20px solid transparent;
+                border-bottom: 20px solid transparent;
+                border-left: 25px solid #fff;
+                position: absolute;
+                left: 0px;
+                top: 0;
+              }
+          }
+      }
+  }
+}
+
+::ng-deep mat-toolbar{
+  background: var(--custom-color-accent) !important;
+}
+
+::ng-deep #crumbs ul li:first-child a {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+::ng-deep #crumbs ul li:first-child a:before {
+  display: none;
+}
+
+::ng-deep #crumbs ul li:last-child a {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+::ng-deep #crumbs ul li:last-child a:after {
+  display: none;
+}
+
+::ng-deep #crumbs ul li a:hover {
+  background: $bg-color;
+  color: var(--custom-color-textsidbar) !important;
+}
+
+::ng-deep #crumbs ul li a:active {
+  background: $bg-color;
+  color: var(--custom-color-textsidbar) !important;
+}
+
+::ng-deep #crumbs ul li a:hover:after {
+  border-left-color: $bg-color;
+  color: var(--custom-color-textsidbar) !important;
+}
+
+::ng-deep .active{
+  background: $bg-color;
+  color: var(--custom-color-textsidbar) !important;
+}
+
+::ng-deep .next{
+  background: rgb(231, 255, 221);
+  color: var(--custom-color-textsidbar) !important;
+}
+
+::ng-deep #crumbs {
+  ul {
+    li {
+      a {
+        &.active {
+          background: $bg-color;
+          color: var(--custom-color-textsidbar) !important;
+
+          &:after {
+            border-left-color: $bg-color;
+          }
+        }
+      }
+    }
+  }
+}
+
+::ng-deep a{
+  color:#00ff95;
+}
+
+::ng-deep .hrefpro-full-width {
+  background-color: var(--custom-color-accent) !important;
+  height: 40px !important;
+  border-radius: 0px 0px 16px 16px !important;
+  margin: 0rem 1rem !important;
+  width: 98%;
+  top: 0;
+  z-index: 1000;
+  position: -webkit-sticky; /* For Safari */
+  position: sticky;
+}
+
+::ng-deep .example-icon{
+  color: red;
+}
+
+*{
+  margin:0;
+  padding:0;
+  -webkit-box-sizing:border-box;
+  box-sizing:border-box;
+
+}
+.hrefpro-full-width {
+  background-color: var(--custom-color-accent) !important;
+  height: 40px !important;
+  border-radius: 0px 0px 16px 16px !important;
+  margin: 0rem 1rem !important;
+  width: 98%;
+  top: 0;
+  z-index: 1000;
+  position: -webkit-sticky;
+  position: sticky;
+}
+::ng-deep .body{
+  padding:0rem 1rem !important;
+}
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+.card {
+  background-color: #E1F4FF00 !important;
+  border: none;
+}
+.mat-toolbar-multiple-rows {
+  display: flex;
+  box-sizing: border-box;
+  flex-direction: column;
+  width: 100%;
+  min-height: auto;
+}

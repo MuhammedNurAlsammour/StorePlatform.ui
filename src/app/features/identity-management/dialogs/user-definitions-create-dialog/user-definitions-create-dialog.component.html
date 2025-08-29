@@ -1,0 +1,70 @@
+<form [formGroup]="frm" (ngSubmit)="onSubmit(frm.value)">
+  <app-base-dialog
+    [dialogTitle]="dialogTitle"
+    [titleIcon]="titleIcon"
+    [frm]="frm"
+    (formSubmit)="onSubmit($event)">
+    <div dialog-content>
+
+    <div class="container">
+      <div class="row">
+
+        <div class="col">
+          <mat-form-field style="width: 100%;" appearance="outline">
+            <mat-label>Kullanıcı Adı</mat-label>
+            <input matInput #inputusername maxlength="50" placeholder="username" formControlName="username">
+            <mat-hint align="end">{{inputusername.value.length}}/50 karakter kaldı</mat-hint>
+            <mat-error *ngIf="frmControls?.['username']?.errors?.['required']">Lütfen Kullanıcı Adı Giriniz.</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col">
+          <mat-form-field style="width: 100%;" appearance="outline">
+            <mat-label>İsim Soyisim</mat-label>
+            <mat-select formControlName="employeeId">
+              <mat-option *ngFor="let Personellist of Personels" [value]="Personellist?.employeeId">
+                {{Personellist?.firstName}} {{Personellist?.lastName}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="frmControls?.['employeeId']?.errors?.['required']">Lütfen Kullanıcı Soyadı Seçiniz.</mat-error>
+          </mat-form-field>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row">
+
+        <div class="col">
+          <mat-form-field style="width: 100%;" appearance="outline">
+            <mat-label>Şifre</mat-label>
+            <input matInput #inputpassword maxlength="100" formControlName="password" [type]="hide ? 'password' : 'text'">
+            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+              <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+            <mat-hint align="end">{{inputpassword.value.length}}/100 karakter kaldı</mat-hint>
+            <mat-error *ngIf="frmControls?.['password']?.errors?.['required']">Lütfen Şifre Giriniz.</mat-error>
+            <mat-error *ngIf="frm?.hasError('passwordMismatch')">Lütfen, Şifre eşleşmiyor.</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col">
+          <mat-form-field style="width: 100%;" appearance="outline">
+            <mat-label>Şifre Tekrar</mat-label>
+            <input matInput #inputpasswordConfirm maxlength="100" formControlName="passwordConfirm" [type]="hided ? 'password' : 'text'">
+            <button mat-icon-button matSuffix (click)="hided = !hided" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hided">
+              <mat-icon>{{hided ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+            <mat-hint align="end">{{inputpasswordConfirm.value.length}}/100 karakter kaldı</mat-hint>
+            <mat-error *ngIf="frmControls?.['passwordConfirm']?.errors?.['required']">Lütfen Şifre Tekrar Giriniz.</mat-error>
+            <mat-error *ngIf="frm?.hasError('passwordMismatch')">Lütfen Şifre eşleşmiyor.</mat-error>
+          </mat-form-field>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</app-base-dialog>
+</form>

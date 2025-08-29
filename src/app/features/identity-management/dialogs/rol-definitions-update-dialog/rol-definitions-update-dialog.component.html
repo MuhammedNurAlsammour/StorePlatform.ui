@@ -1,0 +1,26 @@
+<form [formGroup]="frm" (ngSubmit)="onSubmit(frm.value)">
+  <app-base-dialog
+    [dialogTitle]="dialogTitle"
+    [titleIcon]="titleIcon"
+    [frm]="frm"
+    (formSubmit)="onSubmit($event)">
+    <div dialog-content>
+
+    <div class="container">
+      <div class="row">
+
+        <div class="col">
+          <mat-form-field style="width: 100%;" appearance="outline">
+            <mat-label >Rol Adı</mat-label>
+            <input matInput #inputusername maxlength="50" formControlName="name" >
+            <mat-hint align="end">{{inputusername.value.length}}/50  karakter kaldı</mat-hint>
+            <mat-error *ngIf="frmControls?.['name']?.errors?.['required']">Lütfen Rol Adı Giriniz.</mat-error>
+          </mat-form-field>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</app-base-dialog>
+</form>
