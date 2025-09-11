@@ -29,93 +29,134 @@ html, body { height: 100%; background-color: var(--custom-color-shade-1) !import
 ::-webkit-scrollbar-thumb:hover {
     background-color: #555;
 }
-
 :root {
-//login
+  //login
   --d: 2500ms;
-	--angle: 90deg;
-	--gradX: 100%;
-	--gradY: 50%;
-	--c1: rgba(168, 239, 255, 1);
-	--c2: rgba(168, 239, 255, 0.1);
+  --angle: 90deg;
+  --gradX: 100%;
+  --gradY: 50%;
+  --c1: rgba(168, 239, 255, 1);
+  --c2: rgba(168, 239, 255, 0.1);
 
+  --font-barlow: "Barlow", sans-serif;
+  --font-barlowCondensed: "Barlow Condensed", sans-serif;
 
-  --font-barlow: 'Barlow', sans-serif;
-	--font-barlowCondensed: 'Barlow Condensed', sans-serif;
+  --time-nav-hover: 0.25s;
 
-	--time-nav-hover: 0.25s;
+  --color-fire: #e30000;
+  --color-black: #191919;
+  --color-grey-5: #fbfbfb;
+  --color-grey-10: #f6f7f7;
+  --color-grey-cool-10: #eeeeef;
+  --color-grey-15: #e8e8e8;
+  --color-grey-20: #d5d6d8;
+  --color-grey-60: #abadb1;
+  --color-grey-70: #888891;
+  --color-grey-80: #6b6a6a;
+  --color-grey-85: #59595f;
 
-	--color-fire:           #E30000;
-	--color-black:          #191919;
-	--color-grey-5:         #FBFBFB;
-	--color-grey-10:        #F6F7F7;
-	--color-grey-cool-10:   #EEEEEF;
-	--color-grey-15:        #E8E8E8;
-	--color-grey-20:        #D5D6D8;
-	--color-grey-60:        #ABADB1;
-	--color-grey-70:        #888891;
-	--color-grey-80:        #6B6A6A;
-	--color-grey-85:        #59595F;
+  --shadow-fire: 0 4px 12px 4px rgba(227, 0, 0, 0.2),
+    0 1px 3px 0 rgba(137, 7, 7, 0.4);
 
-	--shadow-fire:
-		0 4px 12px 4px rgba(227,0,0,0.2),
-		0 1px 3px 0 rgba(137,7,7,0.4)
-	;
+  --focus-style: dotted 2px var(--color-black);
+  --focus-offset: 2px;
 
-	--focus-style: dotted 2px var(--color-black);
-	--focus-offset: 2px;
+  /* Üçüncü tema renkleri - Tailwind CSS beyaz renkler */
+  --custom-color-light-primary: theme("colors.sky.200"); /* Ana renk - beyaz */
+  --custom-color-light-accent: theme(
+    "colors.gray.50"
+  ); /* Vurgu rengi - çok açık gri */
+  --custom-color-light-sidbar: theme("colors.white"); /* Kenar çubuğu - beyaz */
+  --custom-color-light-acc: theme("colors.white"); /* Arka plan - beyaz */
+  --custom-color-light-row-hover: theme(
+    "colors.gray.100"
+  ); /* Satır hover efekti - açık gri */
+  --custom-color-light-shade-1: theme(
+    "colors.white"
+  ); /* Arka plan rengi - beyaz */
+  --custom-color-light-shade-2: theme(
+    "colors.gray.50"
+  ); /* İkincil arka plan - çok açık gri */
+  --custom-color-light-shade-3: theme(
+    "colors.white"
+  ); /* Üçüncül arka plan - beyaz */
+  --custom-color-light-text: theme(
+    "colors.gray.900"
+  ); /* Metin rengi - koyu gri */
+  --custom-color-light-text-active: theme(
+    "colors.white"
+  ); /* Metin rengi - koyu gri */
+  --custom-color-light-textsidbar: theme(
+    "colors.gray.800"
+  ); /* Kenar çubuğu metni - gri */
+  --custom-color-light-icon: theme(
+    "colors.gray.600"
+  ); /* İkon rengi - orta gri */
 
-  --custom-color-light-primary: #bae1f3;
-  --custom-color-light-accent: #F0F9FF;
-  --custom-color-light-sidbar: #F0F9FF;
-  --custom-color-light-acc: #ffffff;
-  --custom-color-light-row-hover: #bae1f34d;
-  --custom-color-light-shade-1: #E1F4FF; //Arka plan color
-  --custom-color-light-shade-2: #FFFFFF;
-  --custom-color-light-shade-3: #E1F4FF;
-  --custom-color-light-text: #333333;
-  --custom-color-light-textsidbar: #333333;
-  --custom-color-light-icon: #4AB6F0;
+  /* Koyu tema renkleri - Tailwind CSS entegrasyonu */
+  --custom-color-dark-primary: theme(
+    "colors.gray.800"
+  ); /* Ana renk - gray-800 */
+  --custom-color-dark-accent: theme(
+    "colors.gray.700"
+  ); /* Vurgu rengi - gray-700 */
+  --custom-color-dark-sidbar: theme(
+    "colors.gray.800"
+  ); /* Kenar çubuğu - gray-800 */
+  --custom-color-dark-acc: theme(
+    "colors.gray.700"
+  ); /* Koyu arka plan - gray-700 */
+  --custom-color-dark-row-hover: theme(
+    "colors.sky.400 / 0.1"
+  ); /* Satır hover efekti - sky-400/10 */
+  --custom-color-dark-shade-1: theme(
+    "colors.gray.700"
+  ); /* Arka plan rengi - gray-700 */
+  --custom-color-dark-shade-2: theme(
+    "colors.gray.600"
+  ); /* İkincil arka plan - gray-600 */
+  --custom-color-dark-shade-3: theme(
+    "colors.gray.800"
+  ); /* Üçüncül arka plan - gray-800 */
+  --custom-color-dark-text: theme("colors.white"); /* Metin rengi - white */
+  --custom-color-dark-text-active: theme(
+    "colors.white"
+  ); /* Metin rengi - white */
+  --custom-color-dark-textsidbar: theme(
+    "colors.white"
+  ); /* Kenar çubuğu metni - white */
+  --custom-color-dark-icon: theme("colors.sky.400"); /* İkon rengi - sky-400 */
 
-  --custom-color-dark-primary: #404258;
-  --custom-color-dark-accent: #6B728E;
-  --custom-color-dark-sidbar: #6B728E;
-  --custom-color-dark-acc: #6B728E;
-  --custom-color-dark-row-hover: #8f33ff10;
-  --custom-color-dark-shade-1: #8D93A8;
-  --custom-color-dark-shade-2: #B0B5C6;
-  --custom-color-dark-shade-3: #565B73;
-  --custom-color-dark-text: #FFFFFF;
-  --custom-color-dark-textsidbar: #FFFFFF;
-  --custom-color-dark-icon: #D1E5F7;
+  /* Açık tema renkleri - Tailwind CSS entegrasyonu */
+  --custom-color-third-primary: #004030; /* Ana renk - lime-600 */
+  --custom-color-third-accent: #eeeeee; /* Vurgu rengi - lime-600 */
+  --custom-color-third-sidbar: #eeeeee; /* Kenar çubuğu - lime-600 */
+  --custom-color-third-acc: theme("colors.amber.50"); /* Beyaz arka plan */
+  --custom-color-third-row-hover: #004030; /* Satır hover efekti - lime-600/30 */
+  --custom-color-third-shade-1: #eeeeee; /* Arka plan rengi - lime-600 */
+  --custom-color-third-shade-2: #eeeeee; /* İkincil arka plan - amber.50 */
+  --custom-color-third-shade-3: #eeeeee; /* Üçüncül arka plan - lime-600 */
+  --custom-color-third-text: theme(
+    "colors.gray.700"
+  ); /* Metin rengi - gray-700 */
+  --custom-color-third-text-active: #eeeeee; /* Metin rengi - amber.50 */
+  --custom-color-third-textsidbar: theme(
+    "colors.gray.700"
+  ); /* Kenar çubuğu metni - gray-700 */
+  --custom-color-third-icon: #004030; /* İkon rengi - lime-100 */
 
-
-
-  --custom-color-third-primary: #C4DFDF;
-  --custom-color-third-accent: #E3F4F4;
-  --custom-color-third-sidbar: #E3F4F4;
-  --custom-color-third-acc: #ffffff;
-  --custom-color-third-row-hover: #8f33ff10; //table row hover
-  --custom-color-third-shade-1: rgb(255, 248, 248);
-  --custom-color-third-shade-2: white;
-  --custom-color-third-shade-3: #DCE0E5;
-  --custom-color-third-text: #404258;
-  --custom-color-third-textsidbar: #404258;
-  --custom-color-third-icon: #404258;
-
-
-  --custom-color-color-primary: #8E33FF;
-  --custom-color-color-accent: #FFFFFF;
+  --custom-color-color-primary: #a855f7;
+  --custom-color-color-accent: #ffffff;
   --custom-color-color-sidbar: #202033; //SİDBAR BG
-  --custom-color-color-textsidbar: #FFFFFF; //SİDBAR TEXT
+  --custom-color-color-textsidbar: #ffffff; //SİDBAR TEXT
   --custom-color-color-acc: #ffffff;
   --custom-color-color-row-hover: #a969f810; //table row hover
-  --custom-color-color-shade-1: #F5F6FA; // BODY  BG
-  --custom-color-color-shade-2: #E6F4FF;
+  --custom-color-color-shade-1: #f5f6fa; // BODY  BG
+  --custom-color-color-shade-2: #e6f4ff;
   --custom-color-color-shade-3: #a258fd10; //table row hover
   --custom-color-color-text: #333333;
-  --custom-color-color-icon: #4A90E2;
-
+  --custom-color-color-text-active: #ffffff;
+  --custom-color-color-icon: #4a90e2;
 }
 
 

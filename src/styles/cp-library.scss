@@ -1,0 +1,439 @@
+/* CoderPioneers Library - SCSS Classes */
+/* CP Library - Hazır CSS sınıfları */
+
+// ========================================
+// BACKGROUND CLASSES - Arka plan sınıfları
+// ========================================
+
+// Ana arka plan renkleri
+.cp-bg-primary {
+  background-color: var(--custom-color-primary);
+}
+
+.cp-bg-accent {
+  background-color: var(--custom-color-accent);
+}
+
+.cp-bg-sidebar {
+  background-color: var(--custom-color-sidbar);
+}
+
+.cp-bg-acc {
+  background-color: var(--custom-color-acc);
+}
+
+// Arka plan gölge renkleri
+.cp-bg-shade-1 {
+  background-color: var(--custom-color-shade-1);
+}
+
+.cp-bg-shade-2 {
+  background-color: var(--custom-color-shade-2);
+}
+
+.cp-bg-shade-3 {
+  background-color: var(--custom-color-shade-3);
+}
+
+// ========================================
+// TEXT CLASSES - Metin sınıfları
+// ========================================
+
+.cp-text-primary {
+  color: var(--custom-color-text);
+}
+
+.cp-text-sidebar {
+  color: var(--custom-color-textsidbar);
+}
+
+.cp-text-icon {
+  color: var(--custom-color-icon);
+}
+
+// ========================================
+// BORDER CLASSES - Kenarlık sınıfları
+// ========================================
+
+.cp-border-primary {
+  border-color: var(--custom-color-primary);
+}
+
+.cp-border-accent {
+  border-color: var(--custom-color-accent);
+}
+
+.cp-border-shade-1 {
+  border-color: var(--custom-color-shade-1);
+}
+
+.cp-border-shade-2 {
+  border-color: var(--custom-color-shade-2);
+}
+
+.cp-border-shade-3 {
+  border-color: var(--custom-color-shade-3);
+}
+
+// ========================================
+// HOVER EFFECTS - Hover efektleri
+// ========================================
+
+.cp-hover-bg {
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: var(--custom-color-row-hover);
+  }
+}
+
+.cp-hover-text {
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: var(--custom-color-primary);
+  }
+}
+
+.cp-hover-border {
+  transition: border-color 0.3s ease;
+
+  &:hover {
+    border-color: var(--custom-color-primary);
+  }
+}
+
+// ========================================
+// COMPONENT CLASSES - Bileşen sınıfları
+// ========================================
+
+// Card bileşeni
+.cp-card {
+  background-color: var(--custom-color-acc);
+  border: 1px solid var(--custom-color-shade-2);
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+// Button bileşeni
+.cp-btn {
+  background-color: var(--custom-color-primary);
+  color: var(--custom-color-text);
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: var(--custom-color-accent);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.cp-btn-secondary {
+  background-color: var(--custom-color-shade-2);
+  color: var(--custom-color-text);
+  border: 1px solid var(--custom-color-shade-3);
+
+  &:hover {
+    background-color: var(--custom-color-shade-3);
+  }
+}
+
+// Input bileşeni
+.cp-input {
+  background-color: var(--custom-color-acc);
+  border: 1px solid var(--custom-color-shade-2);
+  border-radius: 4px;
+  padding: 0.5rem;
+  color: var(--custom-color-text);
+
+  &:focus {
+    outline: none;
+    border-color: var(--custom-color-primary);
+    box-shadow: 0 0 0 2px rgba(74, 182, 240, 0.2);
+  }
+
+  &::placeholder {
+    color: var(--custom-color-shade-3);
+  }
+}
+
+// Table bileşeni
+.cp-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th,
+  td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid var(--custom-color-shade-2);
+  }
+
+  th {
+    background-color: var(--custom-color-shade-1);
+    color: var(--custom-color-text);
+    font-weight: 600;
+  }
+
+  tr {
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: var(--custom-color-row-hover);
+    }
+  }
+}
+
+// ========================================
+// LAYOUT CLASSES - Düzen sınıfları
+// ========================================
+
+.cp-container {
+  background-color: var(--custom-color-shade-1);
+  min-height: 100vh;
+  padding: 1rem;
+}
+
+.cp-sidebar {
+  background-color: var(--custom-color-sidbar);
+  color: var(--custom-color-textsidbar);
+  padding: 1rem;
+  min-height: 100vh;
+}
+
+.cp-content {
+  background-color: var(--custom-color-acc);
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+// ========================================
+// UTILITY CLASSES - Yardımcı sınıflar
+// ========================================
+
+.cp-rounded {
+  border-radius: 8px;
+}
+
+.cp-rounded-sm {
+  border-radius: 4px;
+}
+
+.cp-rounded-lg {
+  border-radius: 12px;
+}
+
+.cp-shadow {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.cp-shadow-lg {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.cp-transition {
+  transition: all 0.3s ease;
+}
+
+// ========================================
+// RESPONSIVE CLASSES - Duyarlı sınıflar
+// ========================================
+
+@media (max-width: 768px) {
+  .cp-responsive-hide {
+    display: none;
+  }
+
+  .cp-responsive-full {
+    width: 100%;
+  }
+}
+
+@media (min-width: 769px) {
+  .cp-responsive-show {
+    display: block;
+  }
+}
+
+// ========================================
+// ANIMATION CLASSES - Animasyon sınıfları
+// ========================================
+
+.cp-fade-in {
+  animation: cpFadeIn 0.5s ease-in;
+}
+
+.cp-slide-up {
+  animation: cpSlideUp 0.3s ease-out;
+}
+
+@keyframes cpFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes cpSlideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+// ========================================
+// STATUS CLASSES - Durum sınıfları
+// ========================================
+
+.cp-status-success {
+  background-color: #10b981;
+  color: white;
+}
+
+.cp-status-warning {
+  background-color: #f59e0b;
+  color: white;
+}
+
+.cp-status-error {
+  background-color: #ef4444;
+  color: white;
+}
+
+.cp-status-info {
+  background-color: var(--custom-color-primary);
+  color: white;
+}
+
+// ========================================
+// SPACING CLASSES - Boşluk sınıfları
+// ========================================
+
+.cp-p-1 {
+  padding: 0.25rem;
+}
+.cp-p-2 {
+  padding: 0.5rem;
+}
+.cp-p-3 {
+  padding: 0.75rem;
+}
+.cp-p-4 {
+  padding: 1rem;
+}
+.cp-p-5 {
+  padding: 1.25rem;
+}
+.cp-p-6 {
+  padding: 1.5rem;
+}
+
+.cp-m-1 {
+  margin: 0.25rem;
+}
+.cp-m-2 {
+  margin: 0.5rem;
+}
+.cp-m-3 {
+  margin: 0.75rem;
+}
+.cp-m-4 {
+  margin: 1rem;
+}
+.cp-m-5 {
+  margin: 1.25rem;
+}
+.cp-m-6 {
+  margin: 1.5rem;
+}
+
+// ========================================
+// FLEXBOX CLASSES - Flexbox sınıfları
+// ========================================
+
+.cp-flex {
+  display: flex;
+}
+
+.cp-flex-col {
+  flex-direction: column;
+}
+
+.cp-flex-row {
+  flex-direction: row;
+}
+
+.cp-justify-center {
+  justify-content: center;
+}
+
+.cp-justify-between {
+  justify-content: space-between;
+}
+
+.cp-items-center {
+  align-items: center;
+}
+
+.cp-items-start {
+  align-items: flex-start;
+}
+
+.cp-items-end {
+  align-items: flex-end;
+}
+
+// ========================================
+// GRID CLASSES - Grid sınıfları
+// ========================================
+
+.cp-grid {
+  display: grid;
+}
+
+.cp-grid-cols-1 {
+  grid-template-columns: repeat(1, 1fr);
+}
+.cp-grid-cols-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+.cp-grid-cols-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+.cp-grid-cols-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.cp-gap-1 {
+  gap: 0.25rem;
+}
+.cp-gap-2 {
+  gap: 0.5rem;
+}
+.cp-gap-3 {
+  gap: 0.75rem;
+}
+.cp-gap-4 {
+  gap: 1rem;
+}
+.cp-gap-5 {
+  gap: 1.25rem;
+}
+.cp-gap-6 {
+  gap: 1.5rem;
+}
