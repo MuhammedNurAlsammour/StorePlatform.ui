@@ -1,4 +1,4 @@
-@import '../../../../../themes/dialogs.scss';
+@import "../../../../../themes/dialogs.scss";
 
 .example-section {
   margin: 12px 0;
@@ -12,8 +12,9 @@ ul {
   list-style-type: none;
   margin-top: 4px;
 }
+
 .selected-count {
-  background-color: #2196F3;
+  background-color: #2196f3;
   color: white;
   border-radius: 50%;
   padding: 2px 8px;
@@ -32,4 +33,295 @@ ul {
 
 .mat-expansion-panel-header {
   align-items: center;
+}
+
+:host ::ng-deep .mat-expansion-panel-header-description {
+  flex-grow: 2;
+  color: var(--custom-color-accent) !important;
+}
+
+:host ::ng-deep .mat-expansion-panel-header-title {
+  color: var(--custom-color-accent) !important;
+}
+
+:host ::ng-deep .mdc-label {
+  color: var(--custom-color-accent) !important;
+}
+
+:host ::ng-deep .card-header {
+  color: var(--custom-color-accent) !important;
+}
+
+// Arama ve Filtreleme Stilleri
+.search-filter-panel {
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
+}
+
+// Chip Stilleri
+.selected-chip {
+  background-color: #3b82f6 !important;
+  color: white !important;
+  border: 2px solid #1d4ed8 !important;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: #2563eb !important;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.unselected-chip {
+  background-color: #f3f4f6 !important;
+  color: #6b7280 !important;
+  border: 2px solid #d1d5db !important;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: #e5e7eb !important;
+    color: #374151 !important;
+    transform: translateY(-1px);
+  }
+}
+
+// İstatistik Kartları
+.stat-card {
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-color: rgba(59, 130, 246, 0.3);
+  }
+}
+
+.stats-panel {
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.total-stats {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+}
+
+// Badge Stilleri
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 9999px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
+// Temizleme Butonu
+.clear-filters-btn {
+  transition: all 0.2s ease;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+// Responsive Tasarım
+@media (max-width: 768px) {
+  .search-filter-panel {
+    .row {
+      .col-md-4 {
+        margin-bottom: 1rem;
+      }
+    }
+  }
+
+  .stats-panel {
+    .row {
+      .col-md-4 {
+        margin-bottom: 1rem;
+      }
+    }
+  }
+
+  .flex {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
+// Animasyonlar
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.search-filter-panel,
+.stats-panel {
+  animation: fadeIn 0.5s ease-out;
+}
+
+// HTTP Method Badge Stilleri
+.http-method-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 0.375rem;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  transition: all 0.2s ease;
+  min-width: 4rem;
+  width: 4rem;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.http-method-get {
+  background-color: #dbeafe;
+  color: #1e40af;
+  border: 1px solid #93c5fd;
+}
+
+.http-method-post {
+  background-color: #dcfce7;
+  color: #166534;
+  border: 1px solid #86efac;
+}
+
+.http-method-put {
+  background-color: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fcd34d;
+}
+
+.http-method-delete {
+  background-color: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fca5a5;
+}
+
+.http-method-patch {
+  background-color: #e0e7ff;
+  color: #3730a3;
+  border: 1px solid #a5b4fc;
+}
+
+.http-method-unknown {
+  background-color: #f3f4f6;
+  color: #6b7280;
+  border: 1px solid #d1d5db;
+}
+
+// List Item Hover Effects
+li {
+  transition: all 0.2s ease;
+
+  &:hover {
+    .http-method-badge {
+      transform: scale(1.05);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+  }
+}
+
+// HTTP Method Badge Alignment - Grid Layout
+li:has(.http-method-badge) {
+  display: grid !important;
+  grid-template-columns: 1fr 4rem;
+  gap: 1rem;
+  align-items: center;
+}
+
+// Alternative approach for better browser support
+.flex.items-center.justify-between {
+  display: grid !important;
+  grid-template-columns: 1fr 4rem;
+  gap: 1rem;
+  align-items: center;
+}
+
+// Ensure checkbox and text stay together
+li:has(.http-method-badge) mat-checkbox {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+// Fallback for older browsers
+@supports not (display: grid) {
+  li:has(.http-method-badge) {
+    display: flex !important;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .http-method-badge {
+    margin-left: auto;
+  }
+}
+
+// Material Design Overrides
+:host ::ng-deep {
+  .mat-chip {
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .mat-form-field {
+    .mat-form-field-outline {
+      transition: all 0.2s ease;
+    }
+
+    &:hover .mat-form-field-outline {
+      border-color: #3b82f6;
+    }
+  }
+
+  .mat-expansion-panel {
+    margin-bottom: 8px;
+    border-radius: 8px !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+    transition: all 0.2s ease;
+
+    &:hover {
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+    }
+  }
+
+  .mat-expansion-panel-header {
+    border-radius: 8px 8px 0 0 !important;
+    padding: 16px 24px !important;
+  }
+
+  .mat-expansion-panel-body {
+    padding: 16px 24px !important;
+  }
 }

@@ -1,9 +1,38 @@
 // management.component.ts
-import { CdkDragDrop, CdkDragEnd, CdkDragStart, CdkDropList, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
+import {
+  CdkDragDrop,
+  CdkDragEnd,
+  CdkDragStart,
+  CdkDropList,
+  DragDropModule,
+  moveItemInArray,
+} from '@angular/cdk/drag-drop';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, HostBinding, Inject, NgZone, OnInit, Output, PLATFORM_ID, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  HostBinding,
+  Inject,
+  NgZone,
+  OnInit,
+  Output,
+  PLATFORM_ID,
+  QueryList,
+  ViewChild,
+  ViewChildren,
+} from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { AdminSettingsCardsComponent, AlertConfig, AlertPosition, AlertService, BaseComponent, PermissionsService } from '@coder-pioneers/shared';
+import {
+  AdminSettingsCardsComponent,
+  AlertConfig,
+  AlertPosition,
+  AlertService,
+  BaseComponent,
+  PermissionsService,
+} from '@coder-pioneers/shared';
 import { NgxSpinnerService } from 'ngx-spinner';
 
 interface AdminCard {
@@ -24,13 +53,18 @@ interface AdminCard {
     CommonModule,
     RouterModule,
     AdminSettingsCardsComponent,
-    DragDropModule
+    DragDropModule,
   ],
   templateUrl: './management.component.html',
-  styleUrls: ['./management.component.scss']
+  styleUrls: ['./management.component.scss'],
 })
-export class ManagementComponent extends BaseComponent implements OnInit, AfterViewInit {
-  @HostBinding('class.dragging') get dragging() { return this.isDragging; }
+export class ManagementComponent
+  extends BaseComponent
+  implements OnInit, AfterViewInit
+{
+  @HostBinding('class.dragging') get dragging() {
+    return this.isDragging;
+  }
   @Output() created = new EventEmitter();
   @ViewChild(CdkDropList) dropList?: CdkDropList<AdminCard[]>;
   @ViewChildren('cardItem') cardItems?: QueryList<ElementRef>;
@@ -91,7 +125,8 @@ export class ManagementComponent extends BaseComponent implements OnInit, AfterV
   setupTouchHandlers(): void {
     if (!this.dropList) return;
 
-    const container = this.elementRef.nativeElement.querySelector('.card-container');
+    const container =
+      this.elementRef.nativeElement.querySelector('.card-container');
     if (!container) return;
 
     this.dropList.entered.subscribe(() => {
@@ -110,20 +145,25 @@ export class ManagementComponent extends BaseComponent implements OnInit, AfterV
     });
 
     this.cardItems?.changes.subscribe((items: QueryList<ElementRef>) => {
-      items.forEach(item => {
+      items.forEach((item) => {
         const el = item.nativeElement;
-        el.addEventListener('touchstart', (e: TouchEvent) => {
-          if (el.closest('.drag-handle')) {
-            e.preventDefault();
-          }
-        }, { passive: false });
+        el.addEventListener(
+          'touchstart',
+          (e: TouchEvent) => {
+            if (el.closest('.drag-handle')) {
+              e.preventDefault();
+            }
+          },
+          { passive: false }
+        );
       });
     });
   }
 
   filterVisibleCards() {
-    this.visibleCards = this.adminCards.filter(card =>
-      !card.permission || this.permissionsService.ifPermit(card.permission)
+    this.visibleCards = this.adminCards.filter(
+      (card) =>
+        !card.permission || this.permissionsService.ifPermit(card.permission)
     );
   }
 
@@ -131,7 +171,11 @@ export class ManagementComponent extends BaseComponent implements OnInit, AfterV
     this.ngZone.run(() => {
       if (event.previousIndex !== event.currentIndex) {
         try {
-          moveItemInArray(this.visibleCards, event.previousIndex, event.currentIndex);
+          moveItemInArray(
+            this.visibleCards,
+            event.previousIndex,
+            event.currentIndex
+          );
           this.saveCardOrder();
           this.created.emit();
 
@@ -159,7 +203,7 @@ export class ManagementComponent extends BaseComponent implements OnInit, AfterV
 
   saveCardOrder() {
     try {
-      const orderMap = this.visibleCards.map(card => card.route);
+      const orderMap = this.visibleCards.map((card) => card.route);
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(orderMap));
     } catch (error) {
       console.error('Kart sırası kaydedilirken hata:', error);
@@ -183,14 +227,14 @@ export class ManagementComponent extends BaseComponent implements OnInit, AfterV
 
         const orderedCards: AdminCard[] = [];
 
-        orderMap.forEach(route => {
-          const card = this.visibleCards.find(c => c.route === route);
+        orderMap.forEach((route) => {
+          const card = this.visibleCards.find((c) => c.route === route);
           if (card) {
             orderedCards.push(card);
           }
         });
 
-        this.visibleCards.forEach(card => {
+        this.visibleCards.forEach((card) => {
           if (!orderMap.includes(card.route)) {
             orderedCards.push(card);
           }
@@ -232,14 +276,17 @@ export class ManagementComponent extends BaseComponent implements OnInit, AfterV
         this.ngZone.runOutsideAngular(() => {
           const mirror = document.querySelector('.cdk-drag-preview');
           if (mirror) {
-            (mirror as HTMLElement).style.transform = 'scale(1.03) translateZ(0) rotate(-1deg)';
-            (mirror as HTMLElement).style.boxShadow = '0 12px 30px rgba(76, 175, 80, 0.4)';
+            (mirror as HTMLElement).style.transform =
+              'scale(1.03) translateZ(0) rotate(-1deg)';
+            (mirror as HTMLElement).style.boxShadow =
+              '0 12px 30px rgba(76, 175, 80, 0.4)';
           }
         });
       }
     }
 
-    const container = this.elementRef.nativeElement.querySelector('.card-container');
+    const container =
+      this.elementRef.nativeElement.querySelector('.card-container');
     if (container) {
       container.classList.add('dragging-active');
     }
@@ -258,7 +305,8 @@ export class ManagementComponent extends BaseComponent implements OnInit, AfterV
       element.style.border = '';
     }
 
-    const container = this.elementRef.nativeElement.querySelector('.card-container');
+    const container =
+      this.elementRef.nativeElement.querySelector('.card-container');
     if (container) {
       container.classList.remove('dragging-active');
     }
@@ -271,64 +319,15 @@ export class ManagementComponent extends BaseComponent implements OnInit, AfterV
 
   adminCards: AdminCard[] = [
     {
-      permission: 'GET.Reading.SiparişlerListesiGetirir',
-      route: '/orders',
-      title: 'Siparişler',
-      description: '(orders) Siparişleri yönetebilirsiniz',
+      permission:
+        'GET.Reading.BusinessesİşletmelerveOrganizasyonlarListesiGetirir',
+      route: '/businesses-management',
+      title: 'İşletmeler',
+      description: '(businesses) İşletmeleri yönetebilirsiniz',
       status: 'Aktif',
       backgroundColor: '#f8d7da',
       iconBackgroundColor: '#dc3545',
-      materialIconName: 'shopping_cart'
+      materialIconName: 'business',
     },
-    {
-      permission: 'GET.Reading.MüşterialışverişsepetiListesiGetirir',
-      route: '/carts',
-      title: 'Sepetler',
-      description: '(carts) Sepetleri yönetebilirsiniz',
-      status: 'Aktif',
-      backgroundColor: '#f8d7da',
-      iconBackgroundColor: '#312178',
-      materialIconName: 'shopping_cart'
-    },
-    {
-      permission: 'GET.Reading.SiparişÜrünleriListesiGetirir',
-      route: '/order-items',
-      title: 'Sipariş Ürünleri',
-      description: '(order-items) Sipariş ürünlerini yönetebilirsiniz',
-      status: 'Aktif',
-      backgroundColor: '#f8d7da',
-      iconBackgroundColor: '#375119',
-      materialIconName: 'shopping_cart'
-    },
-    {
-      permission: 'GET.Reading.ÜrünstokanlıkgörüntüleritablosuListesiGetirir',
-      route: '/inventory-snapshot',
-      title: 'Envanter',
-      description: '(inventory-snapshot) Envanteri yönetebilirsiniz',
-      status: 'Aktif',
-      backgroundColor: '#f8d7da',
-      iconBackgroundColor: '#315189',
-      materialIconName: 'inventory'
-    }
   ];
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -3,6 +3,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { AlertConfig, AlertPosition, AlertService, BaseComponent, DialogService, PermissionsService } from '@coder-pioneers/shared';
 import { CoderPioneersCreateComponent } from '@coder-pioneers/ui-layout-components';
 import { RequestRolDefinitions } from '@features/identity-management/contracts/requests/request-rol-definitions';
+import { AuthorizeDefinitionEndpointsDialogComponent } from '@features/identity-management/dialogs/authorize-definition-endpoints-dialog/authorize-definition-endpoints-dialog.component';
 import { RolDefinitionsCreateDialogComponent } from '@features/identity-management/dialogs/rol-definitions-create-dialog/rol-definitions-create-dialog.component';
 import { RolDefinitionsService } from '@features/identity-management/services/rol-definitions.service';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -69,10 +70,31 @@ export class CreateComponent extends BaseComponent implements OnInit{
     this.alertService.warning('yetkiniz yok');
   }
 
+  view(){
+    if (this.permissionsService.ifPermit('POST.Writing.CreateRole')){
+      this.dialogService.openDialog({
+        componentType: AuthorizeDefinitionEndpointsDialogComponent,
+        options: {
+          width: '1050px'
+        },
+        data: {},
+        disableClose:true,
+        afterClosed: ()  => {
+          this.created.emit();
+        }
+      });
+    } else {
+      this.alertService.warning('yetkiniz yok');
+    }
+  }
+
   filterList(value: string) {
     this.searchFilter.emit(value);
   }
 }
+
+
+
 
 
 

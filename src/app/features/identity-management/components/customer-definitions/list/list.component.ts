@@ -143,8 +143,8 @@ isDataLoading: boolean = false;
     label: 'Düzenle',
     icon: 'edit',
     color: 'blue',
-    updatePermission: 'PUT.Updating.MüşteriGüncelle',
-    deleteOnePermission: 'DELETE.Deleting.MüşteriSil',
+    updatePermission: 'PUT.Updating.UpdateCustomer', //PUT.Updating.CustomerUpdate
+    deleteOnePermission: 'DELETE.Deleting.RemoveCustomer', //DELETE.Deleting.CustomerDelete
     deleteController: 'Customer',
     deleteAction: 'DeleteCustomer',
     handler: (element) => this.update(element)
@@ -182,7 +182,7 @@ isDataLoading: boolean = false;
   //#region Listeleme
   // Verileri listeleyen fonksiyonları
   async getList(paginationState?: PaginationState): Promise<void> {
-    if (this.permissionsService.ifPermit('GET.Reading.TümMüşterileriGör')) {
+    if (this.permissionsService.ifPermit('GET.Reading.GetAllCustomers')) {
       this.isDataLoading = true;
       try {
         const responseTotalRows = await this.customerDefinitionsService.read(
@@ -316,6 +316,9 @@ exportToHTML = () => this.export('html');
 //#endregion
 
 }
+
+
+
 
 
 

@@ -1,0 +1,15 @@
+:host ::ng-deep #crumbs ul li a.active {
+  background: var(--custom-color-primary) !important;
+  color: var(--custom-color-shade-2) !important;
+}
+
+:host ::ng-deep #crumbs ul li a:hover {
+  color: var(--custom-color-shade-2) !important;
+}
+::ng-deep .mat-toolbar-multiple-rows {
+  display: flex;
+  box-sizing: border-box;
+  flex-direction: column;
+  width: 100%;
+  min-height: auto;
+}

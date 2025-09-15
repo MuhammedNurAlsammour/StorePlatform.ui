@@ -41,15 +41,8 @@
       "@themes": ["src/themes"],
       "@themes/*": ["src/themes/*"]
     },
-    "typeRoots": [
-      "node_modules/@types",
-      "src/typings"
-    ],
-    "lib": [
-      "ES2022",
-      "dom"
-    ]
-
+    "typeRoots": ["node_modules/@types", "src/typings"],
+    "lib": ["ES2022", "dom"]
   },
 
   "angularCompilerOptions": {
@@ -60,6 +53,7 @@
   },
   "include": [
     "src/**/*.ts",
-    "src/polyfills.ts"
-, "src/app/common/services/export/.service.ts"  ]
+    "src/polyfills.ts",
+    "src/app/common/services/export/.service.ts"
+  ]
 }

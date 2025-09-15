@@ -1,244 +1,493 @@
-  <div class="container">
-    <div class="row justify-content-between">
-      <div class="col-6">
-        <h1 mat-dialog-title> <span class="material-icons" style="color: rgb(19, 196, 202);">campaign</span>   Rol İşlemleri</h1>
+<div class="container">
+  <div class="row justify-content-between">
+    <div class="col-6">
+      <h1 mat-dialog-title>
+        <span class="material-icons" style="color: rgb(19, 196, 202)"
+          >campaign</span
+        >
+        Rol İşlemleri
+      </h1>
+    </div>
+  </div>
+</div>
+<div mat-dialog-content style="padding: 5px">
+  <hr />
+
+  <!-- Rol Adı ve Tümünü Seç -->
+  <div class="container mb-4">
+    <div class="row">
+      <div class="col-md-6">
+        <mat-form-field style="width: 100%" appearance="outline">
+          <mat-label>Rol Adı</mat-label>
+          <input matInput maxlength="50" [(ngModel)]="roleName" />
+        </mat-form-field>
+      </div>
+      <div class="col-md-6 d-flex align-items-center">
+        <span class="example-list-section">
+          <mat-checkbox
+            class="example-margin"
+            [checked]="allComplete"
+            [indeterminate]="someComplete()"
+            (change)="setAll($event.checked)"
+          >
+            Tümünü Seç
+          </mat-checkbox>
+        </span>
       </div>
     </div>
   </div>
-  <div mat-dialog-content style="padding: 5px;">
-    <hr>
 
-    <div class="container">
-      <div class="row">
-        <div class="col">
-          <mat-form-field style="width: 100%;" appearance="outline">
-            <mat-label>Rol Adı</mat-label>
-            <input matInput maxlength="50" [(ngModel)]="roleName" >
+  <!-- Arama ve Filtreleme Paneli -->
+  <div class="search-filter-panel bg-gray-50 p-4 rounded-lg mb-4">
+    <div class="row">
+      <!-- Arama Kutusu -->
+      <div class="col-md-4 mb-3">
+        <mat-form-field appearance="outline" style="width: 100%">
+          <mat-label>Arama</mat-label>
+          <input
+            matInput
+            [(ngModel)]="searchQuery"
+            (ngModelChange)="onSearchChange()"
+            placeholder="API veya işlem adı ara..."
+          />
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+      </div>
 
-          </mat-form-field>
+      <!-- HTTP Metodları -->
+      <div class="col-md-4 mb-3">
+        <label class="form-label text-sm font-medium text-gray-700 mb-2"
+          >HTTP Metodları</label
+        >
+        <div class="flex flex-wrap gap-2">
+          @for (method of httpMethods; track method.value) {
+          <mat-chip
+            [class]="
+              isHttpMethodSelected(method.value)
+                ? 'selected-chip'
+                : 'unselected-chip'
+            "
+            (click)="toggleHttpMethod(method.value)"
+            [matTooltip]="method.label + ' metodunu filtrele'"
+          >
+            <mat-icon matChipAvatar>{{
+              getHttpMethodIcon(method.value)
+            }}</mat-icon>
+            {{ method.label }}
+          </mat-chip>
+          }
         </div>
-        <div class="col">
-          <span class="example-list-section">
-            <mat-checkbox class="example-margin"
-            [checked]="allComplete"
-            [indeterminate]="someComplete()"
-            (change)="setAll($event.checked)">
-Tümünü Seç
-</mat-checkbox>
+      </div>
+
+      <!-- API Türleri -->
+      <div class="col-md-4 mb-3">
+        <label class="form-label text-sm font-medium text-gray-700 mb-2"
+          >API Türleri</label
+        >
+        <div class="flex flex-wrap gap-2">
+          @for (type of apiTypes; track type.value) {
+          <mat-chip
+            [class]="
+              isApiTypeSelected(type.value)
+                ? 'selected-chip'
+                : 'unselected-chip'
+            "
+            (click)="toggleApiType(type.value)"
+            [matTooltip]="type.label + ' API türünü filtrele'"
+          >
+            <mat-icon matChipAvatar>{{ type.icon }}</mat-icon>
+            {{ type.label }}
+          </mat-chip>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- İstatistikler ve Temizleme -->
+    <div class="row">
+      <div class="col-md-8">
+        <div class="flex items-center gap-4 text-sm">
+          <span class="flex items-center gap-1">
+            <mat-icon class="text-blue-500">info</mat-icon>
+            <span class="text-gray-600"
+              >Toplam: <strong>{{ searchStats.totalItems }}</strong></span
+            >
+          </span>
+          <span class="flex items-center gap-1">
+            <mat-icon class="text-green-500">filter_list</mat-icon>
+            <span class="text-gray-600"
+              >Filtrelenmiş:
+              <strong>{{ searchStats.filteredItems }}</strong></span
+            >
+          </span>
+          <span class="flex items-center gap-1">
+            <mat-icon class="text-purple-500">check_circle</mat-icon>
+            <span class="text-gray-600"
+              >Seçili: <strong>{{ searchStats.selectedItems }}</strong></span
+            >
+          </span>
+          @if (searchStats.searchActive) {
+          <span class="flex items-center gap-1 text-orange-600">
+            <mat-icon>search</mat-icon>
+            <span>Arama Aktif</span>
+          </span>
+          }
+        </div>
+      </div>
+      <div class="col-md-4 text-end">
+        <button
+          mat-stroked-button
+          color="warn"
+          (click)="clearFilters()"
+          [disabled]="!searchStats.searchActive"
+          class="clear-filters-btn"
+        >
+          <mat-icon>clear</mat-icon>
+          Filtreleri Temizle
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-12" style="margin-top: 20px">
+        <div class="flex items-center justify-between mb-3">
+          <h3
+            class="text-lg font-semibold text-gray-800 flex items-center gap-2"
+          >
+            <mat-icon class="text-blue-500">api</mat-icon>
+            API Endpoints
+          </h3>
+          <span
+            class="badge bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm"
+          >
+            {{ getDisplayTasks().length }} endpoint
           </span>
         </div>
+        <mat-accordion class="example-headers-align" style="width: 100%">
+          @for (task of getDisplayTasks(); track task.name) {
+          <mat-expansion-panel
+            [expanded]="step === task?.id"
+            (opened)="setStep(task?.id ?? 0)"
+            hideToggle
+          >
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{ task.name }}
+              </mat-panel-title>
+              <div style="float: right">
+                @if (getTaskSelectedCount(task) > 0) {
+                <span class="selected-count ms-2">{{
+                  getTaskSelectedCount(task)
+                }}</span>
+                }
+              </div>
+              <div style="float: right">
+                @if (getTaskUnselectedCount(task) > 0) {
+                <span class="unselected-count ms-2">{{
+                  getTaskUnselectedCount(task)
+                }}</span>
+                }
+              </div>
+            </mat-expansion-panel-header>
+            <section class="example-section">
+              <div class="flex items-center mb-3 card-header">
+                <mat-checkbox
+                  [checked]="isAllTaskSelected(task)"
+                  [indeterminate]="isSomeTaskSelected(task)"
+                  (change)="toggleAllTaskItems(task, $event.checked)"
+                  color="primary"
+                >
+                  Tümünü Seç
+                </mat-checkbox>
+                <span class="ml-2 text-sm text-gray-500">
+                  ({{ getTaskSelectedCount(task) }}/{{ task.subtasks?.length }})
+                </span>
+              </div>
+              <span class="example-list-section">
+                <ul>
+                  @for (subtask of task.subtasks; track subtask.code) {
+                  <li
+                    class="flex items-center justify-between p-2 hover:bg-gray-50 rounded transition-colors"
+                  >
+                    <mat-checkbox
+                      [(ngModel)]="subtask.completed"
+                      [color]="subtask.color"
+                      (ngModelChange)="updateAllComplete()"
+                    >
+                      {{ subtask.name }}
+                    </mat-checkbox>
+                    <span
+                      class="http-method-badge"
+                      [class]="getHttpMethodClass(subtask)"
+                    >
+                      {{ getHttpMethod(subtask) }}
+                    </span>
+                  </li>
+                  }
+                </ul>
+              </span>
+            </section>
+          </mat-expansion-panel>
+          }
+        </mat-accordion>
+      </div>
+
+      <div class="col" style="margin-top: 20px">
+        <div class="flex items-center justify-between mb-3">
+          <h3
+            class="text-lg font-semibold text-gray-800 flex items-center gap-2"
+          >
+            <mat-icon class="text-green-500">storage</mat-icon>
+            API Primary Endpoints
+          </h3>
+          <span
+            class="badge bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm"
+          >
+            {{ getDisplayTasksPrimary().length }} endpoint
+          </span>
+        </div>
+        <mat-accordion class="example-headers-align" style="width: 100%">
+          @for (task of getDisplayTasksPrimary(); track task.name) {
+          <mat-expansion-panel
+            [expanded]="step === task?.id"
+            (opened)="setStep(task?.id ?? 0)"
+            hideToggle
+          >
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{ task.name }}
+              </mat-panel-title>
+
+              <div style="float: right">
+                @if (getTaskSelectedCount(task) > 0) {
+                <span class="selected-count ms-2">{{
+                  getTaskSelectedCount(task)
+                }}</span>
+                }
+              </div>
+              <div style="float: right">
+                @if (getTaskUnselectedCount(task) > 0) {
+                <span class="unselected-count ms-2">{{
+                  getTaskUnselectedCount(task)
+                }}</span>
+                }
+              </div>
+            </mat-expansion-panel-header>
+            <section class="example-section">
+              <div class="flex items-center mb-3 card-header">
+                <mat-checkbox
+                  [checked]="isAllTaskSelected(task)"
+                  [indeterminate]="isSomeTaskSelected(task)"
+                  (change)="toggleAllTaskItems(task, $event.checked)"
+                  color="primary"
+                >
+                  Tümünü Seç
+                </mat-checkbox>
+                <span class="ml-2 text-sm text-gray-500">
+                  ({{ getTaskSelectedCount(task) }}/{{ task.subtasks?.length }})
+                </span>
+              </div>
+              <span class="example-list-section">
+                <ul>
+                  @for (subtask of task.subtasks; track subtask.code) {
+                  <li
+                    class="flex items-center justify-between p-2 hover:bg-gray-50 rounded transition-colors"
+                  >
+                    <mat-checkbox
+                      [(ngModel)]="subtask.completed"
+                      [color]="subtask.color"
+                      (ngModelChange)="updateAllComplete()"
+                    >
+                      {{ subtask.name }}
+                    </mat-checkbox>
+                    <span
+                      class="http-method-badge"
+                      [class]="getHttpMethodClass(subtask)"
+                    >
+                      {{ getHttpMethod(subtask) }}
+                    </span>
+                  </li>
+                  }
+                </ul>
+              </span>
+            </section>
+          </mat-expansion-panel>
+          }
+        </mat-accordion>
+      </div>
+
+      <div class="col" style="margin-top: 20px">
+        <div class="flex items-center justify-between mb-3">
+          <h3
+            class="text-lg font-semibold text-gray-800 flex items-center gap-2"
+          >
+            <mat-icon class="text-purple-500">security</mat-icon>
+            Auth Endpoints
+          </h3>
+          <span
+            class="badge bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm"
+          >
+            {{ getDisplayAuthTasks().length }} endpoint
+          </span>
+        </div>
+
+        <mat-accordion class="example-headers-align" style="width: 100%">
+          @for ( taskAuth of getDisplayAuthTasks(); track taskAuth.name) {
+          <mat-expansion-panel
+            [expanded]="step === taskAuth?.id"
+            (opened)="setStep(taskAuth?.id ?? 0)"
+            hideToggle
+          >
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{ taskAuth.name }}
+              </mat-panel-title>
+              <div style="float: right">
+                @if (getAuthTaskSelectedCount(taskAuth) > 0) {
+                <span class="selected-count ms-2">{{
+                  getAuthTaskSelectedCount(taskAuth)
+                }}</span>
+                }
+              </div>
+              <div style="float: right">
+                @if (getAuthTaskUnselectedCount(taskAuth) > 0) {
+                <span class="unselected-count ms-2">{{
+                  getAuthTaskUnselectedCount(taskAuth)
+                }}</span>
+                }
+              </div>
+            </mat-expansion-panel-header>
+
+            <section class="example-section">
+              <div class="flex items-center mb-3 card-header">
+                <mat-checkbox
+                  [checked]="isAllAuthTaskSelected(taskAuth)"
+                  [indeterminate]="isSomeAuthTaskSelected(taskAuth)"
+                  (change)="toggleAllAuthTaskItems(taskAuth, $event.checked)"
+                  color="primary"
+                >
+                  Tümünü Seç
+                </mat-checkbox>
+                <span class="ml-2 text-sm text-gray-500">
+                  ({{ getAuthTaskSelectedCount(taskAuth) }}/{{
+                    taskAuth.subtaskAuth?.length
+                  }})
+                </span>
+              </div>
+
+              <span class="example-list-section">
+                <ul>
+                  @for (subtaskAuth of taskAuth.subtaskAuth; track
+                  subtaskAuth.code) {
+                  <li
+                    class="flex items-center justify-between p-2 hover:bg-gray-50 rounded transition-colors"
+                  >
+                    <mat-checkbox
+                      [(ngModel)]="subtaskAuth.completed"
+                      [color]="subtaskAuth.color"
+                      (ngModelChange)="updateAllComplete()"
+                    >
+                      {{ subtaskAuth.name }}
+                    </mat-checkbox>
+                    <span
+                      class="http-method-badge"
+                      [class]="getHttpMethodClass(subtaskAuth)"
+                    >
+                      {{ getHttpMethod(subtaskAuth) }}
+                    </span>
+                  </li>
+                  }
+                </ul>
+              </span>
+            </section>
+          </mat-expansion-panel>
+          }
+        </mat-accordion>
       </div>
     </div>
+  </div>
 
-    <div class="container">
+  <!-- İstatistikler Paneli -->
+  <div class="container mt-4">
+    <div
+      class="stats-panel bg-gradient-to-r from-blue-50 to-purple-50 p-4 rounded-lg"
+    >
       <div class="row">
-
-        <div class="col"  style="margin-top: 20px;">
-          <p>Api</p>
-          <mat-accordion class="example-headers-align" style="width: 100%;">
-            @for (task of tasks; track task.name) {
-              <mat-expansion-panel [expanded]="step === task?.id" (opened)="setStep(task?.id ?? 0)" hideToggle>
-                <mat-expansion-panel-header>
-                  <mat-panel-title>
-                    {{task.name}}
-                  </mat-panel-title>
-                  <mat-panel-description>
-                    {{task.name}} izinlendirme
-                  </mat-panel-description>
-                  <div style="float: right;">
-                    @if (getTaskSelectedCount(task) > 0) {
-                      <span class="selected-count ms-2">{{getTaskSelectedCount(task)}}</span>
-                    }
-                  </div>
-                  <div style="float: right;">
-                    @if (getTaskUnselectedCount(task) > 0) {
-                      <span class="unselected-count ms-2">{{getTaskUnselectedCount(task)}}</span>
-                    }
-                  </div>
-                </mat-expansion-panel-header>
-                <section class="example-section">
-                  <div class="flex items-center mb-3 card-header">
-                    <mat-checkbox
-                      [checked]="isAllTaskSelected(task)"
-                      [indeterminate]="isSomeTaskSelected(task)"
-                      (change)="toggleAllTaskItems(task, $event.checked)"
-                      color="primary">
-                      Tümünü Seç
-                    </mat-checkbox>
-                    <span class="ml-2 text-sm text-gray-500">
-                      ({{getTaskSelectedCount(task)}}/{{task.subtasks?.length}})
-                    </span>
-                  </div>
-                  <span class="example-list-section">
-                    <ul>
-                      @for (subtask of task.subtasks; track subtask.code) {
-                        <li>
-                          <mat-checkbox [(ngModel)]="subtask.completed"
-                                      [color]="subtask.color"
-                                      (ngModelChange)="updateAllComplete()">
-                            {{subtask.name}}
-                          </mat-checkbox>
-                        </li>
-                      }
-                    </ul>
-                  </span>
-                </section>
-              </mat-expansion-panel>
-            }
-          </mat-accordion>
+        <div class="col-12">
+          <h4
+            class="text-lg font-semibold text-gray-800 mb-3 flex items-center gap-2"
+          >
+            <mat-icon class="text-blue-500">analytics</mat-icon>
+            Seçim İstatistikleri
+          </h4>
         </div>
-
-
-        <div class="col"  style="margin-top: 20px;">
-          <p>Api Pimary</p>
-          <mat-accordion class="example-headers-align" style="width: 100%;">
-            @for (task of tasksPrimary; track task.name) {
-              <mat-expansion-panel [expanded]="step === task?.id" (opened)="setStep(task?.id ?? 0)" hideToggle>
-                <mat-expansion-panel-header>
-                  <mat-panel-title>
-                    {{task.name}}
-                  </mat-panel-title>
-                  <mat-panel-description>
-                    {{task.name}} izinlendirme
-                  </mat-panel-description>
-                  <div style="float: right;">
-                    @if (getTaskSelectedCount(task) > 0) {
-                      <span class="selected-count ms-2">{{getTaskSelectedCount(task)}}</span>
-                    }
-                  </div>
-                  <div style="float: right;">
-                    @if (getTaskUnselectedCount(task) > 0) {
-                      <span class="unselected-count ms-2">{{getTaskUnselectedCount(task)}}</span>
-                    }
-                  </div>
-                </mat-expansion-panel-header>
-                <section class="example-section">
-                  <div class="flex items-center mb-3 card-header">
-                    <mat-checkbox
-                      [checked]="isAllTaskSelected(task)"
-                      [indeterminate]="isSomeTaskSelected(task)"
-                      (change)="toggleAllTaskItems(task, $event.checked)"
-                      color="primary">
-                      Tümünü Seç
-                    </mat-checkbox>
-                    <span class="ml-2 text-sm text-gray-500">
-                      ({{getTaskSelectedCount(task)}}/{{task.subtasks?.length}})
-                    </span>
-                  </div>
-                  <span class="example-list-section">
-                    <ul>
-                      @for (subtask of task.subtasks; track subtask.code) {
-                        <li>
-                          <mat-checkbox [(ngModel)]="subtask.completed"
-                                      [color]="subtask.color"
-                                      (ngModelChange)="updateAllComplete()">
-                            {{subtask.name}}
-                          </mat-checkbox>
-                        </li>
-                      }
-                    </ul>
-                  </span>
-                </section>
-              </mat-expansion-panel>
-            }
-          </mat-accordion>
+      </div>
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          <div class="stat-card bg-blue-100 p-3 rounded-lg text-center">
+            <mat-icon class="text-blue-600 text-2xl mb-2">api</mat-icon>
+            <div class="text-2xl font-bold text-blue-800">
+              {{ getApiSelectedCount() }}
+            </div>
+            <div class="text-sm text-blue-600">API Seçili</div>
+          </div>
         </div>
-
-        <div class="col"  style="margin-top: 20px;">
-          <p>Auth</p>
-
-          <mat-accordion class="example-headers-align"  style="width: 100%;">
-
-            @for ( taskAuth of authTask; track taskAuth.name) {
-              <mat-expansion-panel [expanded]="step === taskAuth?.id" (opened)="setStep(taskAuth?.id ?? 0)" hideToggle>
-                <mat-expansion-panel-header>
-                  <mat-panel-title>
-                    {{taskAuth.name}}
-                  </mat-panel-title>
-                  <mat-panel-description>
-                    {{taskAuth.name}} izinlendirme
-
-                  </mat-panel-description>
-                  <div style="float: right;">
-                    @if (getAuthTaskSelectedCount(taskAuth) > 0) {
-                      <span class="selected-count ms-2">{{getAuthTaskSelectedCount(taskAuth)}}</span>
-                    }
-                  </div>
-                  <div style="float: right;">
-                    @if (getAuthTaskUnselectedCount(taskAuth) > 0) {
-                      <span class="unselected-count ms-2">{{getAuthTaskUnselectedCount(taskAuth)}}</span>
-                    }
-                  </div>
-                </mat-expansion-panel-header>
-
-                <section class="example-section">
-                  <div class="flex items-center mb-3 card-header">
-                    <mat-checkbox
-                      [checked]="isAllAuthTaskSelected(taskAuth)"
-                      [indeterminate]="isSomeAuthTaskSelected(taskAuth)"
-                      (change)="toggleAllAuthTaskItems(taskAuth, $event.checked)"
-                      color="primary">
-                      Tümünü Seç
-                    </mat-checkbox>
-                    <span class="ml-2 text-sm text-gray-500">
-                      ({{getAuthTaskSelectedCount(taskAuth)}}/{{taskAuth.subtaskAuth?.length}})
-                    </span>
-                  </div>
-
-                  <span class="example-list-section">
-                    <ul>
-                      @for (subtaskAuth of taskAuth.subtaskAuth; track subtaskAuth.code) {
-                        <li>
-                          <mat-checkbox [(ngModel)]="subtaskAuth.completed"
-                                        [color]="subtaskAuth.color"
-                                        (ngModelChange)="updateAllComplete()">
-                            {{subtaskAuth.name}}
-                          </mat-checkbox>
-                        </li>
-                      }
-                    </ul>
-                  </span>
-                </section>
-
-              </mat-expansion-panel>
-            }
-
-          </mat-accordion>
+        <div class="col-md-4 mb-3">
+          <div class="stat-card bg-green-100 p-3 rounded-lg text-center">
+            <mat-icon class="text-green-600 text-2xl mb-2">storage</mat-icon>
+            <div class="text-2xl font-bold text-green-800">
+              {{ getApiPrimarySelectedCount() }}
+            </div>
+            <div class="text-sm text-green-600">API Primary Seçili</div>
+          </div>
+        </div>
+        <div class="col-md-4 mb-3">
+          <div class="stat-card bg-purple-100 p-3 rounded-lg text-center">
+            <mat-icon class="text-purple-600 text-2xl mb-2">security</mat-icon>
+            <div class="text-2xl font-bold text-purple-800">
+              {{ getAuthApiSelectedCount() }}
+            </div>
+            <div class="text-sm text-purple-600">Auth Seçili</div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <div
+            class="total-stats bg-white p-3 rounded-lg border-l-4 border-blue-500"
+          >
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <mat-icon class="text-blue-500">check_circle</mat-icon>
+                <span class="font-semibold text-gray-700"
+                  >Toplam Seçili İşlem:</span
+                >
+              </div>
+              <span class="text-2xl font-bold text-blue-600">{{
+                getTotalSelectedCountValue()
+              }}</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
+  </div>
 
-
-    <div class="container">
-      <div class="row justify-content-between">
-        <div class="col-6">
-          <h1 mat-dialog-title>
-          </h1>
-        </div>
-        <div class="col-6 text-end">
-          <span class="badge bg-primary">Api Seçili: {{getApiSelectedCount()}}</span>
-          <span class="badge bg-success ms-2">Api Primary Seçili: {{getApiPrimarySelectedCount()}}</span>
-          <span class="badge bg-success ms-2">Auth Seçili: {{getAuthApiSelectedCount()}}</span>
-        </div>
-      </div>
-    </div>
-
-
-  <hr>
+  <hr />
 </div>
-<mat-dialog-actions   style="justify-content: end; padding-right: 25px;">
+<mat-dialog-actions style="justify-content: end; padding-right: 25px">
   <div>
-    <div class="button-appApproval" style="float: right;">
+    <div class="button-appApproval" style="float: right">
       <span class="mas">Kaydet</span>
       <button type="button" name="Hover" (click)="save()">Kaydet</button>
     </div>
-</div>
-    <div>
-      <div class="button-forego"  style="float: right;">
-        <span class="mas">Vazgeç</span>
-        <button type="button" mat-dialog-close  name="Hover">Vazgeç</button>
-      </div>
+  </div>
+  <div>
+    <div class="button-forego" style="float: right">
+      <span class="mas">Vazgeç</span>
+      <button type="button" mat-dialog-close name="Hover">Vazgeç</button>
     </div>
+  </div>
 </mat-dialog-actions>
-
-

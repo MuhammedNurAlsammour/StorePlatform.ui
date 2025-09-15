@@ -1,0 +1,533 @@
+<div class="container">
+  <div class="row justify-content-between">
+    <div class="col-6">
+      <h1 mat-dialog-title>
+        <span class="material-icons" style="color: rgb(19, 196, 202)"
+          >campaign</span
+        >
+        Yetki İşlemleri
+      </h1>
+    </div>
+  </div>
+</div>
+<div mat-dialog-content style="padding: 5px">
+  <hr />
+
+  <!-- Yetki Adı ve Tümünü Seç -->
+  <div class="container mb-4">
+    <div class="row">
+      <div class="col-md-6 d-flex align-items-center">
+        <span class="example-list-section">
+          <mat-checkbox
+            class="example-margin"
+            [checked]="allComplete"
+            [indeterminate]="someComplete()"
+            (change)="setAll($event.checked)"
+          >
+            Tümünü Seç
+          </mat-checkbox>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Yetki Kopyalama Paneli -->
+  <div
+    class="copy-permissions-panel bg-blue-50 p-4 rounded-lg mb-4 border border-blue-200"
+  >
+    <div class="row">
+      <div class="col-12 mb-3">
+        <h4
+          class="text-lg font-semibold text-blue-800 flex items-center gap-2 mb-2"
+        >
+          <mat-icon class="text-blue-600">content_copy</mat-icon>
+          Yetki Kopyalama ve Yapıştırma
+        </h4>
+        <div class="help-text bg-blue-100 p-3 rounded-lg text-sm text-blue-700">
+          <div class="flex items-start gap-2">
+            <mat-icon class="text-blue-600 text-lg">info</mat-icon>
+            <div>
+              <p class="font-medium mb-1">Hızlı Yetki Yönetimi:</p>
+              <ul class="text-xs space-y-1 ml-4">
+                <li>
+                  • <strong>API'den Kopyala:</strong> Swagger'dan veri
+                  kopyalamak yerine otomatik olarak API'den çeker
+                </li>
+                <li>
+                  • <strong>Manuel Kopyala:</strong> Mevcut yetki ayarlarını
+                  başka roller için kopyalar
+                </li>
+                <li>
+                  • <strong>Yapıştır:</strong> JSON formatında veri yapıştırarak
+                  yetkileri günceller
+                </li>
+                <li>
+                  • <strong>Klavye Kısayolları:</strong> Ctrl+Shift+C (API'den),
+                  Ctrl+Shift+X (Kopyala), Ctrl+Shift+V (Yapıştır)
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <!-- API'den Kopyala -->
+      <div class="col-md-4 mb-3">
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="copyFromApi()"
+          [disabled]="isLoadingApi"
+          class="w-100 copy-api-btn"
+          [matTooltip]="
+            'API\'den otomatik olarak yetki verilerini çeker ve uygular (Ctrl+Shift+C)'
+          "
+          matTooltipPosition="above"
+        >
+          <mat-icon>{{
+            isLoadingApi ? "hourglass_empty" : "cloud_download"
+          }}</mat-icon>
+          {{ isLoadingApi ? "Yükleniyor..." : "API'den Kopyala" }}
+        </button>
+      </div>
+
+      <!-- Manuel Kopyala -->
+      <div class="col-md-4 mb-3">
+        <button
+          mat-stroked-button
+          color="accent"
+          (click)="copyToClipboard()"
+          class="w-100 copy-manual-btn"
+          [matTooltip]="
+            'Mevcut yetki verilerini clipboard\'a kopyalar (Ctrl+Shift+X)'
+          "
+          matTooltipPosition="above"
+        >
+          <mat-icon>content_copy</mat-icon>
+          Mevcut Verileri Kopyala
+        </button>
+      </div>
+
+      <!-- Yapıştır -->
+      <div class="col-md-4 mb-3">
+        <button
+          mat-stroked-button
+          color="warn"
+          (click)="pasteFromClipboard()"
+          class="w-100 paste-btn"
+          [matTooltip]="'Clipboard\'dan JSON verisi yapıştırır (Ctrl+Shift+V)'"
+          matTooltipPosition="above"
+        >
+          <mat-icon>content_paste</mat-icon>
+          Yapıştır
+        </button>
+      </div>
+    </div>
+
+    <!-- JSON Veri Alanı -->
+    <div class="row" *ngIf="showJsonEditor">
+      <div class="col-12">
+        <div class="json-editor-container">
+          <div class="json-editor-header">
+            <h5
+              class="text-md font-semibold text-gray-700 mb-2 flex items-center gap-2"
+            >
+              <mat-icon class="text-blue-500">code</mat-icon>
+              JSON Veri Editörü
+            </h5>
+            <div class="json-editor-actions">
+              <button
+                mat-icon-button
+                (click)="formatJson()"
+                matTooltip="JSON'u formatla"
+                class="format-json-btn"
+              >
+                <mat-icon>format_align_left</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                (click)="clearJson()"
+                matTooltip="JSON'u temizle"
+                class="clear-json-btn"
+              >
+                <mat-icon>clear</mat-icon>
+              </button>
+            </div>
+          </div>
+          <mat-form-field appearance="outline" style="width: 100%">
+            <mat-label>JSON Verisi</mat-label>
+            <textarea
+              matInput
+              [(ngModel)]="jsonData"
+              placeholder='Örnek: [{"name": "Announcements-Duyurular", "actions": [...]}]'
+              rows="8"
+              style="
+                font-family: 'Courier New', monospace;
+                font-size: 12px;
+                line-height: 1.4;
+              "
+            ></textarea>
+            <mat-hint>
+              <div class="flex items-center justify-between">
+                <span
+                  >API'den kopyaladığınız JSON verisini buraya yapıştırın</span
+                >
+                <span class="text-xs text-gray-500"
+                  >{{ jsonData.length }} karakter</span
+                >
+              </div>
+            </mat-hint>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+
+    <!-- Uygula Butonu -->
+    <div class="row" *ngIf="showJsonEditor">
+      <div class="col-12 text-end">
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="applyJsonData()"
+          [disabled]="!jsonData"
+          class="apply-json-btn"
+        >
+          <mat-icon>check_circle</mat-icon>
+          Veriyi Uygula
+        </button>
+        <button mat-button (click)="showJsonEditor = false" class="ml-2">
+          İptal
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-12" style="margin-top: 20px">
+        <div class="flex items-center justify-between mb-3">
+          <h3
+            class="text-lg font-semibold text-gray-800 flex items-center gap-2"
+          >
+            <mat-icon class="text-blue-500">api</mat-icon>
+            API Endpoints
+          </h3>
+          <span
+            class="badge bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm"
+          >
+            {{ getDisplayTasks().length }} endpoint
+          </span>
+        </div>
+        <mat-accordion class="example-headers-align" style="width: 100%">
+          @for (task of getDisplayTasks(); track task.name) {
+          <mat-expansion-panel
+            [expanded]="step === task?.id"
+            (opened)="setStep(task?.id ?? 0)"
+            hideToggle
+          >
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{ task.name }}
+              </mat-panel-title>
+              <div style="float: right">
+                @if (getTaskSelectedCount(task) > 0) {
+                <span class="selected-count ms-2">{{
+                  getTaskSelectedCount(task)
+                }}</span>
+                }
+              </div>
+              <div style="float: right">
+                @if (getTaskUnselectedCount(task) > 0) {
+                <span class="unselected-count ms-2">{{
+                  getTaskUnselectedCount(task)
+                }}</span>
+                }
+              </div>
+            </mat-expansion-panel-header>
+            <section class="example-section">
+              <div class="flex items-center mb-3 card-header">
+                <mat-checkbox
+                  [checked]="isAllTaskSelected(task)"
+                  [indeterminate]="isSomeTaskSelected(task)"
+                  (change)="toggleAllTaskItems(task, $event.checked)"
+                  color="primary"
+                >
+                  Tümünü Seç
+                </mat-checkbox>
+                <button
+                  mat-icon-button
+                  (click)="copyTaskCodesAsJson(task)"
+                  [matTooltip]="
+                    'Bu task\'ın seçili kodlarını JSON olarak kopyala'
+                  "
+                  matTooltipPosition="above"
+                  class="copy-json-btn ml-2"
+                >
+                  <mat-icon>code</mat-icon>
+                </button>
+                <span class="ml-2 text-sm text-gray-500">
+                  ({{ getTaskSelectedCount(task) }}/{{ task.subtasks?.length }})
+                </span>
+              </div>
+              <span class="example-list-section">
+                <ul>
+                  @for (subtask of task.subtasks; track subtask.code) {
+                  <li
+                    class="flex items-center justify-between p-2 hover:bg-gray-50 rounded transition-colors"
+                  >
+                    <mat-checkbox
+                      [(ngModel)]="subtask.completed"
+                      [color]="subtask.color"
+                      (ngModelChange)="updateAllComplete()"
+                    >
+                      <span
+                        class="code-text cursor-pointer hover:text-blue-600 transition-colors"
+                        (click)="
+                          copyCodeToClipboard(subtask.code || subtask.name)
+                        "
+                        [matTooltip]="
+                          'Tıkla ve kopyala: ' + (subtask.code || subtask.name)
+                        "
+                        matTooltipPosition="above"
+                      >
+                        {{ subtask.code || subtask.name }}
+                      </span>
+                    </mat-checkbox>
+                    <span
+                      class="http-method-badge"
+                      [class]="getHttpMethodClass(subtask)"
+                    >
+                      {{ getHttpMethod(subtask) }}
+                    </span>
+                  </li>
+                  }
+                </ul>
+              </span>
+            </section>
+          </mat-expansion-panel>
+          }
+        </mat-accordion>
+      </div>
+
+      <div class="col" style="margin-top: 20px">
+        <div class="flex items-center justify-between mb-3">
+          <h3
+            class="text-lg font-semibold text-gray-800 flex items-center gap-2"
+          >
+            <mat-icon class="text-green-500">storage</mat-icon>
+            API Primary Endpoints
+          </h3>
+          <span
+            class="badge bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm"
+          >
+            {{ getDisplayTasksPrimary().length }} endpoint
+          </span>
+        </div>
+        <mat-accordion class="example-headers-align" style="width: 100%">
+          @for (task of getDisplayTasksPrimary(); track task.name) {
+          <mat-expansion-panel
+            [expanded]="step === task?.id"
+            (opened)="setStep(task?.id ?? 0)"
+            hideToggle
+          >
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{ task.name }}
+              </mat-panel-title>
+
+              <div style="float: right">
+                @if (getTaskSelectedCount(task) > 0) {
+                <span class="selected-count ms-2">{{
+                  getTaskSelectedCount(task)
+                }}</span>
+                }
+              </div>
+              <div style="float: right">
+                @if (getTaskUnselectedCount(task) > 0) {
+                <span class="unselected-count ms-2">{{
+                  getTaskUnselectedCount(task)
+                }}</span>
+                }
+              </div>
+            </mat-expansion-panel-header>
+            <section class="example-section">
+              <div class="flex items-center mb-3 card-header">
+                <mat-checkbox
+                  [checked]="isAllTaskSelected(task)"
+                  [indeterminate]="isSomeTaskSelected(task)"
+                  (change)="toggleAllTaskItems(task, $event.checked)"
+                  color="primary"
+                >
+                  Tümünü Seç
+                </mat-checkbox>
+                <button
+                  mat-icon-button
+                  (click)="copyTaskCodesAsJson(task)"
+                  [matTooltip]="
+                    'Bu task\'ın seçili kodlarını JSON olarak kopyala'
+                  "
+                  matTooltipPosition="above"
+                  class="copy-json-btn ml-2"
+                >
+                  <mat-icon>code</mat-icon>
+                </button>
+                <span class="ml-2 text-sm text-gray-500">
+                  ({{ getTaskSelectedCount(task) }}/{{ task.subtasks?.length }})
+                </span>
+              </div>
+              <span class="example-list-section">
+                <ul>
+                  @for (subtask of task.subtasks; track subtask.code) {
+                  <li
+                    class="flex items-center justify-between p-2 hover:bg-gray-50 rounded transition-colors"
+                  >
+                    <mat-checkbox
+                      [(ngModel)]="subtask.completed"
+                      [color]="subtask.color"
+                      (ngModelChange)="updateAllComplete()"
+                    >
+                      <span
+                        class="code-text cursor-pointer hover:text-blue-600 transition-colors"
+                        (click)="
+                          copyCodeToClipboard(subtask.code || subtask.name)
+                        "
+                        [matTooltip]="
+                          'Tıkla ve kopyala: ' + (subtask.code || subtask.name)
+                        "
+                        matTooltipPosition="above"
+                      >
+                        {{ subtask.code || subtask.name }}
+                      </span>
+                    </mat-checkbox>
+                    <span
+                      class="http-method-badge"
+                      [class]="getHttpMethodClass(subtask)"
+                    >
+                      {{ getHttpMethod(subtask) }}
+                    </span>
+                  </li>
+                  }
+                </ul>
+              </span>
+            </section>
+          </mat-expansion-panel>
+          }
+        </mat-accordion>
+      </div>
+
+      <div class="col" style="margin-top: 20px">
+        <div class="flex items-center justify-between mb-3">
+          <h3
+            class="text-lg font-semibold text-gray-800 flex items-center gap-2"
+          >
+            <mat-icon class="text-purple-500">security</mat-icon>
+            Auth Endpoints
+          </h3>
+          <span
+            class="badge bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm"
+          >
+            {{ getDisplayAuthTasks().length }} endpoint
+          </span>
+        </div>
+
+        <mat-accordion class="example-headers-align" style="width: 100%">
+          @for ( taskAuth of getDisplayAuthTasks(); track taskAuth.name) {
+          <mat-expansion-panel
+            [expanded]="step === taskAuth?.id"
+            (opened)="setStep(taskAuth?.id ?? 0)"
+            hideToggle
+          >
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{ taskAuth.name }}
+              </mat-panel-title>
+              <div style="float: right">
+                @if (getAuthTaskSelectedCount(taskAuth) > 0) {
+                <span class="selected-count ms-2">{{
+                  getAuthTaskSelectedCount(taskAuth)
+                }}</span>
+                }
+              </div>
+              <div style="float: right">
+                @if (getAuthTaskUnselectedCount(taskAuth) > 0) {
+                <span class="unselected-count ms-2">{{
+                  getAuthTaskUnselectedCount(taskAuth)
+                }}</span>
+                }
+              </div>
+            </mat-expansion-panel-header>
+
+            <section class="example-section">
+              <div class="flex items-center mb-3 card-header">
+                <mat-checkbox
+                  [checked]="isAllAuthTaskSelected(taskAuth)"
+                  [indeterminate]="isSomeAuthTaskSelected(taskAuth)"
+                  (change)="toggleAllAuthTaskItems(taskAuth, $event.checked)"
+                  color="primary"
+                >
+                  Tümünü Seç
+                </mat-checkbox>
+                <span class="ml-2 text-sm text-gray-500">
+                  ({{ getAuthTaskSelectedCount(taskAuth) }}/{{
+                    taskAuth.subtaskAuth?.length
+                  }})
+                </span>
+              </div>
+
+              <span class="example-list-section">
+                <ul>
+                  @for (subtaskAuth of taskAuth.subtaskAuth; track
+                  subtaskAuth.code) {
+                  <li
+                    class="flex items-center justify-between p-2 hover:bg-gray-50 rounded transition-colors"
+                  >
+                    <mat-checkbox
+                      [(ngModel)]="subtaskAuth.completed"
+                      [color]="subtaskAuth.color"
+                      (ngModelChange)="updateAllComplete()"
+                    >
+                      {{ subtaskAuth.name }}
+                    </mat-checkbox>
+                    <span
+                      class="http-method-badge"
+                      [class]="getHttpMethodClass(subtaskAuth)"
+                    >
+                      {{ getHttpMethod(subtaskAuth) }}
+                    </span>
+                  </li>
+                  }
+                </ul>
+              </span>
+            </section>
+          </mat-expansion-panel>
+          }
+        </mat-accordion>
+      </div>
+    </div>
+  </div>
+
+  <!-- Basit İstatistikler -->
+  <div class="container mt-4">
+    <div class="simple-stats bg-gray-50 p-3 rounded-lg">
+      <div class="flex items-center justify-center gap-4 text-sm">
+        <span class="flex items-center gap-1">
+          <mat-icon class="text-blue-500">check_circle</mat-icon>
+          <span class="text-gray-600">
+            Toplam Seçili: <strong>{{ getTotalSelectedCountValue() }}</strong>
+          </span>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <hr />
+</div>
+<mat-dialog-actions style="justify-content: end; padding-right: 25px">
+  <div>
+    <div class="button-forego" style="float: right">
+      <span class="mas">Kapat</span>
+      <button type="button" mat-dialog-close name="Hover">Kapat</button>
+    </div>
+  </div>
+</mat-dialog-actions>

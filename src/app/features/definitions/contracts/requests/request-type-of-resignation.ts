@@ -23,3 +23,6 @@ export class RequestTypeOfResignation extends Base_Contract {
 
 
 
+
+
+

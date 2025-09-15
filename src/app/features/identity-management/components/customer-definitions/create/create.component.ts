@@ -1,5 +1,13 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { AlertConfig, AlertPosition, AlertService, BaseComponent, DialogService, MaterialCreateModule, PermissionsService } from '@coder-pioneers/shared';
+import {
+  AlertConfig,
+  AlertPosition,
+  AlertService,
+  BaseComponent,
+  DialogService,
+  MaterialCreateModule,
+  PermissionsService,
+} from '@coder-pioneers/shared';
 import { CoderPioneersCreateComponent } from '@coder-pioneers/ui-layout-components';
 import { CustomerDefinitionsCreateDialogComponent } from '@features/identity-management/dialogs/customer-definitions/customer-definitions-create-dialog.component';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -7,12 +15,9 @@ import { NgxSpinnerService } from 'ngx-spinner';
 @Component({
   selector: 'app-create',
   standalone: true,
-  imports: [
-    MaterialCreateModule,
-    CoderPioneersCreateComponent
-  ],
+  imports: [MaterialCreateModule, CoderPioneersCreateComponent],
   templateUrl: './create.component.html',
-  styleUrl: './create.component.scss'
+  styleUrl: './create.component.scss',
 })
 export class CreateComponent extends BaseComponent implements OnInit {
   @Output() created = new EventEmitter();
@@ -33,29 +38,26 @@ export class CreateComponent extends BaseComponent implements OnInit {
     private alertService: AlertService,
     public permissionsService: PermissionsService,
     spinner: NgxSpinnerService
-  ) 
-  {
+  ) {
     super(spinner);
     const config = new AlertConfig();
-    config.duration = 5000; 
-    config.positionY = AlertPosition.Top; 
+    config.duration = 5000;
+    config.positionY = AlertPosition.Top;
     config.positionX = AlertPosition.Right;
     alertService.setConfig(config);
   }
 
-
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   //#region dialog
   create(): void {
-    if (this.permissionsService.ifPermit('POST.Writing.MüşteriOluştur')){
+    if (this.permissionsService.ifPermit('POST.Writing.CreateCustomer')) {
       this.dialogService.openDialog({
         componentType: CustomerDefinitionsCreateDialogComponent,
         options: { width: '730px' },
         disableClose: true,
         data: {},
-        afterClosed: () => void this.created.emit()
+        afterClosed: () => void this.created.emit(),
       });
     }
   }
@@ -99,7 +101,6 @@ export class CreateComponent extends BaseComponent implements OnInit {
   }
   //#endregion
 
-
   //#region Filtreleme Fonksiyonu
   handleFilter(type: string): void {
     switch (type) {
@@ -121,23 +122,6 @@ export class CreateComponent extends BaseComponent implements OnInit {
   }
   //#endregion
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

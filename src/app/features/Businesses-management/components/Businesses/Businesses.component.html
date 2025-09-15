@@ -1,0 +1,26 @@
+<app-cp
+  [showBreadcrumbs]="showBreadcrumbs"
+  [homeRoute]="'/'"
+  [closeRoute]="'/management'"
+  [breadcrumbs]="[
+    { route: '/management', label: 'Yönetim', icon: 'fa-cog' },
+    { route: '/businesses-management', label: 'İşletmeler', active: true }
+  ]"
+>
+  <app-create
+    header
+    (created)="created()"
+    (searchFilter)="receiveSearchValue($event)"
+    (excel)="excel()"
+    (csv)="exportToCSV()"
+    (txt)="exportToTXT()"
+    (json)="exportToJSON()"
+    (html)="exportToHTML()"
+    (filtre1)="filtre1()"
+    (filtre2)="filtre2()"
+    (filtre3)="filtre3()"
+    (filtre4)="filtre4()"
+  ></app-create>
+
+  <app-list content [filterValue]="searchValue"></app-list>
+</app-cp>

@@ -25,7 +25,7 @@ export class LayoutComponent {
   isSideNavCollapsed = false;
   screenWidth = 0;
   navData = navbarData;
-  companyLogo = "assets/login/Logo1.png";
+  companyLogo = "assets/login/Logo4.png";
   version = '1.0.2';
   onToggleSideNav(data: SideNavToggle): void {
     this.screenWidth = data.screenWidth;

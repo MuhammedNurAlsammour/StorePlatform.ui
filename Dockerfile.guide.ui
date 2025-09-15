@@ -1,0 +1,28 @@
+# Angular UI için Dockerfile - Cache kullanımını engellemek için
+FROM nginx:alpine
+
+# Build argümanları
+ARG BUILDKIT_INLINE_CACHE=0
+ARG BUILD_DATE
+ARG VCS_REF
+ARG CACHE_BUSTER
+
+# Cache'i devre dışı bırak
+ENV DOCKER_BUILDKIT=0
+ENV BUILDKIT_INLINE_CACHE=0
+
+# Nginx konfigürasyonunu kopyala
+COPY nginx.guide.ui.conf /etc/nginx/nginx.conf
+
+# Cache busting için timestamp ekle
+RUN echo "Build time: $(date)" > /build-info.txt
+
+# Angular build dosyalarını kopyala
+COPY guideplatform.ui/ /usr/share/nginx/html/
+
+# Port 4200'i expose et
+EXPOSE 4200
+EXPOSE 2053
+
+# Nginx'i başlat
+CMD ["nginx", "-g", "daemon off;"]

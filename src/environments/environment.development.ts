@@ -23,7 +23,7 @@ export const environment = {
   //   'localhost:7007',
   //   'localhost/api',
   //   'localhost/authapi',
-  //   'localhost/storeplatform',
+  //   'localhost/GuidePlatform',
   // ],
   // apiUrls: {
   //   baseUrl: 'http://localhost:3000/storeapi/api',
@@ -40,8 +40,8 @@ export const environment = {
   //   'localhost:3000/sharedapi',
   // ],
   apiUrls: {
-    baseUrl: 'http://72.60.33.111:3000/storeapi/api',
-    whUrl: 'http://72.60.33.111:3000/storeapi/api',
+    baseUrl: 'http://72.60.33.111:3000/guideapi/api',
+    whUrl: 'http://72.60.33.111:3000/guideapi/api',
     authApiUrl: 'http://72.60.33.111:3000/storeauth/api',
     secondaryBaseUrl: 'http://72.60.33.111:3000/sharedapi/api',
     primaryBaseUrl: 'http://72.60.33.111:3000/sharedapi/api',
@@ -51,6 +51,6 @@ export const environment = {
     '72.60.33.111:3000',
     '72.60.33.111/sharedapi',
     '72.60.33.111/authapi',
-    '72.60.33.111/storeplatform',
+    '72.60.33.111/GuidePlatform',
   ],
 };

@@ -5,6 +5,15 @@ $bg-color:var(--custom-color-primary) !important;
 $crumbs-back:var(--custom-color-text) !important;
 $text-color:var(--custom-color-text) !important;
 
+:host ::ng-deep #crumbs ul li a.active {
+  background: var(--custom-color-primary) !important;
+  color: var(--custom-color-shade-2)  !important;
+}
+
+:host ::ng-deep #crumbs ul li a:hover {
+  color: var(--custom-color-shade-2) !important;
+}
+
 ::ng-deep #crumbs {
   text-align: center;
   h1 {
@@ -12,7 +21,7 @@ $text-color:var(--custom-color-text) !important;
       font-size: .9rem;
       font-weight: 600;
       letter-spacing: .01rem;
-      color: var(--custom-color-textsidbar) !important; /* Assuming $text-color is defined elsewhere */
+      color: var(--custom-color-shade-2) !important; /* Assuming $text-color is defined elsewhere */
   }
   ul {
       list-style: none;
@@ -78,27 +87,27 @@ $text-color:var(--custom-color-text) !important;
 
 ::ng-deep #crumbs ul li a:hover {
   background: $bg-color;
-  color: var(--custom-color-textsidbar) !important;
+  color: var(--custom-color-shade-2) !important;
 }
 
 ::ng-deep #crumbs ul li a:active {
   background: $bg-color;
-  color: var(--custom-color-textsidbar) !important;
+  color: var(--custom-color-shade-2) !important;
 }
 
 ::ng-deep #crumbs ul li a:hover:after {
   border-left-color: $bg-color;
-  color: var(--custom-color-textsidbar) !important;
+  color: var(--custom-color-shade-2) !important; 
 }
 
 ::ng-deep .active{
   background: $bg-color;
-  color: var(--custom-color-textsidbar) !important;
+  color: var(--custom-color-shade-2) !important;
 }
 
 ::ng-deep .next{
   background: rgb(231, 255, 221);
-  color: var(--custom-color-textsidbar) !important;
+  color: var(--custom-color-shade-2) !important;
 }
 
 ::ng-deep #crumbs {
@@ -107,7 +116,7 @@ $text-color:var(--custom-color-text) !important;
       a {
         &.active {
           background: $bg-color;
-          color: var(--custom-color-textsidbar) !important;
+          color: var(--custom-color-shade-2) !important;
 
           &:after {
             border-left-color: $bg-color;

@@ -50,7 +50,7 @@ export class CustomerDefinitionsComponent extends BaseComponent implements OnIni
 
   ngOnInit(): void {
     if (
-      !this.permissionsService.ifPermit('GET.Reading.TümMüşterileriGör')
+      !this.permissionsService.ifPermit('GET.Reading.GetAllCustomers')
       ){
       this.routers.navigate(['/unauthorized']);
       return;
@@ -96,6 +96,9 @@ export class CustomerDefinitionsComponent extends BaseComponent implements OnIni
   }
   //#endregion
 }
+
+
+
 
 
 

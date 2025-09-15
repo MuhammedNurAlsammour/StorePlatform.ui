@@ -1,33 +1,37 @@
 /* You can add global styles to this file, and also import other style files */
-@import './themes/style.scss';
-@import './themes/theme.scss';
-@import url('https://fonts.googleapis.com/css?family=Ubuntu Condensed');
+@import "./themes/style.scss";
+@import "./themes/theme.scss";
+@import url("https://fonts.googleapis.com/css?family=Ubuntu Condensed");
 
-html, body { height: 100%; background-color: var(--custom-color-shade-1) !important; }
+html,
+body {
+  height: 100%;
+  background-color: var(--custom-color-shade-1) !important;
+}
 // body { margin: 0; font-family: 'Ubuntu'; }
 
- body { margin: 0;
-
+body {
+  margin: 0;
 }
 
 ::-webkit-scrollbar {
-    width: 10px;
+  width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-    border-radius: 8px;
+  border-radius: 8px;
 }
 
 ::-webkit-scrollbar-thumb {
-    height: 56px;
-    border-radius: 8px !important;
-    border: 1px solid transparent;
-    background-clip: content-box;
-    background-color: #888;
+  height: 56px;
+  border-radius: 8px !important;
+  border: 1px solid transparent;
+  background-clip: content-box;
+  background-color: #888;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background-color: #555;
+  background-color: #555;
 }
 :root {
   //login
@@ -159,7 +163,7 @@ html, body { height: 100%; background-color: var(--custom-color-shade-1) !import
   --custom-color-color-icon: #4a90e2;
 }
 
-
 .notyf__toast {
   padding-right: 40px;
 }
+

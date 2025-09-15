@@ -14,6 +14,6 @@ export const environment = {
     '72.60.33.111:3000',
     '72.60.33.111/sharedapi',
     '72.60.33.111/authapi',
-    '72.60.33.111/storeplatform',
+    '72.60.33.111/GuidePlatform',
   ],
 };

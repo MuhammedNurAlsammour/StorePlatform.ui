@@ -1,6 +1,6 @@
-# StorePlatform VPS Kurulum Rehberi
+# GuidePlatform VPS Kurulum Rehberi
 
-Bu proje, StorePlatform uygulamanızı Ubuntu VPS üzerinde Docker ile çalıştırmak için gerekli dosyaları içerir.
+Bu proje, GuidePlatform uygulamanızı Ubuntu VPS üzerinde Docker ile çalıştırmak için gerekli dosyaları içerir.
 
 ## Gereksinimler
 
@@ -41,7 +41,7 @@ chmod +x quick-setup.sh
 ### 5. Veritabanını İçe Aktarın
 
 ```bash
-docker exec -i storeplatform_postgres psql -U storeuser -d storeplatform < /backup/dump-hrefproHrefProdeneme-enson.sql
+docker exec -i GuidePlatform_postgres psql -U storeuser -d GuidePlatform < /backup/dump-hrefproHrefProdeneme-enson.sql
 ```
 
 ### 6. API Servisini Başlatın
@@ -75,9 +75,9 @@ Otomatik kurulum scripti.
 - **PostgreSQL**:
   - Host: 72.60.33.111
   - Port: 5432
-  - Database: storeplatform
+  - Database: GuidePlatform
   - User: storeuser
-  - Password: StorePlatform123!
+  - Password: GuidePlatform123!
 
 ## Yönetim Komutları
 
@@ -91,7 +91,7 @@ systemctl status main-api
 docker ps
 
 # Nginx logları
-docker logs storeplatform_nginx
+docker logs GuidePlatform_nginx
 ```
 
 ### Servisleri Yeniden Başlatma
@@ -107,7 +107,7 @@ docker-compose restart
 ### Veritabanı Yedekleme
 
 ```bash
-docker exec storeplatform_postgres pg_dump -U storeuser storeplatform > /backup/backup_$(date +%Y%m%d_%H%M%S).sql
+docker exec GuidePlatform_postgres pg_dump -U storeuser GuidePlatform > /backup/backup_$(date +%Y%m%d_%H%M%S).sql
 ```
 
 ## Güvenlik Notları
@@ -133,18 +133,18 @@ systemctl restart main-api
 
 ```bash
 # PostgreSQL durumunu kontrol edin
-docker logs storeplatform_postgres
+docker logs GuidePlatform_postgres
 
 # Bağlantıyı test edin
-docker exec -it storeplatform_postgres psql -U storeuser -d storeplatform
+docker exec -it GuidePlatform_postgres psql -U storeuser -d GuidePlatform
 ```
 
 ### Nginx Sorunları
 
 ```bash
 # Nginx loglarını kontrol edin
-docker logs storeplatform_nginx
+docker logs GuidePlatform_nginx
 
 # Konfigürasyonu test edin
-docker exec storeplatform_nginx nginx -t
+docker exec GuidePlatform_nginx nginx -t
 ```

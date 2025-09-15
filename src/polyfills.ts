@@ -42,4 +42,4 @@ import 'zone.js'; // Included with Angular CLI.
  * APPLICATION IMPORTS
  */
 
-window.global=window;
+window.global = window;

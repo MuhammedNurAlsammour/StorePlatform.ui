@@ -1,5 +1,5 @@
 {
-  "name": "storeplatform",
+  "name": "GuidePlatform",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -14,7 +14,7 @@
     "build:prod": "ng build --base-href=/ng-matero/",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:StorePlatform": "node dist/storeplatform/server/server.mjs",
+    "serve:ssr:GuidePlatform": "node dist/GuidePlatform/server/server.mjs",
     "plop-c": "plop c",
     "plop-bc": "plop component",
     "plop-bcall": "plop componentAll",
